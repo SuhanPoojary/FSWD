@@ -1,5 +1,6 @@
+
 import React from "react";
-import { Button } from "@/components/ui/Button";
+import { Button } from "@/components/ui/button";
 
 const HeroSection: React.FC = () => {
   return (
@@ -11,7 +12,11 @@ const HeroSection: React.FC = () => {
         <p className="text-white text-[22px] leading-[30.8px] max-sm:text-lg">
           Join a community of skilled professionals and contractors.
         </p>
-        <Button variant="default" size="default">
+        <Button 
+          variant="default" 
+          size="default"
+          onClick={() => window.location.href = "/journey"}
+        >
           Start Your Journey
         </Button>
       </div>

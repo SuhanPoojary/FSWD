@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Button } from "@/components/ui/Button";
+import { Button } from "@/components/ui/button";
 
 const NewsletterSignup: React.FC = () => {
   const [email, setEmail] = useState("");

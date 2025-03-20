@@ -1,8 +1,15 @@
 
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 
 const HeroSection: React.FC = () => {
+  const navigate = useNavigate();
+
+  const handleStartJourney = () => {
+    navigate("/journey");
+  };
+
   return (
     <section className="flex justify-center items-center bg-[#004A57] px-6 py-[120px] max-md:flex-col">
       <div className="flex flex-col items-center gap-10 max-w-[720px] text-center">
@@ -15,7 +22,7 @@ const HeroSection: React.FC = () => {
         <Button 
           variant="default" 
           size="default"
-          onClick={() => window.location.href = "/journey"}
+          onClick={handleStartJourney}
         >
           Start Your Journey
         </Button>

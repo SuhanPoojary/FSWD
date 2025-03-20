@@ -1,5 +1,6 @@
 
-import React from "react";
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import { PageHeader } from "@/components/PageHeader";
@@ -7,12 +8,16 @@ import { RoleCard } from "@/components/RoleCard";
 import { Button } from "@/components/ui/button";
 
 const Journey: React.FC = () => {
+  const navigate = useNavigate();
+  const [selectedRole, setSelectedRole] = useState<string | null>(null);
+  
   const checkIcon = "https://cdn.builder.io/api/v1/image/assets/TEMP/70b17f95af25fb1ca7f0dae89feda5083f69926b14013c5a2773d4964e3d6a6f?apiKey=c295e679d9414a73a1381f5a8a56ab87&";
   
   const roles = [
     {
+      id: "worker",
       title: "Construction Worker",
-      icon: "https://cdn.builder.io/api/v1/image/assets/TEMP/c9f4bb7a27c7e52988dcb0b49ed14b5ca985afe91a6fe34c7f2a42b4e8d5f9fb?apiKey=c295e679d9414a73a1381f5a8a56ab87&",
+      icon: "public/lovable-uploads/90d991c9-8176-439c-bad5-165655fabe79.png",
       description: "Join our network of skilled construction workers and find regular employment opportunities across various projects.",
       features: [
         { icon: checkIcon, text: "Access to daily and weekly job opportunities" },
@@ -22,8 +27,9 @@ const Journey: React.FC = () => {
       ],
     },
     {
+      id: "professional",
       title: "Skilled Professional",
-      icon: "https://cdn.builder.io/api/v1/image/assets/TEMP/7c9b1b0e1b0a7e7a4e9f3c7e8c9f5c6a3e9f4b7a6b7f3c9e8b7f3c7e8c9f5c6a3?apiKey=c295e679d9414a73a1381f5a8a56ab87&",
+      icon: "public/lovable-uploads/f1cebe40-9e7f-4534-9c92-38664e054dd0.png",
       description: "For licensed professionals in electrical, plumbing, carpentry and other specialized trades. Connect with clients and projects directly.",
       features: [
         { icon: checkIcon, text: "Showcase your certifications and portfolio" },
@@ -33,8 +39,9 @@ const Journey: React.FC = () => {
       ],
     },
     {
+      id: "contractor",
       title: "Contractor",
-      icon: "https://cdn.builder.io/api/v1/image/assets/TEMP/e9c5f7b3e8a7c7f4b8e5c7f4b8a5c7f4b8e5c7f4b8a5c7f4b8e5c7f4b8a5c7f4?apiKey=c295e679d9414a73a1381f5a8a56ab87&",
+      icon: "public/lovable-uploads/fdbb3d24-072b-479b-9feb-e014ec588c22.png",
       description: "Streamline your project management and find the right workers for each job. Build reliable teams for your construction projects.",
       features: [
         { icon: checkIcon, text: "Post jobs and find qualified workers quickly" },
@@ -44,6 +51,18 @@ const Journey: React.FC = () => {
       ],
     },
   ];
+
+  const handleRoleSelect = (roleId: string) => {
+    setSelectedRole(roleId);
+  };
+
+  const handleCreateProfile = () => {
+    if (selectedRole) {
+      navigate(`/login?role=${selectedRole}`);
+    } else {
+      alert("Please select a role first");
+    }
+  };
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -57,14 +76,27 @@ const Journey: React.FC = () => {
           />
           
           <div className="mt-16 grid md:grid-cols-3 gap-8 max-md:grid-cols-1">
-            {roles.map((role, index) => (
-              <RoleCard 
-                key={index}
-                title={role.title}
-                icon={role.icon}
-                description={role.description}
-                features={role.features}
-              />
+            {roles.map((role) => (
+              <div
+                key={role.id}
+                className="cursor-pointer"
+                onClick={() => handleRoleSelect(role.id)}
+              >
+                <div 
+                  className={`transition-all duration-200 ${
+                    selectedRole === role.id 
+                      ? "ring-2 ring-[#FF4B55] transform scale-[1.02]" 
+                      : "hover:shadow-lg"
+                  }`}
+                >
+                  <RoleCard 
+                    title={role.title}
+                    icon={role.icon}
+                    description={role.description}
+                    features={role.features}
+                  />
+                </div>
+              </div>
             ))}
           </div>
           
@@ -72,7 +104,11 @@ const Journey: React.FC = () => {
             <p className="text-[rgba(113,123,158,1)] text-lg mb-8">
               Ready to take the next step? Create your profile and start exploring opportunities.
             </p>
-            <Button variant="primary" size="lg">
+            <Button 
+              variant="primary" 
+              size="lg"
+              onClick={handleCreateProfile}
+            >
               Create Your Profile
             </Button>
           </div>

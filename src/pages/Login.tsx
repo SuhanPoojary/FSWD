@@ -25,6 +25,7 @@ const Login: React.FC = () => {
             stat2: { value: "500+", label: "Verified Contractors" },
           },
           formTitle: "Sign In",
+          redirectPath: "/worker-dashboard"
         };
       case "professional":
         return {
@@ -35,6 +36,7 @@ const Login: React.FC = () => {
             stat2: { value: "85%", label: "Booking Rate" },
           },
           formTitle: "Professional Sign In",
+          redirectPath: "/professional-dashboard"
         };
       case "contractor":
         return {
@@ -58,14 +60,17 @@ const Login: React.FC = () => {
           alternateActionLinkText: "Register your business",
           socialLogins: ["google", "microsoft"],
           supportLink: true,
+          redirectPath: "/contractor-dashboard"
         };
       default:
-        return <Navigate to="/login?role=worker" replace />;
+        return null;
     }
   };
 
   const content = getRoleContent();
-  if (!content) return null;
+  if (!content) {
+    return <Navigate to="/login?role=worker" replace />;
+  }
 
   // Common login page structure with role-specific content
   return (
@@ -86,6 +91,7 @@ const Login: React.FC = () => {
         alternateActionLinkText={content.alternateActionLinkText}
         socialLogins={content.socialLogins}
         supportLink={content.supportLink}
+        redirectPath={content.redirectPath}
       />
     </LoginLayout>
   );

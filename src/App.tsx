@@ -11,6 +11,7 @@ import NotFound from "./pages/NotFound";
 import WorkerDashboard from "./pages/WorkerDashboard";
 import ProfessionalDashboard from "./pages/ProfessionalDashboard";
 import ContractorDashboard from "./pages/ContractorDashboard";
+import EliteConstructionProject from "./pages/EliteConstructionProject";
 
 const queryClient = new QueryClient();
 
@@ -27,6 +28,7 @@ const App = () => (
           <Route path="/worker-dashboard" element={<WorkerDashboard />} />
           <Route path="/professional-dashboard" element={<ProfessionalDashboard />} />
           <Route path="/contractor-dashboard" element={<ContractorDashboard />} />
+          <Route path="/elite-construction-project" element={<EliteConstructionProject />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>

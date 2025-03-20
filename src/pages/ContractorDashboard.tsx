@@ -1,8 +1,15 @@
 
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
+import { Search, Plus, MapPin, Clock, Briefcase, Users } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
+import ContactForm from "@/components/ContactForm";
+import PostProjectForm from "@/components/PostProjectForm";
 
 const ContractorDashboard: React.FC = () => {
+  const [searchQuery, setSearchQuery] = useState("");
+  
   return (
     <div className="min-h-screen bg-white">
       {/* Header */}
@@ -20,91 +27,123 @@ const ContractorDashboard: React.FC = () => {
           </nav>
         </div>
         <div className="flex items-center gap-4">
-          <Link to="#" className="bg-[#FF4B55] text-white px-4 py-2 rounded hover:bg-[#E43F49] transition-colors">
-            Post Project
-          </Link>
+          <Dialog>
+            <DialogTrigger asChild>
+              <Button variant="primary" className="flex items-center gap-2">
+                <Plus size={18} />
+                Post Project
+              </Button>
+            </DialogTrigger>
+            <DialogContent className="max-w-4xl w-full">
+              <PostProjectForm />
+            </DialogContent>
+          </Dialog>
           <div className="w-8 h-8 rounded-full bg-gray-300"></div>
         </div>
       </header>
 
-      {/* Main Content */}
-      <main className="container mx-auto py-8 px-4">
-        <div className="mb-8">
-          <h1 className="text-2xl font-bold text-[#121224]">Find Construction Projects & Workers</h1>
-          <p className="text-[#717B9E]">Connect with top builders and manage your workforce efficiently</p>
-        </div>
-
-        {/* Search Bar */}
-        <div className="flex gap-4 mb-8">
-          <div className="flex-grow">
-            <input 
-              type="text" 
-              placeholder="Search for workers or projects..." 
-              className="w-full p-3 border border-gray-300 rounded hover:border-[#FF4B55] focus:border-[#FF4B55] focus:outline-none transition-colors"
-            />
+      {/* Hero Banner */}
+      <div className="bg-[#004A57] text-white py-10 px-4">
+        <div className="container mx-auto max-w-5xl">
+          <h1 className="text-2xl md:text-3xl font-bold mb-2">Find Construction Projects & Workers</h1>
+          <p className="text-[#EEE] mb-6">Connect with top builders and manage your workforce efficiently.<br />
+          Access high-value construction projects and skilled laborers.</p>
+          
+          <div className="flex flex-col md:flex-row gap-4 mt-8">
+            <div className="flex-grow relative">
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={20} />
+              <input 
+                type="text" 
+                placeholder="Search for workers or projects..." 
+                className="w-full p-3 pl-10 border border-gray-300 rounded-lg hover:border-[#FF4B55] focus:border-[#FF4B55] focus:outline-none transition-colors"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+              />
+            </div>
+            <Button variant="primary" className="md:w-auto">
+              Search
+            </Button>
           </div>
-          <button className="bg-[#FF4B55] text-white px-6 py-3 rounded hover:bg-[#E43F49] transition-colors">
-            Search
-          </button>
         </div>
+      </div>
 
+      {/* Main Content */}
+      <main className="container mx-auto py-8 px-4 max-w-5xl">
         {/* Available Projects Section */}
         <div className="mb-12">
-          <h2 className="text-xl font-semibold text-[#121224] mb-4">Available Projects</h2>
+          <h2 className="text-xl font-semibold text-[#121224] mb-6">Available Projects</h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div className="bg-white border border-gray-200 rounded-lg shadow-sm overflow-hidden hover:border-[#FF4B55] transition-colors">
+            <Link to="/elite-construction-project" className="bg-white border border-gray-200 rounded-lg shadow-sm overflow-hidden hover:border-[#FF4B55] transition-colors">
               <div className="h-40 bg-gray-200"></div>
               <div className="p-4">
                 <div className="flex justify-between mb-2">
                   <span className="bg-gray-100 text-gray-600 px-2 py-1 rounded text-xs">Commercial</span>
-                  <span className="text-sm text-gray-500">3 weeks</span>
+                  <span className="text-sm text-gray-500 flex items-center gap-1">
+                    <Clock size={14} /> 3 weeks
+                  </span>
                 </div>
                 <h3 className="font-semibold mb-1">Retail Center Remodel</h3>
-                <p className="text-sm text-gray-500 mb-3">Oakland, CA</p>
+                <p className="text-sm text-gray-500 mb-3 flex items-center gap-1">
+                  <MapPin size={14} /> Oakland, CA
+                </p>
                 <div className="flex justify-between items-center">
                   <span className="text-[#FF4B55] font-bold">$30-45/hr</span>
-                  <button className="text-[#FF4B55] text-sm font-medium hover:underline">Apply Now →</button>
+                  <button className="text-[#FF4B55] text-sm font-medium hover:underline flex items-center gap-1">
+                    Apply Now →
+                  </button>
                 </div>
               </div>
-            </div>
+            </Link>
 
-            <div className="bg-white border border-gray-200 rounded-lg shadow-sm overflow-hidden hover:border-[#FF4B55] transition-colors">
+            <Link to="/elite-construction-project" className="bg-white border border-gray-200 rounded-lg shadow-sm overflow-hidden hover:border-[#FF4B55] transition-colors">
               <div className="h-40 bg-gray-200"></div>
               <div className="p-4">
                 <div className="flex justify-between mb-2">
                   <span className="bg-gray-100 text-gray-600 px-2 py-1 rounded text-xs">Residential</span>
-                  <span className="text-sm text-gray-500">1 month</span>
+                  <span className="text-sm text-gray-500 flex items-center gap-1">
+                    <Clock size={14} /> 1 month
+                  </span>
                 </div>
                 <h3 className="font-semibold mb-1">Custom Home Construction</h3>
-                <p className="text-sm text-gray-500 mb-3">Denver, CO</p>
+                <p className="text-sm text-gray-500 mb-3 flex items-center gap-1">
+                  <MapPin size={14} /> Denver, CO
+                </p>
                 <div className="flex justify-between items-center">
                   <span className="text-[#FF4B55] font-bold">$28-40/hr</span>
-                  <button className="text-[#FF4B55] text-sm font-medium hover:underline">Apply Now →</button>
+                  <button className="text-[#FF4B55] text-sm font-medium hover:underline flex items-center gap-1">
+                    Apply Now →
+                  </button>
                 </div>
               </div>
-            </div>
+            </Link>
 
-            <div className="bg-white border border-gray-200 rounded-lg shadow-sm overflow-hidden hover:border-[#FF4B55] transition-colors">
+            <Link to="/elite-construction-project" className="bg-white border border-gray-200 rounded-lg shadow-sm overflow-hidden hover:border-[#FF4B55] transition-colors">
               <div className="h-40 bg-gray-200"></div>
               <div className="p-4">
                 <div className="flex justify-between mb-2">
                   <span className="bg-gray-100 text-gray-600 px-2 py-1 rounded text-xs">Industrial</span>
-                  <span className="text-sm text-gray-500">2 months</span>
+                  <span className="text-sm text-gray-500 flex items-center gap-1">
+                    <Clock size={14} /> 2 months
+                  </span>
                 </div>
                 <h3 className="font-semibold mb-1">Warehouse Expansion</h3>
-                <p className="text-sm text-gray-500 mb-3">Phoenix, AZ</p>
+                <p className="text-sm text-gray-500 mb-3 flex items-center gap-1">
+                  <MapPin size={14} /> Phoenix, AZ
+                </p>
                 <div className="flex justify-between items-center">
                   <span className="text-[#FF4B55] font-bold">$35-50/hr</span>
-                  <button className="text-[#FF4B55] text-sm font-medium hover:underline">Apply Now →</button>
+                  <button className="text-[#FF4B55] text-sm font-medium hover:underline flex items-center gap-1">
+                    Apply Now →
+                  </button>
                 </div>
               </div>
-            </div>
+            </Link>
           </div>
         </div>
 
         {/* Popular Categories */}
         <div className="mb-12">
-          <h2 className="text-xl font-semibold text-[#121224] mb-4">Popular Categories</h2>
+          <h2 className="text-xl font-semibold text-[#121224] mb-6">Popular Categories</h2>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             <div className="bg-white border border-gray-200 rounded-lg p-4 text-center hover:border-[#FF4B55] transition-colors cursor-pointer">
               <h3 className="font-semibold">Commercial</h3>
@@ -147,6 +186,14 @@ const ContractorDashboard: React.FC = () => {
           </div>
           <div>
             <h3 className="font-semibold mb-4">Contact Us</h3>
+            <Dialog>
+              <DialogTrigger asChild>
+                <Button variant="outline" className="w-full mb-4">Contact Us</Button>
+              </DialogTrigger>
+              <DialogContent className="max-w-4xl">
+                <ContactForm />
+              </DialogContent>
+            </Dialog>
             <ul className="space-y-2 text-gray-600">
               <li>123 Build St., Suite 700</li>
               <li>San Francisco, CA 94103</li>

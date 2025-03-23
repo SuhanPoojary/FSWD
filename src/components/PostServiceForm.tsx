@@ -6,6 +6,7 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Calendar, MapPin, DollarSign, Clock, Upload } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { motion } from "framer-motion";
 
 const PostServiceForm: React.FC = () => {
   const { toast } = useToast();
@@ -48,15 +49,38 @@ const PostServiceForm: React.FC = () => {
       title: "Service Posted",
       description: "Your service has been successfully posted.",
     });
+    
+    // Reset form
+    setFormData({
+      projectTitle: "",
+      projectLocation: "",
+      budgetRange: "",
+      timeline: "",
+      projectScope: "",
+      contractorRequirements: "",
+      materialsEquipment: "",
+      insuranceRequired: false,
+      permitsRequired: false,
+    });
   };
 
   return (
-    <div className="p-6 max-w-4xl mx-auto bg-white">
+    <motion.div 
+      className="p-6 max-w-4xl mx-auto bg-white"
+      initial={{ opacity: 0, y: 10 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.3 }}
+    >
       <h2 className="text-2xl font-bold mb-2">Post a Contracting Job</h2>
       <p className="text-gray-500 mb-8">Create a new opportunity with project details</p>
 
       <form onSubmit={handleSubmit}>
-        <div className="bg-gray-50 p-6 rounded-lg mb-8">
+        <motion.div 
+          className="bg-gray-50 p-6 rounded-lg mb-8"
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.3, delay: 0.1 }}
+        >
           <h3 className="text-lg font-semibold mb-4">Project Information</h3>
           
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
@@ -132,9 +156,14 @@ const PostServiceForm: React.FC = () => {
               </div>
             </div>
           </div>
-        </div>
+        </motion.div>
 
-        <div className="bg-gray-50 p-6 rounded-lg mb-8">
+        <motion.div 
+          className="bg-gray-50 p-6 rounded-lg mb-8"
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.3, delay: 0.2 }}
+        >
           <h3 className="text-lg font-semibold mb-4">Project Details</h3>
           
           <div className="mb-6">
@@ -205,9 +234,14 @@ const PostServiceForm: React.FC = () => {
               </Label>
             </div>
           </div>
-        </div>
+        </motion.div>
 
-        <div className="bg-gray-50 p-6 rounded-lg mb-8">
+        <motion.div 
+          className="bg-gray-50 p-6 rounded-lg mb-8"
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.3, delay: 0.3 }}
+        >
           <h3 className="text-lg font-semibold mb-4">Project Images & Plans</h3>
           
           <div className="border-2 border-dashed border-gray-300 rounded-lg p-8 text-center">
@@ -223,14 +257,14 @@ const PostServiceForm: React.FC = () => {
               </label>
             </div>
           </div>
-        </div>
+        </motion.div>
 
         <div className="flex justify-end gap-4">
           <Button type="button" variant="outline">Save Draft</Button>
           <Button type="submit" variant="primary">Post Project</Button>
         </div>
       </form>
-    </div>
+    </motion.div>
   );
 };
 

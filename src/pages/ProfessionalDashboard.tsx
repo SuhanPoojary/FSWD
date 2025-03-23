@@ -1,6 +1,8 @@
 
 import React from "react";
 import { Link } from "react-router-dom";
+import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
+import PostServiceForm from "@/components/PostServiceForm";
 
 const ProfessionalDashboard: React.FC = () => {
   return (
@@ -20,9 +22,16 @@ const ProfessionalDashboard: React.FC = () => {
           </nav>
         </div>
         <div className="flex items-center gap-4">
-          <Link to="/post-project" className="bg-[#FF4B55] text-white px-4 py-2 rounded hover:bg-[#E43F49] transition-colors">
-            Post Services
-          </Link>
+          <Dialog>
+            <DialogTrigger asChild>
+              <Link to="#" className="bg-[#FF4B55] text-white px-4 py-2 rounded hover:bg-[#E43F49] transition-colors">
+                Post Services
+              </Link>
+            </DialogTrigger>
+            <DialogContent className="max-w-4xl">
+              <PostServiceForm />
+            </DialogContent>
+          </Dialog>
           <Link to="/professional-profile">
             <div className="w-8 h-8 rounded-full bg-gray-300"></div>
           </Link>

@@ -1,9 +1,11 @@
+
 import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Upload } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { motion } from "framer-motion";
 
 const PostProjectForm: React.FC = () => {
   const { toast } = useToast();
@@ -48,12 +50,22 @@ const PostProjectForm: React.FC = () => {
   };
 
   return (
-    <div className="p-6">
+    <motion.div 
+      className="p-6"
+      initial={{ opacity: 0, y: 10 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.3 }}
+    >
       <h2 className="text-2xl font-bold mb-6">Post a New Job</h2>
       <p className="text-gray-500 mb-8">Fill in the details below to create your job listing</p>
 
-      <form onSubmit={handleSubmit}>
-        <div className="bg-gray-50 p-6 rounded-lg mb-8">
+      <form onSubmit={handleSubmit} className="space-y-8">
+        <motion.div 
+          className="bg-gray-50 p-6 rounded-lg"
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.3, delay: 0.1 }}
+        >
           <h3 className="text-lg font-semibold mb-4">Basic Information</h3>
           
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
@@ -109,9 +121,14 @@ const PostProjectForm: React.FC = () => {
               />
             </div>
           </div>
-        </div>
+        </motion.div>
 
-        <div className="bg-gray-50 p-6 rounded-lg mb-8">
+        <motion.div 
+          className="bg-gray-50 p-6 rounded-lg"
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.3, delay: 0.2 }}
+        >
           <h3 className="text-lg font-semibold mb-4">Job Details</h3>
           
           <div className="mb-6">
@@ -141,9 +158,14 @@ const PostProjectForm: React.FC = () => {
               required
             />
           </div>
-        </div>
+        </motion.div>
 
-        <div className="bg-gray-50 p-6 rounded-lg mb-8">
+        <motion.div 
+          className="bg-gray-50 p-6 rounded-lg"
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.3, delay: 0.3 }}
+        >
           <h3 className="text-lg font-semibold mb-4">Project Images</h3>
           
           <div className="border-2 border-dashed border-gray-300 rounded-lg p-8 text-center">
@@ -159,14 +181,14 @@ const PostProjectForm: React.FC = () => {
               </label>
             </div>
           </div>
-        </div>
+        </motion.div>
 
         <div className="flex justify-end gap-4 mt-8">
           <Button type="button" variant="outline">Cancel</Button>
           <Button type="submit" variant="primary">Post Job</Button>
         </div>
       </form>
-    </div>
+    </motion.div>
   );
 };
 

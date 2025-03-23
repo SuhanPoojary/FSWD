@@ -14,6 +14,10 @@ import ActiveWork from "./pages/ActiveWork";
 import ProfessionalDashboard from "./pages/ProfessionalDashboard";
 import ContractorDashboard from "./pages/ContractorDashboard";
 import EliteConstructionProject from "./pages/EliteConstructionProject";
+import ProfessionalProfile from "./pages/ProfessionalProfile";
+import ProjectDetails from "./pages/ProjectDetails";
+import ProfessionalMessages from "./pages/ProfessionalMessages";
+import ProfessionalProjects from "./pages/ProfessionalProjects";
 
 const queryClient = new QueryClient();
 
@@ -31,6 +35,10 @@ const App = () => (
           <Route path="/worker-profile" element={<WorkerProfile />} />
           <Route path="/active-work" element={<ActiveWork />} />
           <Route path="/professional-dashboard" element={<ProfessionalDashboard />} />
+          <Route path="/professional-profile" element={<ProfessionalProfile />} />
+          <Route path="/project-details/:id" element={<ProjectDetails />} />
+          <Route path="/professional-messages" element={<ProfessionalMessages />} />
+          <Route path="/professional-projects" element={<ProfessionalProjects />} />
           <Route path="/contractor-dashboard" element={<ContractorDashboard />} />
           <Route path="/elite-construction-project" element={<EliteConstructionProject />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}

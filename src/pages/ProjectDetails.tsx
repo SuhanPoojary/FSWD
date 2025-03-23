@@ -1,16 +1,14 @@
-
 import React, { useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Star, MapPin, Calendar, Building, Phone, Mail, Tool, FileCheck, BadgeCheck } from "lucide-react";
+import { Star, MapPin, Calendar, Building, Phone, Mail, Wrench, FileCheck, BadgeCheck } from "lucide-react";
 
 const ProjectDetails: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const [activeTab, setActiveTab] = useState("current");
   
-  // Mock data for project details
   const project = {
     id: 1,
     title: "Skyline Commercial Tower",
@@ -47,7 +45,6 @@ const ProjectDetails: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-[#F6F6F7]">
-      {/* Header */}
       <header className="bg-[#004A57] text-white py-3 px-6 flex justify-between items-center">
         <Link to="/" className="flex items-center gap-2">
           <div className="w-6 h-6 bg-[#FF4B55] transform rotate-45" />
@@ -61,10 +58,8 @@ const ProjectDetails: React.FC = () => {
         </div>
       </header>
 
-      {/* Main Content */}
       <main className="container mx-auto py-8 px-4 max-w-5xl">
         <div className="flex flex-col md:flex-row gap-8">
-          {/* Left Column - Company Info */}
           <div className="w-full md:w-1/3">
             <div className="bg-white rounded-lg p-6 shadow-sm mb-6">
               <div className="flex flex-col items-center mb-4">
@@ -166,7 +161,6 @@ const ProjectDetails: React.FC = () => {
             </div>
           </div>
           
-          {/* Right Column - Project Info */}
           <div className="w-full md:w-2/3">
             <Tabs defaultValue="current" className="w-full" onValueChange={setActiveTab}>
               <TabsList className="w-full bg-white mb-6 h-auto rounded-lg">

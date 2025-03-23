@@ -1,11 +1,12 @@
-
 import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Upload } from "lucide-react";
+import { useToast } from "@/hooks/use-toast";
 
 const PostProjectForm: React.FC = () => {
+  const { toast } = useToast();
   const [formData, setFormData] = useState({
     title: "",
     location: "",
@@ -28,8 +29,22 @@ const PostProjectForm: React.FC = () => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     console.log("Post Project Form submitted:", formData);
-    // Here you would normally send the data to your backend
-    alert("Project posted successfully!");
+    
+    // Show success toast notification
+    toast({
+      title: "Project Posted Successfully!",
+      description: "Your project has been posted and is now visible to professionals.",
+    });
+    
+    // Reset form or close dialog if needed
+    setFormData({
+      title: "",
+      location: "",
+      employmentType: "",
+      hourlyRate: "",
+      jobDescription: "",
+      requirements: "",
+    });
   };
 
   return (
@@ -146,7 +161,7 @@ const PostProjectForm: React.FC = () => {
           </div>
         </div>
 
-        <div className="flex justify-end gap-4">
+        <div className="flex justify-end gap-4 mt-8">
           <Button type="button" variant="outline">Cancel</Button>
           <Button type="submit" variant="primary">Post Job</Button>
         </div>

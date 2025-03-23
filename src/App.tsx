@@ -16,6 +16,7 @@ import ContractorDashboard from "./pages/ContractorDashboard";
 import EliteConstructionProject from "./pages/EliteConstructionProject";
 import ProfessionalProfile from "./pages/ProfessionalProfile";
 import ProjectDetails from "./pages/ProjectDetails";
+import ProjectView from "./pages/ProjectView";
 import ProfessionalMessages from "./pages/ProfessionalMessages";
 import ProfessionalProjects from "./pages/ProfessionalProjects";
 
@@ -37,6 +38,7 @@ const App = () => (
           <Route path="/professional-dashboard" element={<ProfessionalDashboard />} />
           <Route path="/professional-profile" element={<ProfessionalProfile />} />
           <Route path="/project-details/:id" element={<ProjectDetails />} />
+          <Route path="/project-view/:id" element={<ProjectView />} />
           <Route path="/professional-messages" element={<ProfessionalMessages />} />
           <Route path="/professional-projects" element={<ProfessionalProjects />} />
           <Route path="/contractor-dashboard" element={<ContractorDashboard />} />

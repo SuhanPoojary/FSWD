@@ -13,17 +13,19 @@ const ProfessionalDashboard: React.FC = () => {
             <span className="text-[#EEE] text-xl font-medium">LabourNet</span>
           </Link>
           <nav className="hidden md:flex space-x-6 ml-12">
-            <Link to="#" className="hover:text-[#FF4B55]">Dashboard</Link>
-            <Link to="#" className="hover:text-[#FF4B55]">Find Projects</Link>
-            <Link to="#" className="hover:text-[#FF4B55]">My Profile</Link>
-            <Link to="#" className="hover:text-[#FF4B55]">Messages</Link>
+            <Link to="/professional-dashboard" className="text-[#FF4B55]">Dashboard</Link>
+            <Link to="/professional-projects" className="hover:text-[#FF4B55]">Find Projects</Link>
+            <Link to="/professional-profile" className="hover:text-[#FF4B55]">My Profile</Link>
+            <Link to="/professional-messages" className="hover:text-[#FF4B55]">Messages</Link>
           </nav>
         </div>
         <div className="flex items-center gap-4">
-          <Link to="#" className="bg-[#FF4B55] text-white px-4 py-2 rounded hover:bg-[#E43F49] transition-colors">
+          <Link to="/post-project" className="bg-[#FF4B55] text-white px-4 py-2 rounded hover:bg-[#E43F49] transition-colors">
             Post Services
           </Link>
-          <div className="w-8 h-8 rounded-full bg-gray-300"></div>
+          <Link to="/professional-profile">
+            <div className="w-8 h-8 rounded-full bg-gray-300"></div>
+          </Link>
         </div>
       </header>
 
@@ -76,7 +78,7 @@ const ProfessionalDashboard: React.FC = () => {
                 <span className="bg-gray-100 text-gray-600 px-2 py-1 rounded text-xs">Commercial</span>
                 <span className="bg-gray-100 text-gray-600 px-2 py-1 rounded text-xs">Chicago, IL</span>
               </div>
-              <button className="text-[#FF4B55] font-medium text-sm hover:underline">View Details →</button>
+              <Link to="/project-view/1" className="text-[#FF4B55] font-medium text-sm hover:underline">View Details →</Link>
             </div>
           </div>
 
@@ -91,7 +93,7 @@ const ProfessionalDashboard: React.FC = () => {
                 <span className="bg-gray-100 text-gray-600 px-2 py-1 rounded text-xs">Residential</span>
                 <span className="bg-gray-100 text-gray-600 px-2 py-1 rounded text-xs">Austin, TX</span>
               </div>
-              <button className="text-[#FF4B55] font-medium text-sm hover:underline">View Details →</button>
+              <Link to="/project-view/2" className="text-[#FF4B55] font-medium text-sm hover:underline">View Details →</Link>
             </div>
           </div>
 
@@ -106,7 +108,7 @@ const ProfessionalDashboard: React.FC = () => {
                 <span className="bg-gray-100 text-gray-600 px-2 py-1 rounded text-xs">Healthcare</span>
                 <span className="bg-gray-100 text-gray-600 px-2 py-1 rounded text-xs">Boston, MA</span>
               </div>
-              <button className="text-[#FF4B55] font-medium text-sm hover:underline">View Details →</button>
+              <Link to="/project-view/3" className="text-[#FF4B55] font-medium text-sm hover:underline">View Details →</Link>
             </div>
           </div>
 
@@ -121,7 +123,7 @@ const ProfessionalDashboard: React.FC = () => {
                 <span className="bg-gray-100 text-gray-600 px-2 py-1 rounded text-xs">Education</span>
                 <span className="bg-gray-100 text-gray-600 px-2 py-1 rounded text-xs">Denver, CO</span>
               </div>
-              <button className="text-[#FF4B55] font-medium text-sm hover:underline">View Details →</button>
+              <Link to="/project-view/4" className="text-[#FF4B55] font-medium text-sm hover:underline">View Details →</Link>
             </div>
           </div>
         </div>

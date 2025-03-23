@@ -3,6 +3,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import PostServiceForm from "@/components/PostServiceForm";
+import { motion } from "framer-motion";
 
 const ProfessionalDashboard: React.FC = () => {
   return (
@@ -24,9 +25,9 @@ const ProfessionalDashboard: React.FC = () => {
         <div className="flex items-center gap-4">
           <Dialog>
             <DialogTrigger asChild>
-              <Link to="#" className="bg-[#FF4B55] text-white px-4 py-2 rounded hover:bg-[#E43F49] transition-colors">
+              <button className="bg-[#FF4B55] text-white px-4 py-2 rounded hover:bg-[#E43F49] transition-colors">
                 Post Services
-              </Link>
+              </button>
             </DialogTrigger>
             <DialogContent className="max-w-4xl">
               <PostServiceForm />
@@ -40,13 +41,23 @@ const ProfessionalDashboard: React.FC = () => {
 
       {/* Main Content */}
       <main className="container mx-auto py-8 px-4">
-        <div className="mb-8">
+        <motion.div 
+          className="mb-8"
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.3 }}
+        >
           <h1 className="text-2xl font-bold text-[#121224]">Find Skilled Construction Professionals</h1>
           <p className="text-[#717B9E]">Connect with reliable workers for your construction projects</p>
-        </div>
+        </motion.div>
 
         {/* Search Bar */}
-        <div className="flex gap-4 mb-8">
+        <motion.div 
+          className="flex gap-4 mb-8"
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.3, delay: 0.1 }}
+        >
           <div className="flex-grow">
             <input 
               type="text" 
@@ -65,18 +76,28 @@ const ProfessionalDashboard: React.FC = () => {
           <button className="bg-[#FF4B55] text-white px-6 py-3 rounded hover:bg-[#E43F49] transition-colors">
             Search
           </button>
-        </div>
+        </motion.div>
 
         {/* Filter Tags */}
-        <div className="flex gap-2 mb-6">
+        <motion.div 
+          className="flex gap-2 mb-6"
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.3, delay: 0.2 }}
+        >
           <span className="bg-[#004A57] text-white px-3 py-1 rounded-full text-sm">All Jobs</span>
           <span className="bg-gray-200 text-gray-700 px-3 py-1 rounded-full text-sm hover:bg-gray-300 cursor-pointer">Nearby</span>
           <span className="bg-gray-200 text-gray-700 px-3 py-1 rounded-full text-sm hover:bg-gray-300 cursor-pointer">Commercial</span>
-        </div>
+        </motion.div>
 
         {/* Job Listings */}
         <div className="space-y-4">
-          <div className="bg-white p-6 rounded-lg shadow-sm hover:border-[#FF4B55] border border-transparent transition-colors cursor-pointer">
+          <motion.div 
+            className="bg-white p-6 rounded-lg shadow-sm hover:border-[#FF4B55] border border-transparent transition-colors cursor-pointer"
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.3, delay: 0.3 }}
+          >
             <div className="flex justify-between mb-3">
               <h2 className="text-lg font-semibold text-[#121224]">Commercial Building Project</h2>
               <span className="text-[#FF4B55] font-bold">$225,000</span>
@@ -89,9 +110,14 @@ const ProfessionalDashboard: React.FC = () => {
               </div>
               <Link to="/project-view/1" className="text-[#FF4B55] font-medium text-sm hover:underline">View Details →</Link>
             </div>
-          </div>
+          </motion.div>
 
-          <div className="bg-white p-6 rounded-lg shadow-sm hover:border-[#FF4B55] border border-transparent transition-colors cursor-pointer">
+          <motion.div 
+            className="bg-white p-6 rounded-lg shadow-sm hover:border-[#FF4B55] border border-transparent transition-colors cursor-pointer"
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.3, delay: 0.4 }}
+          >
             <div className="flex justify-between mb-3">
               <h2 className="text-lg font-semibold text-[#121224]">Residential Complex</h2>
               <span className="text-[#FF4B55] font-bold">$180,000</span>
@@ -104,9 +130,14 @@ const ProfessionalDashboard: React.FC = () => {
               </div>
               <Link to="/project-view/2" className="text-[#FF4B55] font-medium text-sm hover:underline">View Details →</Link>
             </div>
-          </div>
+          </motion.div>
 
-          <div className="bg-white p-6 rounded-lg shadow-sm hover:border-[#FF4B55] border border-transparent transition-colors cursor-pointer">
+          <motion.div 
+            className="bg-white p-6 rounded-lg shadow-sm hover:border-[#FF4B55] border border-transparent transition-colors cursor-pointer"
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.3, delay: 0.5 }}
+          >
             <div className="flex justify-between mb-3">
               <h2 className="text-lg font-semibold text-[#121224]">Hospital Renovation</h2>
               <span className="text-[#FF4B55] font-bold">$430,000</span>
@@ -119,9 +150,14 @@ const ProfessionalDashboard: React.FC = () => {
               </div>
               <Link to="/project-view/3" className="text-[#FF4B55] font-medium text-sm hover:underline">View Details →</Link>
             </div>
-          </div>
+          </motion.div>
 
-          <div className="bg-white p-6 rounded-lg shadow-sm hover:border-[#FF4B55] border border-transparent transition-colors cursor-pointer">
+          <motion.div 
+            className="bg-white p-6 rounded-lg shadow-sm hover:border-[#FF4B55] border border-transparent transition-colors cursor-pointer"
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.3, delay: 0.6 }}
+          >
             <div className="flex justify-between mb-3">
               <h2 className="text-lg font-semibold text-[#121224]">School Construction</h2>
               <span className="text-[#FF4B55] font-bold">$520,000</span>
@@ -134,11 +170,16 @@ const ProfessionalDashboard: React.FC = () => {
               </div>
               <Link to="/project-view/4" className="text-[#FF4B55] font-medium text-sm hover:underline">View Details →</Link>
             </div>
-          </div>
+          </motion.div>
         </div>
 
         {/* Stats */}
-        <div className="grid grid-cols-4 gap-6 mt-12 text-center">
+        <motion.div 
+          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mt-12 text-center"
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.3, delay: 0.7 }}
+        >
           <div>
             <p className="text-2xl font-bold text-[#121224]">23</p>
             <p className="text-[#717B9E]">Active Projects</p>
@@ -155,7 +196,7 @@ const ProfessionalDashboard: React.FC = () => {
             <p className="text-2xl font-bold text-[#121224]">$4.2M</p>
             <p className="text-[#717B9E]">Budget Total</p>
           </div>
-        </div>
+        </motion.div>
       </main>
     </div>
   );

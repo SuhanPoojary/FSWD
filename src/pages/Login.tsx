@@ -58,7 +58,7 @@ const Login: React.FC = () => {
           actionButtonText: "Sign in to Dashboard",
           alternateActionText: "Need a contractor account?",
           alternateActionLinkText: "Register your business",
-          socialLogins: ["google", "microsoft"],
+          socialLogins: ["google", "microsoft"] as ("google" | "microsoft" | "apple")[],
           supportLink: true,
           redirectPath: "/contractor-dashboard"
         };

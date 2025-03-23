@@ -9,6 +9,8 @@ import Journey from "./pages/Journey";
 import Login from "./pages/Login";
 import NotFound from "./pages/NotFound";
 import WorkerDashboard from "./pages/WorkerDashboard";
+import WorkerProfile from "./pages/WorkerProfile";
+import ActiveWork from "./pages/ActiveWork";
 import ProfessionalDashboard from "./pages/ProfessionalDashboard";
 import ContractorDashboard from "./pages/ContractorDashboard";
 import EliteConstructionProject from "./pages/EliteConstructionProject";
@@ -26,6 +28,8 @@ const App = () => (
           <Route path="/journey" element={<Journey />} />
           <Route path="/login" element={<Login />} />
           <Route path="/worker-dashboard" element={<WorkerDashboard />} />
+          <Route path="/worker-profile" element={<WorkerProfile />} />
+          <Route path="/active-work" element={<ActiveWork />} />
           <Route path="/professional-dashboard" element={<ProfessionalDashboard />} />
           <Route path="/contractor-dashboard" element={<ContractorDashboard />} />
           <Route path="/elite-construction-project" element={<EliteConstructionProject />} />

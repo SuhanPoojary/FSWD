@@ -1,75 +1,19 @@
 
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import { Button } from "@/components/ui/button";
-import { MapPin, Clock, Users, ArrowLeft, ArrowRight, Building, Calendar } from "lucide-react";
-import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import PostProjectForm from "@/components/PostProjectForm";
-import { motion } from "framer-motion";
 import { useProjectContext } from "@/components/PostProjectForm";
+import { Button } from "@/components/ui/button";
+import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
+import { Plus, Calendar, User, Building, ArrowRight } from "lucide-react";
+import { motion } from "framer-motion";
 
 const EliteConstructionProject: React.FC = () => {
   const { projects } = useProjectContext();
-  const [page, setPage] = useState(1);
-  
-  // Base projects data
-  const baseProjects = [
-    {
-      id: 1,
-      name: "Retail Center Remodel",
-      type: "Commercial",
-      location: "Oakland, CA",
-      timeline: "Oct 15 - Nov 30",
-      workersNeeded: 15,
-      workersHired: 12,
-      image: "/public/lovable-uploads/9a9ec47f-9e06-4682-9ecf-5a5110bff90e.png"
-    },
-    {
-      id: 2,
-      name: "Custom Home Construction",
-      type: "Residential",
-      location: "Denver, CO",
-      timeline: "Sep 1 - Dec 15",
-      workersNeeded: 10,
-      workersHired: 8,
-      image: "/public/lovable-uploads/9a9ec47f-9e06-4682-9ecf-5a5110bff90e.png"
-    },
-    {
-      id: 3,
-      name: "Warehouse Expansion",
-      type: "Industrial",
-      location: "Phoenix, AZ",
-      timeline: "Nov 1 - Jan 15",
-      workersNeeded: 20,
-      workersHired: 15,
-      image: "/public/lovable-uploads/9a9ec47f-9e06-4682-9ecf-5a5110bff90e.png"
-    },
-    {
-      id: 4,
-      name: "Skyline Commercial Tower",
-      type: "Commercial",
-      location: "Downtown Toronto, ON",
-      timeline: "Oct 1 - Mar 30",
-      workersNeeded: 85,
-      workersHired: 85,
-      image: "/public/lovable-uploads/9a9ec47f-9e06-4682-9ecf-5a5110bff90e.png"
-    }
-  ];
-  
-  // Combine base projects with any newly added projects
-  const allProjects = [...baseProjects, ...projects.map(p => ({
-    id: p.id,
-    name: p.title,
-    type: p.projectType || "Commercial",
-    location: p.location,
-    timeline: `${new Date().toLocaleDateString()} - ${p.timeline}`,
-    workersNeeded: 10,
-    workersHired: 0,
-    image: "/public/lovable-uploads/9a9ec47f-9e06-4682-9ecf-5a5110bff90e.png"
-  }))];
+  const [isFormOpen, setIsFormOpen] = useState(false);
   
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-[#F6F6F7]">
       {/* Header */}
       <header className="bg-[#004A57] text-white p-4 flex justify-between items-center">
         <div className="flex items-center gap-4">
@@ -77,188 +21,175 @@ const EliteConstructionProject: React.FC = () => {
             <div className="w-6 h-6 bg-[#FF4B55] transform rotate-45" />
             <span className="text-[#EEE] text-xl font-medium">LabourNet</span>
           </Link>
-          <nav className="hidden md:flex space-x-6 ml-12">
-            <Link to="/contractor-dashboard" className="hover:text-[#FF4B55]">Dashboard</Link>
-            <Link to="#" className="hover:text-[#FF4B55]">Projects</Link>
-            <Link to="#" className="hover:text-[#FF4B55]">Workers</Link>
-            <Link to="#" className="hover:text-[#FF4B55]">Analytics</Link>
-          </nav>
         </div>
         <div className="flex items-center gap-4">
-          <Link to="/company-profile">
-            <div className="w-8 h-8 rounded-full bg-gray-300"></div>
+          <Dialog open={isFormOpen} onOpenChange={setIsFormOpen}>
+            <DialogTrigger asChild>
+              <Button 
+                variant="primary" 
+                className="bg-[#FF4B55] hover:bg-[#e03e48] transition-colors duration-300"
+              >
+                <Plus className="mr-2 h-4 w-4" /> Post Project
+              </Button>
+            </DialogTrigger>
+            <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
+              <PostProjectForm />
+            </DialogContent>
+          </Dialog>
+          <Link to="/contractor-dashboard">
+            <div className="w-8 h-8 rounded-full bg-gray-300 cursor-pointer hover:ring-2 hover:ring-[#FF4B55] transition-all duration-300"></div>
           </Link>
         </div>
       </header>
 
       {/* Main Content */}
-      <main className="container mx-auto py-8 px-4 max-w-5xl">
-        <div className="mb-6">
-          <Link to="/contractor-dashboard" className="text-gray-600 hover:text-[#FF4B55] flex items-center gap-2 mb-4">
-            <ArrowLeft size={16} /> Back to Dashboard
-          </Link>
-          <h1 className="text-2xl font-bold text-[#121224]">Elite Construction Ltd. Projects</h1>
-          <p className="text-gray-600">Manage your projects and track worker applications</p>
+      <main className="container mx-auto py-8 px-4">
+        <div className="mb-8 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+          <div>
+            <h1 className="text-2xl font-bold">Elite Construction Ltd. Projects</h1>
+            <p className="text-gray-600">Manage and post construction projects</p>
+          </div>
+          <div className="flex gap-3">
+            <Link to="/company-profile">
+              <Button 
+                variant="outline" 
+                className="border-[#004A57] text-[#004A57] hover:bg-[#004A57] hover:text-white transition-colors duration-300"
+              >
+                <Building className="mr-2 h-4 w-4" />
+                View Company Profile
+              </Button>
+            </Link>
+            <Dialog>
+              <DialogTrigger asChild>
+                <Button 
+                  variant="primary" 
+                  className="bg-[#FF4B55] hover:bg-[#e03e48] transition-colors duration-300"
+                >
+                  <Plus className="mr-2 h-4 w-4" /> Post Project
+                </Button>
+              </DialogTrigger>
+              <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
+                <PostProjectForm />
+              </DialogContent>
+            </Dialog>
+          </div>
         </div>
 
-        {/* Project Stats */}
-        <motion.div 
-          className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8"
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.3 }}
-        >
-          <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-100">
-            <h3 className="text-gray-500 text-sm mb-2">Active Projects</h3>
-            <p className="text-2xl font-bold">{allProjects.length}</p>
-          </div>
-          <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-100">
-            <h3 className="text-gray-500 text-sm mb-2">Applications</h3>
-            <p className="text-2xl font-bold">48</p>
-          </div>
-          <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-100">
-            <h3 className="text-gray-500 text-sm mb-2">Hired Workers</h3>
-            <p className="text-2xl font-bold">36</p>
-          </div>
-          <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-100">
-            <h3 className="text-gray-500 text-sm mb-2">Avg. Time-to-Hire</h3>
-            <p className="text-2xl font-bold">5 days</p>
-          </div>
-        </motion.div>
-
-        {/* Action Buttons */}
-        <motion.div 
-          className="flex flex-wrap gap-4 mb-8"
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.3, delay: 0.1 }}
-        >
-          <Dialog>
-            <DialogTrigger asChild>
-              <motion.div
-                whileHover={{ scale: 1.03 }}
-                whileTap={{ scale: 0.97 }}
-              >
-                <Button variant="primary" className="flex items-center gap-2 transition-colors duration-300 bg-[#FF4B55] hover:bg-[#c13941]">
-                  <Plus size={18} /> Post New Project
-                </Button>
-              </motion.div>
-            </DialogTrigger>
-            <DialogContent className="max-w-4xl">
-              <PostProjectForm />
-            </DialogContent>
-          </Dialog>
-          <Button variant="outline" className="border-[#004A57] text-[#004A57] flex items-center gap-2">
-            <Users size={18} /> View All Workers
-          </Button>
-          <Button variant="outline" className="border-[#004A57] text-[#004A57] flex items-center gap-2">
-            <Building size={18} /> Manage Projects
-          </Button>
-        </motion.div>
-
-        {/* Current Projects */}
-        <motion.div 
-          className="bg-white rounded-lg shadow-sm border border-gray-100 mb-8"
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.3, delay: 0.2 }}
-        >
-          <div className="p-6 border-b border-gray-100">
-            <h2 className="text-xl font-semibold">Current Projects</h2>
-          </div>
-          
-          <div className="overflow-x-auto">
-            <table className="w-full">
-              <thead className="bg-gray-50 text-left">
-                <tr>
-                  <th className="p-4 text-gray-600 font-medium">Project Name</th>
-                  <th className="p-4 text-gray-600 font-medium">Location</th>
-                  <th className="p-4 text-gray-600 font-medium">Timeline</th>
-                  <th className="p-4 text-gray-600 font-medium">Workers Needed</th>
-                  <th className="p-4 text-gray-600 font-medium">Actions</th>
-                </tr>
-              </thead>
-              <tbody>
-                {allProjects.map(project => (
-                  <tr key={project.id} className="border-t border-gray-100">
-                    <td className="p-4">
-                      <div className="flex items-center gap-3">
-                        <div className="w-10 h-10 bg-gray-200 rounded"></div>
-                        <div>
-                          <p className="font-medium">{project.name}</p>
-                          <p className="text-gray-500 text-sm">{project.type}</p>
-                        </div>
-                      </div>
-                    </td>
-                    <td className="p-4">
-                      <div className="flex items-center gap-1">
-                        <MapPin size={14} className="text-gray-400" />
-                        <span>{project.location}</span>
-                      </div>
-                    </td>
-                    <td className="p-4">
-                      <div className="flex items-center gap-1">
-                        <Calendar size={14} className="text-gray-400" />
-                        <span>{project.timeline}</span>
-                      </div>
-                    </td>
-                    <td className="p-4">
-                      <div className="flex items-center gap-1">
-                        <Users size={14} className="text-gray-400" />
-                        <span>{project.workersHired} / {project.workersNeeded}</span>
-                      </div>
-                    </td>
-                    <td className="p-4">
-                      <div className="flex gap-2">
-                        <Button variant="outline" size="sm" className="border-[#004A57] text-[#004A57]">
-                          <Link to={`/project-detail-view/${project.id}`}>View</Link>
-                        </Button>
-                        <Button variant="primary" size="sm">
-                          Manage
-                        </Button>
-                      </div>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-          
-          <div className="p-4 border-t border-gray-100 flex justify-between items-center">
-            <div className="text-sm text-gray-500">Showing {allProjects.length} of {allProjects.length} projects</div>
-            <div className="flex gap-2">
-              <Button 
-                variant="outline" 
-                size="sm" 
-                className="border-[#004A57] text-[#004A57]"
-                onClick={() => setPage(Math.max(1, page - 1))}
-                disabled={page === 1}
-              >
-                <ArrowLeft size={16} />
-              </Button>
-              <Button 
-                variant="outline" 
-                size="sm" 
-                className="border-[#004A57] text-[#004A57]"
-                onClick={() => setPage(page + 1)}
-                disabled={page * 5 >= allProjects.length}
-              >
-                <ArrowRight size={16} />
-              </Button>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+          <motion.div 
+            className="bg-white p-6 rounded-lg shadow-sm"
+            whileHover={{ y: -5, boxShadow: "0 10px 15px -3px rgba(0, 0, 0, 0.1)" }}
+            transition={{ duration: 0.3 }}
+          >
+            <div className="flex justify-between items-center mb-4">
+              <h2 className="text-lg font-semibold">Active Projects</h2>
+              <div className="bg-green-100 text-green-700 text-xs px-2 py-1 rounded-full">Active</div>
             </div>
+            <p className="text-3xl font-bold">{projects.length || 0}</p>
+            <p className="text-gray-500 text-sm mt-1">Currently in progress</p>
+          </motion.div>
+          
+          <motion.div 
+            className="bg-white p-6 rounded-lg shadow-sm"
+            whileHover={{ y: -5, boxShadow: "0 10px 15px -3px rgba(0, 0, 0, 0.1)" }}
+            transition={{ duration: 0.3 }}
+          >
+            <div className="flex justify-between items-center mb-4">
+              <h2 className="text-lg font-semibold">Workers Employed</h2>
+              <div className="bg-blue-100 text-blue-700 text-xs px-2 py-1 rounded-full">Current</div>
+            </div>
+            <p className="text-3xl font-bold">156</p>
+            <p className="text-gray-500 text-sm mt-1">Across all projects</p>
+          </motion.div>
+          
+          <motion.div 
+            className="bg-white p-6 rounded-lg shadow-sm"
+            whileHover={{ y: -5, boxShadow: "0 10px 15px -3px rgba(0, 0, 0, 0.1)" }}
+            transition={{ duration: 0.3 }}
+          >
+            <div className="flex justify-between items-center mb-4">
+              <h2 className="text-lg font-semibold">New Applications</h2>
+              <div className="bg-yellow-100 text-yellow-700 text-xs px-2 py-1 rounded-full">Pending</div>
+            </div>
+            <p className="text-3xl font-bold">45</p>
+            <p className="text-gray-500 text-sm mt-1">Waiting for review</p>
+          </motion.div>
+        </div>
+
+        <div className="bg-white rounded-lg shadow-sm p-6 mb-8">
+          <div className="flex justify-between items-center mb-6">
+            <h2 className="text-xl font-bold">Posted Projects</h2>
+            <Link to="/company-profile?tab=postedJobs" className="text-[#FF4B55] hover:underline text-sm">
+              View All Projects
+            </Link>
           </div>
-        </motion.div>
+
+          {projects && projects.length > 0 ? (
+            <div className="space-y-6">
+              {projects.map((project) => (
+                <motion.div 
+                  key={project.id}
+                  className="border border-gray-100 rounded-lg p-4 shadow-sm hover:shadow-md transition-all duration-300"
+                  whileHover={{ scale: 1.01, borderColor: "#FF4B55" }}
+                >
+                  <div className="flex justify-between">
+                    <div>
+                      <h3 className="font-semibold text-lg">{project.title}</h3>
+                      <p className="text-gray-500 text-sm">{project.location} • {project.employmentType}</p>
+                    </div>
+                    <div className="text-right">
+                      <p className="font-medium text-[#004A57]">{project.hourlyRate}/hr</p>
+                      <p className="text-xs text-gray-500">{project.timeline}</p>
+                    </div>
+                  </div>
+                  
+                  <p className="text-gray-600 my-3 line-clamp-2">{project.jobDescription}</p>
+                  
+                  <div className="flex justify-between items-center mt-4">
+                    <div className="flex items-center text-sm text-gray-500">
+                      <Calendar className="h-4 w-4 mr-1" />
+                      <span>Posted {project.postedAt || "recently"}</span>
+                      <User className="h-4 w-4 ml-3 mr-1" />
+                      <span>{project.applicantsCount || 0} applicants</span>
+                    </div>
+                    
+                    <Link to={`/project-detail-view/${project.id}`}>
+                      <Button 
+                        variant="outline" 
+                        size="sm" 
+                        className="text-[#FF4B55] border-[#FF4B55] hover:bg-[#FF4B55] hover:text-white transition-colors duration-300"
+                      >
+                        View Details <ArrowRight className="ml-1 h-4 w-4" />
+                      </Button>
+                    </Link>
+                  </div>
+                </motion.div>
+              ))}
+            </div>
+          ) : (
+            <div className="text-center py-10">
+              <Building className="h-16 w-16 mx-auto text-gray-300 mb-3" />
+              <h3 className="text-lg font-medium text-gray-600">No Projects Posted Yet</h3>
+              <p className="text-gray-500 mb-4">Start by posting your first construction project</p>
+              <Dialog>
+                <DialogTrigger asChild>
+                  <Button 
+                    variant="primary" 
+                    className="bg-[#FF4B55] hover:bg-[#e03e48] transition-colors duration-300"
+                  >
+                    <Plus className="mr-2 h-4 w-4" /> Post Your First Project
+                  </Button>
+                </DialogTrigger>
+                <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
+                  <PostProjectForm />
+                </DialogContent>
+              </Dialog>
+            </div>
+          )}
+        </div>
       </main>
     </div>
   );
 };
-
-// Fix missing import
-const Plus: React.FC<{ size: number }> = ({ size }) => (
-  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-    <line x1="12" y1="5" x2="12" y2="19"></line>
-    <line x1="5" y1="12" x2="19" y2="12"></line>
-  </svg>
-);
 
 export default EliteConstructionProject;

@@ -30,8 +30,34 @@ const SmoothScroll = ({ children }: { children: React.ReactNode }) => {
   useEffect(() => {
     // Apply smooth scrolling behavior to the entire app
     document.documentElement.style.scrollBehavior = "smooth";
+    
+    // Add smooth transitions to all buttons
+    const style = document.createElement('style');
+    style.innerHTML = `
+      button {
+        transition: all 0.3s ease;
+      }
+      
+      .bg-[#FF4B55]:hover, 
+      button:has(.bg-[#FF4B55]):hover,
+      button.bg-[#FF4B55]:hover,
+      a:has(.bg-[#FF4B55]):hover {
+        background-color: #e03e48 !important;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+      }
+      
+      .card-hover:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        transition: all 0.3s ease;
+      }
+    `;
+    document.head.appendChild(style);
+    
     return () => {
       document.documentElement.style.scrollBehavior = "auto";
+      document.head.removeChild(style);
     };
   }, []);
   

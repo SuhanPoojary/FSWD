@@ -12,9 +12,11 @@ import { useNavigate } from "react-router-dom";
 export const ProjectContext = React.createContext<{
   projects: any[];
   addProject: (project: any) => void;
+  removeProject: (id: number) => void;
 }>({
   projects: [],
   addProject: () => {},
+  removeProject: () => {},
 });
 
 export const useProjectContext = () => React.useContext(ProjectContext);
@@ -26,8 +28,12 @@ export const ProjectProvider: React.FC<{ children: React.ReactNode }> = ({ child
     setProjects((prev) => [...prev, project]);
   };
 
+  const removeProject = (id: number) => {
+    setProjects((prev) => prev.filter(project => project.id !== id));
+  };
+
   return (
-    <ProjectContext.Provider value={{ projects, addProject }}>
+    <ProjectContext.Provider value={{ projects, addProject, removeProject }}>
       {children}
     </ProjectContext.Provider>
   );
@@ -47,6 +53,7 @@ const PostProjectForm: React.FC = () => {
     company: "Elite Construction Ltd",
     projectType: "Commercial",
     timeline: "3 months",
+    expiresAfter: "30",
     postedDate: new Date().toISOString(),
   });
 
@@ -81,7 +88,9 @@ const PostProjectForm: React.FC = () => {
       id: Date.now(),
       ...formData,
       applicants: 0,
-      status: "active"
+      status: "active",
+      postedAt: new Date().toLocaleDateString(),
+      applicantsCount: Math.floor(Math.random() * 15)
     });
     
     // Show success toast notification
@@ -106,13 +115,14 @@ const PostProjectForm: React.FC = () => {
       company: "Elite Construction Ltd",
       projectType: "Commercial",
       timeline: "3 months",
+      expiresAfter: "30",
       postedDate: new Date().toISOString(),
     });
   };
 
   return (
     <motion.div 
-      className="p-6"
+      className="p-6 max-h-[80vh] overflow-y-auto"
       initial={{ opacity: 0, y: 10 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.3 }}
@@ -222,6 +232,24 @@ const PostProjectForm: React.FC = () => {
                 <option value="2+ years">2+ years</option>
               </select>
             </div>
+          </div>
+          
+          <div className="mt-6">
+            <Label htmlFor="expiresAfter">Remove Job After</Label>
+            <select
+              id="expiresAfter"
+              name="expiresAfter"
+              value={formData.expiresAfter}
+              onChange={handleChange}
+              className="w-full mt-1 p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#FF4B55]"
+            >
+              <option value="7">7 days</option>
+              <option value="14">14 days</option>
+              <option value="30">30 days</option>
+              <option value="60">60 days</option>
+              <option value="90">90 days</option>
+              <option value="never">Don't automatically remove</option>
+            </select>
           </div>
         </motion.div>
 

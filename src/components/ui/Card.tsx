@@ -1,3 +1,4 @@
+
 import React from "react";
 import { cn } from "@/lib/utils";
 
@@ -21,7 +22,7 @@ const Card: React.FC<CardProps> = ({
   return (
     <div
       className={cn(
-        "flex flex-col min-w-[280px] flex-1 border overflow-hidden rounded-2xl border-solid border-[#FF4B55]",
+        "flex flex-col min-w-[280px] flex-1 border overflow-hidden rounded-2xl border-solid border-[#FF4B55] card-hover transition-all duration-300",
         className,
       )}
       {...props}

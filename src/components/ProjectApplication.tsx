@@ -84,7 +84,7 @@ const ProjectApplication: React.FC<ProjectApplicationProps> = ({
   }
 
   return (
-    <div className="p-2">
+    <div className="p-2 max-h-[80vh] overflow-y-auto">
       <div className="flex justify-between items-center mb-6">
         <h2 className="text-xl font-bold">Apply for Project</h2>
         <Button variant="ghost" size="icon" onClick={onCancel}>

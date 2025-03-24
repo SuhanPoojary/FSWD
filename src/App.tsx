@@ -20,6 +20,9 @@ import ProjectDetails from "./pages/ProjectDetails";
 import ProjectView from "./pages/ProjectView";
 import ProfessionalMessages from "./pages/ProfessionalMessages";
 import ProfessionalProjects from "./pages/ProfessionalProjects";
+import CompanyProfile from "./pages/CompanyProfile";
+import ProjectDetailView from "./pages/ProjectDetailView";
+import { ProjectProvider } from "./components/PostProjectForm";
 
 const queryClient = new QueryClient();
 
@@ -37,32 +40,36 @@ const SmoothScroll = ({ children }: { children: React.ReactNode }) => {
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
-    <TooltipProvider>
-      <Toaster />
-      <Sonner />
-      <SmoothScroll>
-        <BrowserRouter>
-          <Routes>
-            <Route path="/" element={<Index />} />
-            <Route path="/journey" element={<Journey />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="/worker-dashboard" element={<WorkerDashboard />} />
-            <Route path="/worker-profile" element={<WorkerProfile />} />
-            <Route path="/active-work" element={<ActiveWork />} />
-            <Route path="/professional-dashboard" element={<ProfessionalDashboard />} />
-            <Route path="/professional-profile" element={<ProfessionalProfile />} />
-            <Route path="/project-details/:id" element={<ProjectDetails />} />
-            <Route path="/project-view/:id" element={<ProjectView />} />
-            <Route path="/professional-messages" element={<ProfessionalMessages />} />
-            <Route path="/professional-projects" element={<ProfessionalProjects />} />
-            <Route path="/contractor-dashboard" element={<ContractorDashboard />} />
-            <Route path="/elite-construction-project" element={<EliteConstructionProject />} />
-            {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-        </BrowserRouter>
-      </SmoothScroll>
-    </TooltipProvider>
+    <ProjectProvider>
+      <TooltipProvider>
+        <Toaster />
+        <Sonner />
+        <SmoothScroll>
+          <BrowserRouter>
+            <Routes>
+              <Route path="/" element={<Index />} />
+              <Route path="/journey" element={<Journey />} />
+              <Route path="/login" element={<Login />} />
+              <Route path="/worker-dashboard" element={<WorkerDashboard />} />
+              <Route path="/worker-profile" element={<WorkerProfile />} />
+              <Route path="/active-work" element={<ActiveWork />} />
+              <Route path="/professional-dashboard" element={<ProfessionalDashboard />} />
+              <Route path="/professional-profile" element={<ProfessionalProfile />} />
+              <Route path="/project-details/:id" element={<ProjectDetails />} />
+              <Route path="/project-view/:id" element={<ProjectView />} />
+              <Route path="/professional-messages" element={<ProfessionalMessages />} />
+              <Route path="/professional-projects" element={<ProfessionalProjects />} />
+              <Route path="/contractor-dashboard" element={<ContractorDashboard />} />
+              <Route path="/elite-construction-project" element={<EliteConstructionProject />} />
+              <Route path="/company-profile" element={<CompanyProfile />} />
+              <Route path="/project-detail-view/:id" element={<ProjectDetailView />} />
+              {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+              <Route path="*" element={<NotFound />} />
+            </Routes>
+          </BrowserRouter>
+        </SmoothScroll>
+      </TooltipProvider>
+    </ProjectProvider>
   </QueryClientProvider>
 );
 

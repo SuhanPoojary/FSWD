@@ -1,7 +1,7 @@
 
 import React from "react";
 import { Link } from "react-router-dom";
-import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogTitle, DialogDescription, DialogTrigger } from "@/components/ui/dialog";
 import PostServiceForm from "@/components/PostServiceForm";
 import { motion } from "framer-motion";
 
@@ -25,11 +25,20 @@ const ProfessionalDashboard: React.FC = () => {
         <div className="flex items-center gap-4">
           <Dialog>
             <DialogTrigger asChild>
-              <button className="bg-[#FF4B55] text-white px-4 py-2 rounded hover:bg-[#E43F49] transition-colors">
-                Post Services
-              </button>
+              <motion.div
+                whileHover={{ scale: 1.03 }}
+                whileTap={{ scale: 0.97 }}
+              >
+                <button className="bg-[#FF4B55] text-white px-4 py-2 rounded hover:bg-[#E43F49] transition-colors">
+                  Post Services
+                </button>
+              </motion.div>
             </DialogTrigger>
             <DialogContent className="max-w-4xl">
+              <DialogTitle>Post Your Services</DialogTitle>
+              <DialogDescription>
+                Fill out the form below to advertise your professional services to contractors.
+              </DialogDescription>
               <PostServiceForm />
             </DialogContent>
           </Dialog>
@@ -73,9 +82,14 @@ const ProfessionalDashboard: React.FC = () => {
               <option>Industrial</option>
             </select>
           </div>
-          <button className="bg-[#FF4B55] text-white px-6 py-3 rounded hover:bg-[#E43F49] transition-colors">
-            Search
-          </button>
+          <motion.div
+            whileHover={{ scale: 1.03 }}
+            whileTap={{ scale: 0.97 }}
+          >
+            <button className="bg-[#FF4B55] text-white px-6 py-3 rounded hover:bg-[#E43F49] transition-colors">
+              Search
+            </button>
+          </motion.div>
         </motion.div>
 
         {/* Filter Tags */}

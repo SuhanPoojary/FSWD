@@ -22,6 +22,8 @@ import ProfessionalMessages from "./pages/ProfessionalMessages";
 import ProfessionalProjects from "./pages/ProfessionalProjects";
 import CompanyProfile from "./pages/CompanyProfile";
 import ProjectDetailView from "./pages/ProjectDetailView";
+import Workers from "./pages/Workers";
+import AppointWorkers from "./pages/AppointWorkers";
 import { ProjectProvider } from "./components/PostProjectForm";
 
 const queryClient = new QueryClient();
@@ -89,6 +91,8 @@ const App = () => (
               <Route path="/elite-construction-project" element={<EliteConstructionProject />} />
               <Route path="/company-profile" element={<CompanyProfile />} />
               <Route path="/project-detail-view/:id" element={<ProjectDetailView />} />
+              <Route path="/workers" element={<Workers />} />
+              <Route path="/appoint-workers" element={<AppointWorkers />} />
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
               <Route path="*" element={<NotFound />} />
             </Routes>

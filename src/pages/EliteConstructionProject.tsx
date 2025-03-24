@@ -5,7 +5,7 @@ import PostProjectForm from "@/components/PostProjectForm";
 import { useProjectContext } from "@/components/PostProjectForm";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
-import { Plus, Calendar, User, Building, ArrowRight } from "lucide-react";
+import { Plus, Calendar, User, Building, ArrowRight, Users } from "lucide-react";
 import { motion } from "framer-motion";
 
 const EliteConstructionProject: React.FC = () => {
@@ -21,13 +21,19 @@ const EliteConstructionProject: React.FC = () => {
             <div className="w-6 h-6 bg-[#FF4B55] transform rotate-45" />
             <span className="text-[#EEE] text-xl font-medium">LabourNet</span>
           </Link>
+          <nav className="hidden md:flex space-x-6 ml-12">
+            <Link to="/contractor-dashboard" className="hover:text-[#FF4B55]">Dashboard</Link>
+            <Link to="/elite-construction-project" className="hover:text-[#FF4B55]">Projects</Link>
+            <Link to="/workers" className="hover:text-[#FF4B55]">Workers</Link>
+            <Link to="#" className="hover:text-[#FF4B55]">Analytics</Link>
+          </nav>
         </div>
         <div className="flex items-center gap-4">
           <Dialog open={isFormOpen} onOpenChange={setIsFormOpen}>
             <DialogTrigger asChild>
               <Button 
                 variant="primary" 
-                className="bg-[#FF4B55] hover:bg-[#e03e48] transition-colors duration-300"
+                className="bg-[#FF4B55] hover:bg-[#e03e48] transition-all duration-300 hover:scale-105"
               >
                 <Plus className="mr-2 h-4 w-4" /> Post Project
               </Button>
@@ -36,14 +42,14 @@ const EliteConstructionProject: React.FC = () => {
               <PostProjectForm />
             </DialogContent>
           </Dialog>
-          <Link to="/contractor-dashboard">
+          <Link to="/company-profile">
             <div className="w-8 h-8 rounded-full bg-gray-300 cursor-pointer hover:ring-2 hover:ring-[#FF4B55] transition-all duration-300"></div>
           </Link>
         </div>
       </header>
 
       {/* Main Content */}
-      <main className="container mx-auto py-8 px-4">
+      <main className="container mx-auto py-8 px-4 max-w-5xl">
         <div className="mb-8 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
           <div>
             <h1 className="text-2xl font-bold">Elite Construction Ltd. Projects</h1>
@@ -53,17 +59,26 @@ const EliteConstructionProject: React.FC = () => {
             <Link to="/company-profile">
               <Button 
                 variant="outline" 
-                className="border-[#004A57] text-[#004A57] hover:bg-[#004A57] hover:text-white transition-colors duration-300"
+                className="border-[#004A57] text-[#004A57] hover:bg-[#004A57] hover:text-white transition-all duration-300 hover:scale-105"
               >
                 <Building className="mr-2 h-4 w-4" />
                 View Company Profile
+              </Button>
+            </Link>
+            <Link to="/workers">
+              <Button 
+                variant="outline" 
+                className="border-[#004A57] text-[#004A57] hover:bg-[#004A57] hover:text-white transition-all duration-300 hover:scale-105"
+              >
+                <Users className="mr-2 h-4 w-4" />
+                Manage Workers
               </Button>
             </Link>
             <Dialog>
               <DialogTrigger asChild>
                 <Button 
                   variant="primary" 
-                  className="bg-[#FF4B55] hover:bg-[#e03e48] transition-colors duration-300"
+                  className="bg-[#FF4B55] hover:bg-[#e03e48] transition-all duration-300 hover:scale-105"
                 >
                   <Plus className="mr-2 h-4 w-4" /> Post Project
                 </Button>

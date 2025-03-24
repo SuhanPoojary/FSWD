@@ -1,6 +1,5 @@
-
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Search, Plus, MapPin, Clock, Briefcase, Users } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
@@ -9,6 +8,7 @@ import PostProjectForm from "@/components/PostProjectForm";
 
 const ContractorDashboard: React.FC = () => {
   const [searchQuery, setSearchQuery] = useState("");
+  const navigate = useNavigate();
   
   return (
     <div className="min-h-screen bg-white">
@@ -21,24 +21,26 @@ const ContractorDashboard: React.FC = () => {
           </Link>
           <nav className="hidden md:flex space-x-6 ml-12">
             <Link to="#" className="hover:text-[#FF4B55]">Dashboard</Link>
-            <Link to="#" className="hover:text-[#FF4B55]">Projects</Link>
-            <Link to="#" className="hover:text-[#FF4B55]">Workers</Link>
+            <Link to="/elite-construction-project" className="hover:text-[#FF4B55]">Projects</Link>
+            <Link to="/workers" className="hover:text-[#FF4B55]">Workers</Link>
             <Link to="#" className="hover:text-[#FF4B55]">Analytics</Link>
           </nav>
         </div>
         <div className="flex items-center gap-4">
           <Dialog>
             <DialogTrigger asChild>
-              <Button variant="primary" className="flex items-center gap-2">
+              <Button variant="primary" className="flex items-center gap-2 transition-transform hover:scale-105">
                 <Plus size={18} />
                 Post Project
               </Button>
             </DialogTrigger>
-            <DialogContent className="max-w-4xl w-full">
+            <DialogContent className="max-w-4xl w-full max-h-[90vh] overflow-y-auto">
               <PostProjectForm />
             </DialogContent>
           </Dialog>
-          <div className="w-8 h-8 rounded-full bg-gray-300"></div>
+          <Link to="/company-profile">
+            <div className="w-8 h-8 rounded-full bg-gray-300 cursor-pointer hover:ring-2 hover:ring-[#FF4B55] transition-all duration-300"></div>
+          </Link>
         </div>
       </header>
 
@@ -73,7 +75,7 @@ const ContractorDashboard: React.FC = () => {
         <div className="mb-12">
           <h2 className="text-xl font-semibold text-[#121224] mb-6">Available Projects</h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <Link to="/elite-construction-project" className="bg-white border border-gray-200 rounded-lg shadow-sm overflow-hidden hover:border-[#FF4B55] transition-colors">
+            <Link to="/elite-construction-project" className="bg-white border border-gray-200 rounded-lg shadow-sm overflow-hidden hover:border-[#FF4B55] transition-colors card-hover">
               <div className="h-40 bg-gray-200"></div>
               <div className="p-4">
                 <div className="flex justify-between mb-2">
@@ -95,7 +97,7 @@ const ContractorDashboard: React.FC = () => {
               </div>
             </Link>
 
-            <Link to="/elite-construction-project" className="bg-white border border-gray-200 rounded-lg shadow-sm overflow-hidden hover:border-[#FF4B55] transition-colors">
+            <Link to="/elite-construction-project" className="bg-white border border-gray-200 rounded-lg shadow-sm overflow-hidden hover:border-[#FF4B55] transition-colors card-hover">
               <div className="h-40 bg-gray-200"></div>
               <div className="p-4">
                 <div className="flex justify-between mb-2">
@@ -117,7 +119,7 @@ const ContractorDashboard: React.FC = () => {
               </div>
             </Link>
 
-            <Link to="/elite-construction-project" className="bg-white border border-gray-200 rounded-lg shadow-sm overflow-hidden hover:border-[#FF4B55] transition-colors">
+            <Link to="/elite-construction-project" className="bg-white border border-gray-200 rounded-lg shadow-sm overflow-hidden hover:border-[#FF4B55] transition-colors card-hover">
               <div className="h-40 bg-gray-200"></div>
               <div className="p-4">
                 <div className="flex justify-between mb-2">
@@ -208,3 +210,4 @@ const ContractorDashboard: React.FC = () => {
 };
 
 export default ContractorDashboard;
+

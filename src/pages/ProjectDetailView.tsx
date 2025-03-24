@@ -4,7 +4,7 @@ import { useParams, Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Calendar, MapPin, Clock, User, Building, ArrowLeft, Trash2 } from "lucide-react";
+import { Calendar, MapPin, Clock, User, Building, ArrowLeft, Trash2, Users } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { useProjectContext } from "@/components/PostProjectForm";
 import { motion } from "framer-motion";
@@ -49,9 +49,15 @@ const ProjectDetailView: React.FC = () => {
             <div className="w-6 h-6 bg-[#FF4B55] transform rotate-45" />
             <span className="text-[#EEE] text-xl font-medium">LabourNet</span>
           </Link>
+          <nav className="hidden md:flex space-x-6 ml-12">
+            <Link to="/contractor-dashboard" className="hover:text-[#FF4B55]">Dashboard</Link>
+            <Link to="/elite-construction-project" className="hover:text-[#FF4B55]">Projects</Link>
+            <Link to="/workers" className="hover:text-[#FF4B55]">Workers</Link>
+            <Link to="#" className="hover:text-[#FF4B55]">Analytics</Link>
+          </nav>
         </div>
         <div className="flex items-center gap-4">
-          <Link to="/contractor-dashboard">
+          <Link to="/company-profile">
             <div className="w-8 h-8 rounded-full bg-gray-300 cursor-pointer hover:ring-2 hover:ring-[#FF4B55] transition-all duration-300"></div>
           </Link>
         </div>
@@ -64,7 +70,7 @@ const ProjectDetailView: React.FC = () => {
             variant="outline" 
             size="sm" 
             onClick={() => navigate(-1)}
-            className="text-gray-600 hover:text-[#004A57]"
+            className="text-gray-600 hover:text-[#004A57] transition-all duration-300"
           >
             <ArrowLeft className="mr-2 h-4 w-4" /> Back to Projects
           </Button>
@@ -80,7 +86,7 @@ const ProjectDetailView: React.FC = () => {
             <div className="flex flex-col md:flex-row justify-between gap-4">
               <div>
                 <h1 className="text-2xl font-bold">{project.title}</h1>
-                <div className="flex items-center gap-2 text-gray-600 mt-2">
+                <div className="flex items-center gap-2 text-gray-600 mt-2 flex-wrap">
                   <MapPin className="h-4 w-4" />
                   <span>{project.location}</span>
                   
@@ -137,6 +143,12 @@ const ProjectDetailView: React.FC = () => {
                 >
                   Applications
                 </TabsTrigger>
+                <TabsTrigger 
+                  value="workers" 
+                  className="py-3 data-[state=active]:border-b-2 data-[state=active]:border-[#FF4B55] data-[state=active]:text-[#FF4B55] rounded-none"
+                >
+                  Assigned Workers
+                </TabsTrigger>
               </TabsList>
             </div>
             
@@ -173,12 +185,20 @@ const ProjectDetailView: React.FC = () => {
                 <div className="flex justify-end gap-4 pt-4 border-t border-gray-100">
                   <Button 
                     variant="outline" 
-                    className="border-[#FF4B55] text-[#FF4B55] hover:bg-[#FF4B55] hover:text-white"
+                    className="border-[#FF4B55] text-[#FF4B55] hover:bg-[#FF4B55] hover:text-white transition-all duration-300 hover:scale-105"
                     onClick={handleRemoveProject}
                   >
                     <Trash2 className="mr-2 h-4 w-4" /> Remove Project
                   </Button>
-                  <Button variant="outline" className="border-[#004A57] text-[#004A57] hover:bg-[#004A57] hover:text-white">
+                  <Link to="/appoint-workers">
+                    <Button 
+                      variant="outline" 
+                      className="border-[#004A57] text-[#004A57] hover:bg-[#004A57] hover:text-white transition-all duration-300 hover:scale-105"
+                    >
+                      <Users className="mr-2 h-4 w-4" /> Appoint Workers
+                    </Button>
+                  </Link>
+                  <Button variant="outline" className="border-[#004A57] text-[#004A57] hover:bg-[#004A57] hover:text-white transition-all duration-300 hover:scale-105">
                     Edit Project
                   </Button>
                 </div>
@@ -194,6 +214,24 @@ const ProjectDetailView: React.FC = () => {
                     "Applications need to be reviewed." : 
                     "When professionals apply to your project, they will appear here."}
                 </p>
+              </div>
+            </TabsContent>
+            
+            <TabsContent value="workers" className="p-6 mt-0">
+              <div className="text-center py-8">
+                <Users className="h-16 w-16 mx-auto text-gray-300 mb-3" />
+                <h3 className="text-lg font-medium text-gray-600">No Workers Assigned Yet</h3>
+                <p className="text-gray-500 mb-4">
+                  Assign workers to this project to see them listed here
+                </p>
+                <Link to="/appoint-workers">
+                  <Button 
+                    variant="primary" 
+                    className="bg-[#FF4B55] hover:bg-[#e03e48] transition-all duration-300 hover:scale-105"
+                  >
+                    <Users className="mr-2 h-4 w-4" /> Appoint Workers
+                  </Button>
+                </Link>
               </div>
             </TabsContent>
           </Tabs>

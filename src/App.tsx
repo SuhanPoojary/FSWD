@@ -24,8 +24,6 @@ import CompanyProfile from "./pages/CompanyProfile";
 import ProjectDetailView from "./pages/ProjectDetailView";
 import Workers from "./pages/Workers";
 import AppointWorkers from "./pages/AppointWorkers";
-import Analytics from "./pages/Analytics";
-import PostedJobs from "./pages/PostedJobs";
 import { ProjectProvider } from "./components/PostProjectForm";
 
 const queryClient = new QueryClient();
@@ -95,8 +93,6 @@ const App = () => (
               <Route path="/project-detail-view/:id" element={<ProjectDetailView />} />
               <Route path="/workers" element={<Workers />} />
               <Route path="/appoint-workers" element={<AppointWorkers />} />
-              <Route path="/analytics" element={<Analytics />} />
-              <Route path="/posted-jobs" element={<PostedJobs />} />
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
               <Route path="*" element={<NotFound />} />
             </Routes>

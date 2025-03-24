@@ -1,3 +1,4 @@
+
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Search, Plus, MapPin, Clock, Briefcase, Users } from "lucide-react";
@@ -20,16 +21,20 @@ const ContractorDashboard: React.FC = () => {
             <span className="text-[#EEE] text-xl font-medium">LabourNet</span>
           </Link>
           <nav className="hidden md:flex space-x-6 ml-12">
-            <Link to="#" className="hover:text-[#FF4B55]">Dashboard</Link>
-            <Link to="/elite-construction-project" className="hover:text-[#FF4B55]">Projects</Link>
-            <Link to="/workers" className="hover:text-[#FF4B55]">Workers</Link>
-            <Link to="#" className="hover:text-[#FF4B55]">Analytics</Link>
+            <Link to="/contractor-dashboard" className="hover:text-[#FF4B55] text-[#FF4B55] transition-colors">Dashboard</Link>
+            <Link to="/elite-construction-project" className="hover:text-[#FF4B55] transition-colors">Projects</Link>
+            <Link to="/workers" className="hover:text-[#FF4B55] transition-colors">Workers</Link>
+            <Link to="/analytics" className="hover:text-[#FF4B55] transition-colors">Analytics</Link>
+            <Link to="/posted-jobs" className="hover:text-[#FF4B55] transition-colors">Posted Jobs</Link>
           </nav>
         </div>
         <div className="flex items-center gap-4">
           <Dialog>
             <DialogTrigger asChild>
-              <Button variant="primary" className="flex items-center gap-2 transition-transform hover:scale-105">
+              <Button 
+                variant="primary" 
+                className="bg-[#FF4B55] hover:bg-[#e03e48] transition-all duration-300 hover:scale-105"
+              >
                 <Plus size={18} />
                 Post Project
               </Button>
@@ -38,7 +43,7 @@ const ContractorDashboard: React.FC = () => {
               <PostProjectForm />
             </DialogContent>
           </Dialog>
-          <Link to="/company-profile">
+          <Link to="/worker-profile">
             <div className="w-8 h-8 rounded-full bg-gray-300 cursor-pointer hover:ring-2 hover:ring-[#FF4B55] transition-all duration-300"></div>
           </Link>
         </div>
@@ -62,7 +67,10 @@ const ContractorDashboard: React.FC = () => {
                 onChange={(e) => setSearchQuery(e.target.value)}
               />
             </div>
-            <Button variant="primary" className="md:w-auto">
+            <Button 
+              variant="primary" 
+              className="md:w-auto bg-[#FF4B55] hover:bg-[#e03e48] transition-all duration-300 hover:scale-105"
+            >
               Search
             </Button>
           </div>
@@ -147,16 +155,16 @@ const ContractorDashboard: React.FC = () => {
         <div className="mb-12">
           <h2 className="text-xl font-semibold text-[#121224] mb-6">Popular Categories</h2>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-            <div className="bg-white border border-gray-200 rounded-lg p-4 text-center hover:border-[#FF4B55] transition-colors cursor-pointer">
+            <div className="bg-white border border-gray-200 rounded-lg p-4 text-center hover:border-[#FF4B55] transition-colors cursor-pointer card-hover">
               <h3 className="font-semibold">Commercial</h3>
             </div>
-            <div className="bg-white border border-gray-200 rounded-lg p-4 text-center hover:border-[#FF4B55] transition-colors cursor-pointer">
+            <div className="bg-white border border-gray-200 rounded-lg p-4 text-center hover:border-[#FF4B55] transition-colors cursor-pointer card-hover">
               <h3 className="font-semibold">Residential</h3>
             </div>
-            <div className="bg-white border border-gray-200 rounded-lg p-4 text-center hover:border-[#FF4B55] transition-colors cursor-pointer">
+            <div className="bg-white border border-gray-200 rounded-lg p-4 text-center hover:border-[#FF4B55] transition-colors cursor-pointer card-hover">
               <h3 className="font-semibold">Industrial</h3>
             </div>
-            <div className="bg-white border border-gray-200 rounded-lg p-4 text-center hover:border-[#FF4B55] transition-colors cursor-pointer">
+            <div className="bg-white border border-gray-200 rounded-lg p-4 text-center hover:border-[#FF4B55] transition-colors cursor-pointer card-hover">
               <h3 className="font-semibold">Infrastructure</h3>
             </div>
           </div>
@@ -171,8 +179,8 @@ const ContractorDashboard: React.FC = () => {
           <div>
             <h3 className="font-semibold mb-4">Quick Links</h3>
             <ul className="space-y-2 text-gray-600">
-              <li><Link to="#" className="hover:text-[#FF4B55]">Find Jobs</Link></li>
-              <li><Link to="#" className="hover:text-[#FF4B55]">Post a Project</Link></li>
+              <li><Link to="/elite-construction-project" className="hover:text-[#FF4B55]">Find Jobs</Link></li>
+              <li><Link to="/posted-jobs" className="hover:text-[#FF4B55]">Post a Project</Link></li>
               <li><Link to="#" className="hover:text-[#FF4B55]">Our Services</Link></li>
               <li><Link to="#" className="hover:text-[#FF4B55]">For Employers</Link></li>
             </ul>
@@ -190,7 +198,12 @@ const ContractorDashboard: React.FC = () => {
             <h3 className="font-semibold mb-4">Contact Us</h3>
             <Dialog>
               <DialogTrigger asChild>
-                <Button variant="outline" className="w-full mb-4">Contact Us</Button>
+                <Button 
+                  variant="outline" 
+                  className="w-full mb-4 border-[#004A57] text-[#004A57] hover:bg-[#004A57] hover:text-white transition-all duration-300"
+                >
+                  Contact Us
+                </Button>
               </DialogTrigger>
               <DialogContent className="max-w-4xl">
                 <ContactForm />
@@ -210,4 +223,3 @@ const ContractorDashboard: React.FC = () => {
 };
 
 export default ContractorDashboard;
-

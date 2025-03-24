@@ -22,10 +22,11 @@ const EliteConstructionProject: React.FC = () => {
             <span className="text-[#EEE] text-xl font-medium">LabourNet</span>
           </Link>
           <nav className="hidden md:flex space-x-6 ml-12">
-            <Link to="/contractor-dashboard" className="hover:text-[#FF4B55]">Dashboard</Link>
-            <Link to="/elite-construction-project" className="hover:text-[#FF4B55]">Projects</Link>
-            <Link to="/workers" className="hover:text-[#FF4B55]">Workers</Link>
-            <Link to="#" className="hover:text-[#FF4B55]">Analytics</Link>
+            <Link to="/contractor-dashboard" className="hover:text-[#FF4B55] transition-colors">Dashboard</Link>
+            <Link to="/elite-construction-project" className="hover:text-[#FF4B55] text-[#FF4B55] transition-colors">Projects</Link>
+            <Link to="/workers" className="hover:text-[#FF4B55] transition-colors">Workers</Link>
+            <Link to="/analytics" className="hover:text-[#FF4B55] transition-colors">Analytics</Link>
+            <Link to="/posted-jobs" className="hover:text-[#FF4B55] transition-colors">Posted Jobs</Link>
           </nav>
         </div>
         <div className="flex items-center gap-4">
@@ -42,7 +43,7 @@ const EliteConstructionProject: React.FC = () => {
               <PostProjectForm />
             </DialogContent>
           </Dialog>
-          <Link to="/company-profile">
+          <Link to="/worker-profile">
             <div className="w-8 h-8 rounded-full bg-gray-300 cursor-pointer hover:ring-2 hover:ring-[#FF4B55] transition-all duration-300"></div>
           </Link>
         </div>
@@ -53,7 +54,7 @@ const EliteConstructionProject: React.FC = () => {
         <div className="mb-8 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
           <div>
             <h1 className="text-2xl font-bold">Elite Construction Ltd. Projects</h1>
-            <p className="text-gray-600">Manage and post construction projects</p>
+            <p className="text-gray-600">Manage and find construction projects</p>
           </div>
           <div className="flex gap-3">
             <Link to="/company-profile">
@@ -133,9 +134,9 @@ const EliteConstructionProject: React.FC = () => {
 
         <div className="bg-white rounded-lg shadow-sm p-6 mb-8">
           <div className="flex justify-between items-center mb-6">
-            <h2 className="text-xl font-bold">Posted Projects</h2>
-            <Link to="/company-profile?tab=postedJobs" className="text-[#FF4B55] hover:underline text-sm">
-              View All Projects
+            <h2 className="text-xl font-bold">Find Projects</h2>
+            <Link to="/posted-jobs" className="text-[#FF4B55] hover:underline text-sm">
+              View All Available Projects
             </Link>
           </div>
 
@@ -184,8 +185,8 @@ const EliteConstructionProject: React.FC = () => {
           ) : (
             <div className="text-center py-10">
               <Building className="h-16 w-16 mx-auto text-gray-300 mb-3" />
-              <h3 className="text-lg font-medium text-gray-600">No Projects Posted Yet</h3>
-              <p className="text-gray-500 mb-4">Start by posting your first construction project</p>
+              <h3 className="text-lg font-medium text-gray-600">No Projects Found</h3>
+              <p className="text-gray-500 mb-4">Start by browsing the marketplace or posting your own construction project</p>
               <Dialog>
                 <DialogTrigger asChild>
                   <Button 

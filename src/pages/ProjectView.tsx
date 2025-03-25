@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -6,11 +5,19 @@ import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Star, MapPin, Calendar, User, MessageSquare, BadgeCheck } from "lucide-react";
+import { toast } from "sonner";
 import ReviewForm from "@/components/ReviewForm";
 
 const ProjectView: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const [activeTab, setActiveTab] = useState("details");
+  
+  const handleApply = () => {
+    toast.success("Application Submitted Successfully!", {
+      description: "Your application has been sent to the contractor for review.",
+      duration: 5000,
+    });
+  };
   
   const project = {
     id: id,
@@ -149,11 +156,15 @@ const ProjectView: React.FC = () => {
                   </ul>
                 </div>
                 
-                <div className="flex justify-end space-x-4">
-                  <Button variant="outline" className="border-[#004A57] text-[#004A57] hover:bg-[#004A57] hover:text-white">
+                <div className="flex justify-end space-x-4 mt-6">
+                  <Button variant="outline" className="border-[#004A57] text-[#004A57] hover:bg-[#004A57] hover:text-white transition-all duration-300 hover:scale-105">
                     Save Project
                   </Button>
-                  <Button variant="primary">
+                  <Button 
+                    variant="primary" 
+                    className="bg-[#FF4B55] hover:bg-[#e03e48] transition-all duration-300 hover:scale-105"
+                    onClick={handleApply}
+                  >
                     Apply Now
                   </Button>
                 </div>

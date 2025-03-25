@@ -1,258 +1,220 @@
 
 import React, { useState } from "react";
-import { Link, useParams } from "react-router-dom";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { useParams, Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Star, MapPin, Calendar, User, MessageSquare, BadgeCheck } from "lucide-react";
-import ReviewForm from "@/components/ReviewForm";
+import { Badge } from "@/components/ui/badge";
+import { MapPin, Clock, Calendar, User, ArrowLeft, Share2, ExternalLink } from "lucide-react";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from "@/components/ui/dialog";
+import { toast } from "@/hooks/use-toast";
 
 const ProjectView: React.FC = () => {
   const { id } = useParams<{ id: string }>();
-  const [activeTab, setActiveTab] = useState("details");
+  const navigate = useNavigate();
+  const [showApplyDialog, setShowApplyDialog] = useState(false);
   
+  // Simulate project data based on the ID
+  // In a real app, this would come from an API or context
   const project = {
-    id: id,
-    title: "Commercial Building Project",
-    description: "Looking for skilled workers to complete a commercial retail space construction. Experience with modern design elements required.",
-    budget: "$225,000",
-    location: "Chicago, IL",
-    category: "Commercial",
-    postedBy: {
-      name: "City Developers Inc",
-      rating: 4.7,
-      image: "/placeholder.svg"
-    },
-    timeline: {
-      startDate: "Apr 2023",
-      endDate: "Oct 2023"
-    },
-    requirements: [
-      "5+ years of commercial construction experience",
-      "Knowledge of modern building codes",
-      "Experience with sustainable building practices",
-      "Team of at least 3 skilled professionals"
+    id: parseInt(id || "1"),
+    title: "Skyline Commercial Tower Construction",
+    location: "Downtown Toronto, ON",
+    startDate: "Oct 1, 2023",
+    description: "A 25-story commercial tower featuring sustainable design elements, state-of-the-art office spaces, and retail areas. The project includes advanced HVAC systems, smart building technology, and LEED certification requirements.",
+    projectType: "Commercial",
+    status: "Active Project",
+    duration: "18 months",
+    value: "$45M",
+    teamSize: "85 workers",
+    companyName: "Elite Construction Ltd",
+    foundedYear: "2005",
+    timeline: [
+      { phase: "Ground Breaking", date: "Oct 2023" },
+      { phase: "Structure Complete", date: "Jun 2024" },
+      { phase: "Project Completion", date: "Mar 2025" }
     ],
-    reviews: [
-      {
-        id: 1,
-        user: "John Smith",
-        rating: 5,
-        comment: "Great project to work on. The team was very professional and the payment was prompt.",
-        date: "2023-02-15"
-      },
-      {
-        id: 2,
-        user: "Maria Rodriguez",
-        rating: 4,
-        comment: "Well organized project with clear expectations. Would work with them again.",
-        date: "2023-01-30"
-      }
+    workSchedule: {
+      days: "Monday to Friday",
+      hours: "7:00 AM - 3:30 PM"
+    },
+    safetyRequirements: [
+      "Safety certification required",
+      "PPE provided",
+      "Daily safety briefings"
     ]
   };
-
+  
+  const handleApply = () => {
+    setShowApplyDialog(false);
+    toast({
+      title: "Application Submitted",
+      description: "Your application has been successfully submitted!",
+    });
+  };
+  
   return (
-    <div className="min-h-screen bg-[#F6F6F7]">
-      <header className="bg-[#004A57] text-white py-3 px-6 flex justify-between items-center">
-        <Link to="/" className="flex items-center gap-2">
-          <div className="w-6 h-6 bg-[#FF4B55] transform rotate-45" />
-          <span className="text-[#EEE] text-xl font-medium">LabourNet</span>
-        </Link>
-        <nav className="hidden md:flex items-center space-x-6">
-          <Link to="/professional-dashboard" className="hover:text-[#FF4B55]">Dashboard</Link>
-          <Link to="/professional-projects" className="hover:text-[#FF4B55]">Find Projects</Link>
-          <Link to="/professional-profile" className="hover:text-[#FF4B55]">My Profile</Link>
-          <Link to="/professional-messages" className="hover:text-[#FF4B55]">Messages</Link>
-        </nav>
+    <div className="min-h-screen bg-[#F5F5F5]">
+      {/* Header */}
+      <header className="bg-[#004A57] text-white p-4 flex justify-between items-center">
         <div className="flex items-center gap-4">
-          <Link to="/professional-profile">
-            <Avatar className="h-8 w-8 bg-gray-300">
-              <AvatarImage src="/placeholder.svg" alt="User" />
-              <AvatarFallback>U</AvatarFallback>
-            </Avatar>
+          <Link to="/" className="flex items-center gap-2">
+            <div className="w-6 h-6 bg-[#FF4B55] transform rotate-45" />
+            <span className="text-[#EEE] text-xl font-medium">LabourNet</span>
+          </Link>
+          <nav className="hidden md:flex space-x-6 ml-12">
+            <Link to="/contractor-dashboard" className="hover:text-[#FF4B55]">Dashboard</Link>
+            <Link to="/contractor-job-posting" className="hover:text-[#FF4B55]">Jobs</Link>
+            <Link to="/workers" className="hover:text-[#FF4B55]">Workers</Link>
+            <Link to="/analytics" className="hover:text-[#FF4B55]">Analytics</Link>
+          </nav>
+        </div>
+        <div className="flex items-center gap-4">
+          <Button variant="primary">Post Project</Button>
+          <Link to="/company-profile">
+            <div className="w-8 h-8 rounded-full bg-gray-300 cursor-pointer hover:ring-2 hover:ring-[#FF4B55] transition-all duration-300"></div>
           </Link>
         </div>
       </header>
 
-      <main className="container mx-auto py-8 px-4 max-w-5xl">
-        <div className="bg-white rounded-lg shadow-sm p-6 mb-6">
-          <div className="flex justify-between items-start mb-6">
-            <div>
-              <h1 className="text-2xl font-bold mb-2">{project.title}</h1>
-              <div className="flex items-center gap-4 text-sm text-gray-500">
-                <span className="flex items-center gap-1">
-                  <MapPin className="h-4 w-4" /> {project.location}
-                </span>
-                <span className="flex items-center gap-1">
-                  <Calendar className="h-4 w-4" /> Posted on {new Date().toLocaleDateString()}
-                </span>
+      <main className="container mx-auto py-8 px-4 max-w-6xl">
+        <div className="mb-6">
+          <Button 
+            variant="outline" 
+            size="sm" 
+            onClick={() => navigate(-1)}
+            className="text-gray-600 hover:text-[#004A57] transition-all duration-300"
+          >
+            <ArrowLeft className="mr-2 h-4 w-4" /> Back to Projects
+          </Button>
+        </div>
+        
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          {/* Project Image and Title Column */}
+          <div className="md:col-span-2">
+            <div className="bg-white rounded-lg shadow-sm overflow-hidden mb-6">
+              <div className="h-64 bg-gray-200 relative">
+                <div className="absolute top-4 right-4 flex gap-2">
+                  <Button size="sm" variant="outline" className="bg-white/90">
+                    <Share2 size={16} />
+                  </Button>
+                  <Button size="sm" variant="outline" className="bg-white/90">
+                    <ExternalLink size={16} />
+                  </Button>
+                </div>
               </div>
-            </div>
-            <div className="text-right">
-              <p className="text-xl font-bold text-[#FF4B55]">{project.budget}</p>
-              <span className="bg-gray-100 text-gray-600 px-2 py-1 rounded text-xs">
-                {project.category}
-              </span>
+              <div className="p-6">
+                <h1 className="text-2xl font-bold mb-2">{project.title}</h1>
+                <div className="flex items-center gap-2 text-gray-600 mb-4">
+                  <MapPin className="h-4 w-4" />
+                  <span>{project.location}</span>
+                  
+                  <span className="mx-2 text-gray-300">•</span>
+                  
+                  <Calendar className="h-4 w-4" />
+                  <span>Start Date: {project.startDate}</span>
+                </div>
+                
+                <Badge className="bg-[#E5F7ED] text-[#0D9E55] border-0 mb-4">{project.status}</Badge>
+                
+                <p className="text-gray-700 mb-6">{project.description}</p>
+                
+                <div className="grid grid-cols-3 gap-4 border-t border-gray-100 pt-4">
+                  <div className="text-center p-3 border border-gray-100 rounded-lg">
+                    <p className="text-sm text-gray-500">Project Duration</p>
+                    <p className="font-bold">{project.duration}</p>
+                  </div>
+                  <div className="text-center p-3 border border-gray-100 rounded-lg">
+                    <p className="text-sm text-gray-500">Project Value</p>
+                    <p className="font-bold">{project.value}</p>
+                  </div>
+                  <div className="text-center p-3 border border-gray-100 rounded-lg">
+                    <p className="text-sm text-gray-500">Total Team Size</p>
+                    <p className="font-bold">{project.teamSize}</p>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
-
-          <Tabs defaultValue="details" className="w-full" onValueChange={setActiveTab}>
-            <TabsList className="w-full bg-gray-100 mb-6 h-auto rounded-lg">
-              <TabsTrigger 
-                value="details" 
-                className={`flex-1 rounded-none py-3 ${activeTab === 'details' ? 'border-b-2 border-[#FF4B55]' : ''}`}
-              >
-                Project Details
-              </TabsTrigger>
-              <TabsTrigger 
-                value="company" 
-                className={`flex-1 rounded-none py-3 ${activeTab === 'company' ? 'border-b-2 border-[#FF4B55]' : ''}`}
-              >
-                Company Info
-              </TabsTrigger>
-              <TabsTrigger 
-                value="reviews" 
-                className={`flex-1 rounded-none py-3 ${activeTab === 'reviews' ? 'border-b-2 border-[#FF4B55]' : ''}`}
-              >
-                Reviews
-              </TabsTrigger>
-            </TabsList>
-            
-            <TabsContent value="details" className="mt-0">
-              <div className="space-y-6">
-                <div>
-                  <h3 className="text-lg font-semibold mb-3">Project Description</h3>
-                  <p className="text-gray-700">{project.description}</p>
-                </div>
-                
-                <div>
-                  <h3 className="text-lg font-semibold mb-3">Timeline</h3>
-                  <div className="grid grid-cols-2 gap-4">
-                    <div>
-                      <p className="text-sm text-gray-500">Start Date</p>
-                      <p className="font-medium">{project.timeline.startDate}</p>
-                    </div>
-                    <div>
-                      <p className="text-sm text-gray-500">End Date</p>
-                      <p className="font-medium">{project.timeline.endDate}</p>
-                    </div>
+          
+          {/* Project Details Column */}
+          <div className="md:col-span-1">
+            <div className="bg-white rounded-lg shadow-sm overflow-hidden mb-6 p-6">
+              <h2 className="text-xl font-bold mb-4">Project Details</h2>
+              
+              <div className="mb-6">
+                <h3 className="text-sm text-gray-500 mb-2">Construction Company</h3>
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 bg-[#004A57] rounded-md flex items-center justify-center text-white">
+                    EC
                   </div>
-                </div>
-                
-                <div>
-                  <h3 className="text-lg font-semibold mb-3">Requirements</h3>
-                  <ul className="list-disc pl-5 space-y-1">
-                    {project.requirements.map((req, index) => (
-                      <li key={index} className="text-gray-700">{req}</li>
-                    ))}
-                  </ul>
-                </div>
-                
-                <div className="flex justify-end space-x-4">
-                  <Button variant="outline" className="border-[#004A57] text-[#004A57] hover:bg-[#004A57] hover:text-white">
-                    Save Project
-                  </Button>
-                  <Button variant="primary">
-                    Apply Now
-                  </Button>
-                </div>
-              </div>
-            </TabsContent>
-            
-            <TabsContent value="company" className="mt-0">
-              <div className="flex items-center gap-4 mb-6">
-                <Avatar className="h-16 w-16">
-                  <AvatarImage src={project.postedBy.image} alt={project.postedBy.name} />
-                  <AvatarFallback className="bg-gray-200">{project.postedBy.name.charAt(0)}</AvatarFallback>
-                </Avatar>
-                <div>
-                  <h3 className="text-lg font-semibold">{project.postedBy.name}</h3>
-                  <div className="flex items-center mt-1">
-                    {[...Array(5)].map((_, i) => (
-                      <Star 
-                        key={i} 
-                        fill={i < Math.floor(project.postedBy.rating) ? "#FF4B55" : "none"} 
-                        className="h-4 w-4 text-[#FF4B55]" 
-                      />
-                    ))}
-                    <span className="text-xs ml-1">({project.postedBy.rating})</span>
+                  <div>
+                    <p className="font-medium">{project.companyName}</p>
+                    <p className="text-xs text-gray-500">Since {project.foundedYear}</p>
                   </div>
                 </div>
               </div>
-              <div className="bg-gray-50 p-4 rounded-lg mb-6">
-                <p className="text-gray-700">
-                  This company has been a member since January 2020 and has completed over 25 projects through our platform with consistently high ratings.
-                </p>
-              </div>
-              <div className="flex justify-end">
-                <Button variant="outline" className="border-[#004A57] text-[#004A57] hover:bg-[#004A57] hover:text-white">
-                  Contact Company
-                </Button>
-              </div>
-            </TabsContent>
-            
-            <TabsContent value="reviews" className="mt-0">
-              <div className="space-y-6">
-                <div className="flex justify-between items-center mb-4">
-                  <h3 className="text-lg font-semibold">Customer Reviews</h3>
-                  <Dialog>
-                    <DialogTrigger asChild>
-                      <Button variant="primary">
-                        Write a Review
-                      </Button>
-                    </DialogTrigger>
-                    <DialogContent className="max-w-xl">
-                      <ReviewForm 
-                        entityName={project.postedBy.name} 
-                        entityType="contractor" 
-                      />
-                    </DialogContent>
-                  </Dialog>
-                </div>
-                
-                {project.reviews.map((review) => (
-                  <div key={review.id} className="border-b border-gray-200 pb-4 last:border-0">
-                    <div className="flex items-start justify-between mb-2">
-                      <div className="flex items-center">
-                        <Avatar className="h-10 w-10 mr-3">
-                          <AvatarFallback>{review.user.charAt(0)}</AvatarFallback>
-                        </Avatar>
-                        <div>
-                          <p className="font-medium">{review.user}</p>
-                          <p className="text-sm text-gray-500">
-                            {new Date(review.date).toLocaleDateString('en-US', { 
-                              year: 'numeric', 
-                              month: 'short', 
-                              day: 'numeric' 
-                            })}
-                          </p>
-                        </div>
-                      </div>
-                      <div className="flex">
-                        {[...Array(5)].map((_, i) => (
-                          <Star 
-                            key={i} 
-                            fill={i < review.rating ? "#FF4B55" : "none"} 
-                            className="h-4 w-4 text-[#FF4B55]" 
-                          />
-                        ))}
-                      </div>
-                    </div>
-                    <p className="text-gray-700">{review.comment}</p>
+              
+              <div className="mb-6">
+                <h3 className="text-sm text-gray-500 mb-2">Project Timeline</h3>
+                {project.timeline.map((item, index) => (
+                  <div key={index} className="flex justify-between py-2 border-b border-gray-100 last:border-b-0">
+                    <span className="text-sm">{item.phase}</span>
+                    <span className="text-sm font-medium">{item.date}</span>
                   </div>
                 ))}
-                
-                {project.reviews.length === 0 && (
-                  <div className="text-center py-8">
-                    <p className="text-gray-500">No reviews yet. Be the first to review!</p>
-                  </div>
-                )}
               </div>
-            </TabsContent>
-          </Tabs>
+              
+              <div className="mb-6">
+                <h3 className="text-sm text-gray-500 mb-2">Work Schedule</h3>
+                <p className="text-sm mb-1">{project.workSchedule.days}</p>
+                <p className="text-sm">{project.workSchedule.hours}</p>
+              </div>
+              
+              <div className="mb-6">
+                <h3 className="text-sm text-gray-500 mb-2">Safety Requirements</h3>
+                <ul className="space-y-2">
+                  {project.safetyRequirements.map((req, index) => (
+                    <li key={index} className="text-sm flex items-center gap-2">
+                      <span className="w-1.5 h-1.5 bg-[#0D9E55] rounded-full"></span>
+                      {req}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+              
+              <Button
+                variant="primary"
+                className="w-full"
+                onClick={() => setShowApplyDialog(true)}
+              >
+                Apply for Position
+              </Button>
+            </div>
+          </div>
         </div>
       </main>
+      
+      <Dialog open={showApplyDialog} onOpenChange={setShowApplyDialog}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Apply for Position</DialogTitle>
+            <DialogDescription>
+              You're applying for the {project.title} project with {project.companyName}.
+            </DialogDescription>
+          </DialogHeader>
+          
+          <div className="py-4">
+            <p className="mb-4">Are you sure you want to submit your application for this position?</p>
+            <p className="text-sm text-gray-500">
+              Your profile and qualifications will be shared with the employer.
+            </p>
+          </div>
+          
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setShowApplyDialog(false)}>Cancel</Button>
+            <Button variant="primary" onClick={handleApply}>Submit Application</Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };

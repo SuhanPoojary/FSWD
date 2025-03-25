@@ -3,13 +3,52 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Search, Plus, MapPin, Clock, Briefcase, Users } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogTrigger } from "@/components/ui/dialog";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { toast } from "@/hooks/use-toast";
 import ContactForm from "@/components/ContactForm";
 import PostProjectForm from "@/components/PostProjectForm";
 
 const ContractorDashboard: React.FC = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const navigate = useNavigate();
+  
+  const handleApplyClick = (e: React.MouseEvent, projectId: number) => {
+    e.preventDefault();
+    e.stopPropagation();
+    
+    toast({
+      title: "Application Submitted",
+      description: "Your application has been successfully submitted!",
+    });
+  };
+  
+  const projectCards = [
+    {
+      id: 1,
+      title: "Retail Center Remodel",
+      type: "Commercial",
+      duration: "3 weeks",
+      location: "Oakland, CA",
+      hourlyRate: "$30-45/hr"
+    },
+    {
+      id: 2,
+      title: "Custom Home Construction",
+      type: "Residential",
+      duration: "1 month",
+      location: "Denver, CO",
+      hourlyRate: "$28-40/hr"
+    },
+    {
+      id: 3,
+      title: "Warehouse Expansion",
+      type: "Industrial",
+      duration: "2 months",
+      location: "Phoenix, AZ",
+      hourlyRate: "$35-50/hr"
+    }
+  ];
   
   return (
     <div className="min-h-screen bg-white">
@@ -36,6 +75,10 @@ const ContractorDashboard: React.FC = () => {
               </Button>
             </DialogTrigger>
             <DialogContent className="max-w-4xl w-full max-h-[90vh] overflow-y-auto">
+              <DialogHeader>
+                <DialogTitle>Post a New Job</DialogTitle>
+                <DialogDescription>Fill out the form below to post a new job listing</DialogDescription>
+              </DialogHeader>
               <PostProjectForm />
             </DialogContent>
           </Dialog>
@@ -76,71 +119,37 @@ const ContractorDashboard: React.FC = () => {
         <div className="mb-12">
           <h2 className="text-xl font-semibold text-[#121224] mb-6">Available projects</h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div className="bg-white border border-gray-200 rounded-lg shadow-sm overflow-hidden hover:border-[#FF4B55] transition-colors card-hover">
-              <div className="h-40 bg-gray-200"></div>
-              <div className="p-4">
-                <div className="flex justify-between mb-2">
-                  <span className="bg-gray-100 text-gray-600 px-2 py-1 rounded text-xs">Commercial</span>
-                  <span className="text-sm text-gray-500 flex items-center gap-1">
-                    <Clock size={14} /> 3 weeks
-                  </span>
-                </div>
-                <h3 className="font-semibold mb-1">Retail Center Remodel</h3>
-                <p className="text-sm text-gray-500 mb-3 flex items-center gap-1">
-                  <MapPin size={14} /> Oakland, CA
-                </p>
-                <div className="flex justify-between items-center">
-                  <span className="text-[#FF4B55] font-bold">$30-45/hr</span>
-                  <Button variant="outline" className="text-[#FF4B55] text-sm font-medium border-[#FF4B55] hover:bg-[#FF4B55] hover:text-white">
-                    Apply Now
-                  </Button>
-                </div>
-              </div>
-            </div>
-
-            <div className="bg-white border border-gray-200 rounded-lg shadow-sm overflow-hidden hover:border-[#FF4B55] transition-colors card-hover">
-              <div className="h-40 bg-gray-200"></div>
-              <div className="p-4">
-                <div className="flex justify-between mb-2">
-                  <span className="bg-gray-100 text-gray-600 px-2 py-1 rounded text-xs">Residential</span>
-                  <span className="text-sm text-gray-500 flex items-center gap-1">
-                    <Clock size={14} /> 1 month
-                  </span>
-                </div>
-                <h3 className="font-semibold mb-1">Custom Home Construction</h3>
-                <p className="text-sm text-gray-500 mb-3 flex items-center gap-1">
-                  <MapPin size={14} /> Denver, CO
-                </p>
-                <div className="flex justify-between items-center">
-                  <span className="text-[#FF4B55] font-bold">$28-40/hr</span>
-                  <Button variant="outline" className="text-[#FF4B55] text-sm font-medium border-[#FF4B55] hover:bg-[#FF4B55] hover:text-white">
-                    Apply Now
-                  </Button>
+            {projectCards.map((project) => (
+              <div 
+                key={project.id}
+                className="bg-white border border-gray-200 rounded-lg shadow-sm overflow-hidden hover:border-[#FF4B55] transition-colors card-hover cursor-pointer"
+                onClick={() => navigate(`/project-detail-view/${project.id}`)}
+              >
+                <div className="h-40 bg-gray-200"></div>
+                <div className="p-4">
+                  <div className="flex justify-between mb-2">
+                    <span className="bg-gray-100 text-gray-600 px-2 py-1 rounded text-xs">{project.type}</span>
+                    <span className="text-sm text-gray-500 flex items-center gap-1">
+                      <Clock size={14} /> {project.duration}
+                    </span>
+                  </div>
+                  <h3 className="font-semibold mb-1">{project.title}</h3>
+                  <p className="text-sm text-gray-500 mb-3 flex items-center gap-1">
+                    <MapPin size={14} /> {project.location}
+                  </p>
+                  <div className="flex justify-between items-center">
+                    <span className="text-[#FF4B55] font-bold">{project.hourlyRate}</span>
+                    <Button 
+                      variant="outline" 
+                      className="text-[#FF4B55] text-sm font-medium border-[#FF4B55] hover:bg-[#FF4B55] hover:text-white"
+                      onClick={(e) => handleApplyClick(e, project.id)}
+                    >
+                      Apply Now
+                    </Button>
+                  </div>
                 </div>
               </div>
-            </div>
-
-            <div className="bg-white border border-gray-200 rounded-lg shadow-sm overflow-hidden hover:border-[#FF4B55] transition-colors card-hover">
-              <div className="h-40 bg-gray-200"></div>
-              <div className="p-4">
-                <div className="flex justify-between mb-2">
-                  <span className="bg-gray-100 text-gray-600 px-2 py-1 rounded text-xs">Industrial</span>
-                  <span className="text-sm text-gray-500 flex items-center gap-1">
-                    <Clock size={14} /> 2 months
-                  </span>
-                </div>
-                <h3 className="font-semibold mb-1">Warehouse Expansion</h3>
-                <p className="text-sm text-gray-500 mb-3 flex items-center gap-1">
-                  <MapPin size={14} /> Phoenix, AZ
-                </p>
-                <div className="flex justify-between items-center">
-                  <span className="text-[#FF4B55] font-bold">$35-50/hr</span>
-                  <Button variant="outline" className="text-[#FF4B55] text-sm font-medium border-[#FF4B55] hover:bg-[#FF4B55] hover:text-white">
-                    Apply Now
-                  </Button>
-                </div>
-              </div>
-            </div>
+            ))}
           </div>
         </div>
 
@@ -178,6 +187,10 @@ const ContractorDashboard: React.FC = () => {
                   <span className="hover:text-[#FF4B55] cursor-pointer">Post a Job</span>
                 </DialogTrigger>
                 <DialogContent className="max-w-4xl">
+                  <DialogHeader>
+                    <DialogTitle>Post a New Job</DialogTitle>
+                    <DialogDescription>Fill out the form below to post a new job listing</DialogDescription>
+                  </DialogHeader>
                   <PostProjectForm />
                 </DialogContent>
               </Dialog></li>
@@ -201,6 +214,10 @@ const ContractorDashboard: React.FC = () => {
                 <Button variant="outline" className="w-full mb-4">Contact Us</Button>
               </DialogTrigger>
               <DialogContent className="max-w-4xl">
+                <DialogHeader>
+                  <DialogTitle>Contact Us</DialogTitle>
+                  <DialogDescription>Send us a message and we'll get back to you</DialogDescription>
+                </DialogHeader>
                 <ContactForm />
               </DialogContent>
             </Dialog>

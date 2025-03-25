@@ -133,7 +133,7 @@ const ContractorJobPosting: React.FC = () => {
 
         <div className="bg-white rounded-lg shadow-sm p-6 mb-8">
           <div className="flex justify-between items-center mb-6">
-            <h2 className="text-xl font-bold">Find Jobs</h2>
+            <h2 className="text-xl font-bold">Posted Jobs</h2>
             <Link to="/company-profile?tab=postedJobs" className="text-[#FF4B55] hover:underline text-sm">
               View All Jobs
             </Link>

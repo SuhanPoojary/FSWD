@@ -74,9 +74,9 @@ const ContractorDashboard: React.FC = () => {
       <main className="container mx-auto py-8 px-4 max-w-5xl">
         {/* Available Jobs Section */}
         <div className="mb-12">
-          <h2 className="text-xl font-semibold text-[#121224] mb-6">Available Jobs</h2>
+          <h2 className="text-xl font-semibold text-[#121224] mb-6">Available jobs</h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <Link to="/contractor-job-posting" className="bg-white border border-gray-200 rounded-lg shadow-sm overflow-hidden hover:border-[#FF4B55] transition-colors card-hover">
+            <Link to="/project-view/1" className="bg-white border border-gray-200 rounded-lg shadow-sm overflow-hidden hover:border-[#FF4B55] transition-colors card-hover">
               <div className="h-40 bg-gray-200"></div>
               <div className="p-4">
                 <div className="flex justify-between mb-2">
@@ -98,7 +98,7 @@ const ContractorDashboard: React.FC = () => {
               </div>
             </Link>
 
-            <Link to="/contractor-job-posting" className="bg-white border border-gray-200 rounded-lg shadow-sm overflow-hidden hover:border-[#FF4B55] transition-colors card-hover">
+            <Link to="/project-view/2" className="bg-white border border-gray-200 rounded-lg shadow-sm overflow-hidden hover:border-[#FF4B55] transition-colors card-hover">
               <div className="h-40 bg-gray-200"></div>
               <div className="p-4">
                 <div className="flex justify-between mb-2">
@@ -120,7 +120,7 @@ const ContractorDashboard: React.FC = () => {
               </div>
             </Link>
 
-            <Link to="/contractor-job-posting" className="bg-white border border-gray-200 rounded-lg shadow-sm overflow-hidden hover:border-[#FF4B55] transition-colors card-hover">
+            <Link to="/project-view/3" className="bg-white border border-gray-200 rounded-lg shadow-sm overflow-hidden hover:border-[#FF4B55] transition-colors card-hover">
               <div className="h-40 bg-gray-200"></div>
               <div className="p-4">
                 <div className="flex justify-between mb-2">

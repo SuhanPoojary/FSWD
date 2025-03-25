@@ -18,7 +18,7 @@ import {
   Cell
 } from "recharts";
 import { ChartContainer, ChartTooltipContent } from "@/components/ui/chart";
-import { Building, Users, PieChart as PieChartIcon, Calendar, BarChart as BarChartIcon } from "lucide-react";
+import { Building, Users, PieChart as PieChartIcon, Calendar, BarChartIcon } from "lucide-react";
 import { Card } from "@/components/ui/Card";
 import { useProjectContext } from "@/components/PostProjectForm";
 
@@ -73,8 +73,8 @@ const Analytics: React.FC = () => {
       {/* Main Content */}
       <main className="container mx-auto py-8 px-4 max-w-5xl">
         <div className="mb-8">
-          <h1 className="text-2xl font-bold">Project Analytics</h1>
-          <p className="text-gray-600">Track project progress and resource allocation</p>
+          <h1 className="text-2xl font-bold">Job Analytics</h1>
+          <p className="text-gray-600">Track job progress and resource allocation</p>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
@@ -93,7 +93,7 @@ const Analytics: React.FC = () => {
               <Users className="h-6 w-6 text-[#004A57]" />
             </div>
             <p className="text-3xl font-bold">156</p>
-            <p className="text-gray-500 text-sm mt-1">Across all projects</p>
+            <p className="text-gray-500 text-sm mt-1">Across all jobs</p>
           </div>
           
           <div className="bg-white p-6 rounded-lg shadow-sm hover:shadow-md transition-all duration-300">
@@ -106,17 +106,17 @@ const Analytics: React.FC = () => {
           </div>
         </div>
 
-        {/* Project Progress Chart */}
+        {/* Job Progress Chart */}
         <div className="bg-white rounded-lg shadow-sm p-6 mb-8">
           <div className="flex justify-between items-center mb-6">
             <div className="flex items-center gap-2">
               <BarChartIcon className="h-5 w-5 text-[#004A57]" />
-              <h2 className="text-xl font-bold">Project Progress Over Time</h2>
+              <h2 className="text-xl font-bold">Job Progress Over Time</h2>
             </div>
             <select 
               className="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#FF4B55]"
             >
-              <option value="retail-center">Retail Center Project</option>
+              <option value="retail-center">Retail Center Job</option>
               <option value="warehouse">Warehouse Expansion</option>
               <option value="custom-home">Custom Home Build</option>
             </select>
@@ -213,7 +213,7 @@ const Analytics: React.FC = () => {
         {/* Project Cards */}
         <div className="bg-white rounded-lg shadow-sm p-6 mb-8">
           <div className="flex justify-between items-center mb-6">
-            <h2 className="text-xl font-bold">Active Projects</h2>
+            <h2 className="text-xl font-bold">Active Jobs</h2>
             <Link to="/contractor-job-posting" className="text-[#FF4B55] hover:underline text-sm">
               View All Jobs
             </Link>
@@ -248,7 +248,7 @@ const Analytics: React.FC = () => {
             ) : (
               <div className="text-center py-10">
                 <Building className="h-12 w-12 mx-auto text-gray-300 mb-3" />
-                <h3 className="text-lg font-medium text-gray-600">No Active Projects</h3>
+                <h3 className="text-lg font-medium text-gray-600">No Active Jobs</h3>
                 <p className="text-gray-500 mb-4">Post a job to see analytics</p>
                 <Link to="/contractor-job-posting">
                   <Button 

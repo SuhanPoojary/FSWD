@@ -99,7 +99,7 @@ const PostProjectForm: React.FC = () => {
       description: "Your job has been posted and is now visible to professionals.",
     });
     
-    // Navigate to projects page
+    // Navigate to jobs page
     setTimeout(() => {
       navigate("/contractor-job-posting");
     }, 1500);
@@ -317,15 +317,11 @@ const PostProjectForm: React.FC = () => {
           <Button type="button" variant="outline">Save as Draft</Button>
           <motion.div
             whileTap={{ scale: 0.97 }}
-            whileHover={{ 
-              scale: 1.03,
-              backgroundColor: "#c13941" 
-            }}
           >
             <Button 
               type="submit" 
               variant="primary"
-              className="transition-all duration-300 ease-in-out"
+              className="transition-all duration-300 ease-in-out hover:scale-105"
             >
               Post Job
             </Button>

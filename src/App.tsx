@@ -14,7 +14,7 @@ import WorkerProfile from "./pages/WorkerProfile";
 import ActiveWork from "./pages/ActiveWork";
 import ProfessionalDashboard from "./pages/ProfessionalDashboard";
 import ContractorDashboard from "./pages/ContractorDashboard";
-import EliteConstructionProject from "./pages/EliteConstructionProject";
+import ContractorJobPosting from "./pages/ContractorJobPosting";
 import ProfessionalProfile from "./pages/ProfessionalProfile";
 import ProjectDetails from "./pages/ProjectDetails";
 import ProjectView from "./pages/ProjectView";
@@ -24,6 +24,7 @@ import CompanyProfile from "./pages/CompanyProfile";
 import ProjectDetailView from "./pages/ProjectDetailView";
 import Workers from "./pages/Workers";
 import AppointWorkers from "./pages/AppointWorkers";
+import Analytics from "./pages/Analytics";
 import { ProjectProvider } from "./components/PostProjectForm";
 
 const queryClient = new QueryClient();
@@ -88,11 +89,12 @@ const App = () => (
               <Route path="/professional-messages" element={<ProfessionalMessages />} />
               <Route path="/professional-projects" element={<ProfessionalProjects />} />
               <Route path="/contractor-dashboard" element={<ContractorDashboard />} />
-              <Route path="/elite-construction-project" element={<EliteConstructionProject />} />
+              <Route path="/contractor-job-posting" element={<ContractorJobPosting />} />
               <Route path="/company-profile" element={<CompanyProfile />} />
               <Route path="/project-detail-view/:id" element={<ProjectDetailView />} />
               <Route path="/workers" element={<Workers />} />
               <Route path="/appoint-workers" element={<AppointWorkers />} />
+              <Route path="/analytics" element={<Analytics />} />
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
               <Route path="*" element={<NotFound />} />
             </Routes>

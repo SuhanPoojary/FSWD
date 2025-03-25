@@ -1,3 +1,4 @@
+
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Search, Plus, MapPin, Clock, Briefcase, Users } from "lucide-react";
@@ -21,9 +22,9 @@ const ContractorDashboard: React.FC = () => {
           </Link>
           <nav className="hidden md:flex space-x-6 ml-12">
             <Link to="#" className="hover:text-[#FF4B55]">Dashboard</Link>
-            <Link to="/elite-construction-project" className="hover:text-[#FF4B55]">Projects</Link>
+            <Link to="/contractor-job-posting" className="hover:text-[#FF4B55]">Jobs</Link>
             <Link to="/workers" className="hover:text-[#FF4B55]">Workers</Link>
-            <Link to="#" className="hover:text-[#FF4B55]">Analytics</Link>
+            <Link to="/analytics" className="hover:text-[#FF4B55]">Analytics</Link>
           </nav>
         </div>
         <div className="flex items-center gap-4">
@@ -31,7 +32,7 @@ const ContractorDashboard: React.FC = () => {
             <DialogTrigger asChild>
               <Button variant="primary" className="flex items-center gap-2 transition-transform hover:scale-105">
                 <Plus size={18} />
-                Post Project
+                Post Job
               </Button>
             </DialogTrigger>
             <DialogContent className="max-w-4xl w-full max-h-[90vh] overflow-y-auto">
@@ -47,16 +48,16 @@ const ContractorDashboard: React.FC = () => {
       {/* Hero Banner */}
       <div className="bg-[#004A57] text-white py-10 px-4">
         <div className="container mx-auto max-w-5xl">
-          <h1 className="text-2xl md:text-3xl font-bold mb-2">Find Construction Projects & Workers</h1>
+          <h1 className="text-2xl md:text-3xl font-bold mb-2">Find Construction Jobs & Workers</h1>
           <p className="text-[#EEE] mb-6">Connect with top builders and manage your workforce efficiently.<br />
-          Access high-value construction projects and skilled laborers.</p>
+          Access high-value construction jobs and skilled laborers.</p>
           
           <div className="flex flex-col md:flex-row gap-4 mt-8">
             <div className="flex-grow relative">
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={20} />
               <input 
                 type="text" 
-                placeholder="Search for workers or projects..." 
+                placeholder="Search for workers or jobs..." 
                 className="w-full p-3 pl-10 border border-gray-300 rounded-lg hover:border-[#FF4B55] focus:border-[#FF4B55] focus:outline-none transition-colors"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
@@ -71,11 +72,11 @@ const ContractorDashboard: React.FC = () => {
 
       {/* Main Content */}
       <main className="container mx-auto py-8 px-4 max-w-5xl">
-        {/* Available Projects Section */}
+        {/* Available Jobs Section */}
         <div className="mb-12">
-          <h2 className="text-xl font-semibold text-[#121224] mb-6">Available Projects</h2>
+          <h2 className="text-xl font-semibold text-[#121224] mb-6">Available Jobs</h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <Link to="/elite-construction-project" className="bg-white border border-gray-200 rounded-lg shadow-sm overflow-hidden hover:border-[#FF4B55] transition-colors card-hover">
+            <Link to="/contractor-job-posting" className="bg-white border border-gray-200 rounded-lg shadow-sm overflow-hidden hover:border-[#FF4B55] transition-colors card-hover">
               <div className="h-40 bg-gray-200"></div>
               <div className="p-4">
                 <div className="flex justify-between mb-2">
@@ -97,7 +98,7 @@ const ContractorDashboard: React.FC = () => {
               </div>
             </Link>
 
-            <Link to="/elite-construction-project" className="bg-white border border-gray-200 rounded-lg shadow-sm overflow-hidden hover:border-[#FF4B55] transition-colors card-hover">
+            <Link to="/contractor-job-posting" className="bg-white border border-gray-200 rounded-lg shadow-sm overflow-hidden hover:border-[#FF4B55] transition-colors card-hover">
               <div className="h-40 bg-gray-200"></div>
               <div className="p-4">
                 <div className="flex justify-between mb-2">
@@ -119,7 +120,7 @@ const ContractorDashboard: React.FC = () => {
               </div>
             </Link>
 
-            <Link to="/elite-construction-project" className="bg-white border border-gray-200 rounded-lg shadow-sm overflow-hidden hover:border-[#FF4B55] transition-colors card-hover">
+            <Link to="/contractor-job-posting" className="bg-white border border-gray-200 rounded-lg shadow-sm overflow-hidden hover:border-[#FF4B55] transition-colors card-hover">
               <div className="h-40 bg-gray-200"></div>
               <div className="p-4">
                 <div className="flex justify-between mb-2">
@@ -166,13 +167,13 @@ const ContractorDashboard: React.FC = () => {
         <div className="mt-12 grid grid-cols-1 md:grid-cols-4 gap-8 text-sm border-t border-gray-200 pt-8">
           <div>
             <h3 className="font-semibold mb-4">About LabourNet</h3>
-            <p className="text-gray-600">Connecting quality workers with great construction projects across the nation.</p>
+            <p className="text-gray-600">Connecting quality workers with great construction jobs across the nation.</p>
           </div>
           <div>
             <h3 className="font-semibold mb-4">Quick Links</h3>
             <ul className="space-y-2 text-gray-600">
               <li><Link to="#" className="hover:text-[#FF4B55]">Find Jobs</Link></li>
-              <li><Link to="#" className="hover:text-[#FF4B55]">Post a Project</Link></li>
+              <li><Link to="#" className="hover:text-[#FF4B55]">Post a Job</Link></li>
               <li><Link to="#" className="hover:text-[#FF4B55]">Our Services</Link></li>
               <li><Link to="#" className="hover:text-[#FF4B55]">For Employers</Link></li>
             </ul>
@@ -210,4 +211,3 @@ const ContractorDashboard: React.FC = () => {
 };
 
 export default ContractorDashboard;
-

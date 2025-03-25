@@ -81,7 +81,7 @@ const PostProjectForm: React.FC = () => {
       return;
     }
     
-    console.log("Post Project Form submitted:", formData);
+    console.log("Post Job Form submitted:", formData);
     
     // Add the new project to context
     addProject({
@@ -95,13 +95,13 @@ const PostProjectForm: React.FC = () => {
     
     // Show success toast notification
     toast({
-      title: "Project Posted Successfully!",
-      description: "Your project has been posted and is now visible to professionals.",
+      title: "Job Posted Successfully!",
+      description: "Your job has been posted and is now visible to professionals.",
     });
     
     // Navigate to projects page
     setTimeout(() => {
-      navigate("/elite-construction-project");
+      navigate("/contractor-job-posting");
     }, 1500);
     
     // Reset form
@@ -200,7 +200,7 @@ const PostProjectForm: React.FC = () => {
           
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
             <div>
-              <Label htmlFor="projectType">Project Type</Label>
+              <Label htmlFor="projectType">Job Type</Label>
               <select
                 id="projectType"
                 name="projectType"
@@ -296,7 +296,7 @@ const PostProjectForm: React.FC = () => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.3, delay: 0.3 }}
         >
-          <h3 className="text-lg font-semibold mb-4">Project Images</h3>
+          <h3 className="text-lg font-semibold mb-4">Job Images</h3>
           
           <div className="border-2 border-dashed border-gray-300 rounded-lg p-8 text-center">
             <div className="flex flex-col items-center justify-center">

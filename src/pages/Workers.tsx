@@ -1,3 +1,4 @@
+
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
@@ -94,9 +95,9 @@ const Workers: React.FC = () => {
           </Link>
           <nav className="hidden md:flex space-x-6 ml-12">
             <Link to="/contractor-dashboard" className="hover:text-[#FF4B55]">Dashboard</Link>
-            <Link to="/contractor-job-posting" className="hover:text-[#FF4B55]">Jobs</Link>
+            <Link to="/elite-construction-project" className="hover:text-[#FF4B55]">Projects</Link>
             <Link to="/workers" className="hover:text-[#FF4B55]">Workers</Link>
-            <Link to="/analytics" className="hover:text-[#FF4B55]">Analytics</Link>
+            <Link to="#" className="hover:text-[#FF4B55]">Analytics</Link>
           </nav>
         </div>
         <div className="flex items-center gap-4">

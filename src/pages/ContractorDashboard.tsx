@@ -21,7 +21,7 @@ const ContractorDashboard: React.FC = () => {
             <span className="text-[#EEE] text-xl font-medium">LabourNet</span>
           </Link>
           <nav className="hidden md:flex space-x-6 ml-12">
-            <Link to="#" className="hover:text-[#FF4B55]">Dashboard</Link>
+            <Link to="/contractor-dashboard" className="hover:text-[#FF4B55]">Dashboard</Link>
             <Link to="/contractor-job-posting" className="hover:text-[#FF4B55]">Jobs</Link>
             <Link to="/workers" className="hover:text-[#FF4B55]">Workers</Link>
             <Link to="/analytics" className="hover:text-[#FF4B55]">Analytics</Link>
@@ -72,11 +72,11 @@ const ContractorDashboard: React.FC = () => {
 
       {/* Main Content */}
       <main className="container mx-auto py-8 px-4 max-w-5xl">
-        {/* Available Jobs Section */}
+        {/* Available Projects Section */}
         <div className="mb-12">
-          <h2 className="text-xl font-semibold text-[#121224] mb-6">Available jobs</h2>
+          <h2 className="text-xl font-semibold text-[#121224] mb-6">Available projects</h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <Link to="/project-view/1" className="bg-white border border-gray-200 rounded-lg shadow-sm overflow-hidden hover:border-[#FF4B55] transition-colors card-hover">
+            <div className="bg-white border border-gray-200 rounded-lg shadow-sm overflow-hidden hover:border-[#FF4B55] transition-colors card-hover">
               <div className="h-40 bg-gray-200"></div>
               <div className="p-4">
                 <div className="flex justify-between mb-2">
@@ -91,14 +91,14 @@ const ContractorDashboard: React.FC = () => {
                 </p>
                 <div className="flex justify-between items-center">
                   <span className="text-[#FF4B55] font-bold">$30-45/hr</span>
-                  <button className="text-[#FF4B55] text-sm font-medium hover:underline flex items-center gap-1">
-                    Apply Now →
-                  </button>
+                  <Button variant="outline" className="text-[#FF4B55] text-sm font-medium border-[#FF4B55] hover:bg-[#FF4B55] hover:text-white">
+                    Apply Now
+                  </Button>
                 </div>
               </div>
-            </Link>
+            </div>
 
-            <Link to="/project-view/2" className="bg-white border border-gray-200 rounded-lg shadow-sm overflow-hidden hover:border-[#FF4B55] transition-colors card-hover">
+            <div className="bg-white border border-gray-200 rounded-lg shadow-sm overflow-hidden hover:border-[#FF4B55] transition-colors card-hover">
               <div className="h-40 bg-gray-200"></div>
               <div className="p-4">
                 <div className="flex justify-between mb-2">
@@ -113,14 +113,14 @@ const ContractorDashboard: React.FC = () => {
                 </p>
                 <div className="flex justify-between items-center">
                   <span className="text-[#FF4B55] font-bold">$28-40/hr</span>
-                  <button className="text-[#FF4B55] text-sm font-medium hover:underline flex items-center gap-1">
-                    Apply Now →
-                  </button>
+                  <Button variant="outline" className="text-[#FF4B55] text-sm font-medium border-[#FF4B55] hover:bg-[#FF4B55] hover:text-white">
+                    Apply Now
+                  </Button>
                 </div>
               </div>
-            </Link>
+            </div>
 
-            <Link to="/project-view/3" className="bg-white border border-gray-200 rounded-lg shadow-sm overflow-hidden hover:border-[#FF4B55] transition-colors card-hover">
+            <div className="bg-white border border-gray-200 rounded-lg shadow-sm overflow-hidden hover:border-[#FF4B55] transition-colors card-hover">
               <div className="h-40 bg-gray-200"></div>
               <div className="p-4">
                 <div className="flex justify-between mb-2">
@@ -135,12 +135,12 @@ const ContractorDashboard: React.FC = () => {
                 </p>
                 <div className="flex justify-between items-center">
                   <span className="text-[#FF4B55] font-bold">$35-50/hr</span>
-                  <button className="text-[#FF4B55] text-sm font-medium hover:underline flex items-center gap-1">
-                    Apply Now →
-                  </button>
+                  <Button variant="outline" className="text-[#FF4B55] text-sm font-medium border-[#FF4B55] hover:bg-[#FF4B55] hover:text-white">
+                    Apply Now
+                  </Button>
                 </div>
               </div>
-            </Link>
+            </div>
           </div>
         </div>
 
@@ -172,10 +172,17 @@ const ContractorDashboard: React.FC = () => {
           <div>
             <h3 className="font-semibold mb-4">Quick Links</h3>
             <ul className="space-y-2 text-gray-600">
-              <li><Link to="#" className="hover:text-[#FF4B55]">Find Jobs</Link></li>
-              <li><Link to="#" className="hover:text-[#FF4B55]">Post a Job</Link></li>
-              <li><Link to="#" className="hover:text-[#FF4B55]">Our Services</Link></li>
-              <li><Link to="#" className="hover:text-[#FF4B55]">For Employers</Link></li>
+              <li><Link to="/contractor-job-posting" className="hover:text-[#FF4B55]">Find Jobs</Link></li>
+              <li><Dialog>
+                <DialogTrigger asChild>
+                  <span className="hover:text-[#FF4B55] cursor-pointer">Post a Job</span>
+                </DialogTrigger>
+                <DialogContent className="max-w-4xl">
+                  <PostProjectForm />
+                </DialogContent>
+              </Dialog></li>
+              <li><Link to="/workers" className="hover:text-[#FF4B55]">Our Services</Link></li>
+              <li><Link to="/company-profile" className="hover:text-[#FF4B55]">For Employers</Link></li>
             </ul>
           </div>
           <div>

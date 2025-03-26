@@ -21,10 +21,10 @@ const ProjectDetailView: React.FC = () => {
     return (
       <div className="min-h-screen flex items-center justify-center bg-[#F6F6F7]">
         <div className="text-center">
-          <h2 className="text-2xl font-bold mb-4">Project Not Found</h2>
-          <p className="text-gray-600 mb-6">The project you're looking for doesn't exist or has been removed.</p>
-          <Link to="/elite-construction-project">
-            <Button variant="primary">Return to Projects</Button>
+          <h2 className="text-2xl font-bold mb-4">Job Not Found</h2>
+          <p className="text-gray-600 mb-6">The job you're looking for doesn't exist or has been removed.</p>
+          <Link to="/contractor-job-posting">
+            <Button variant="primary">Return to Jobs</Button>
           </Link>
         </div>
       </div>
@@ -34,10 +34,10 @@ const ProjectDetailView: React.FC = () => {
   const handleRemoveProject = () => {
     removeProject(Number(id));
     toast({
-      title: "Project Removed",
-      description: "The project has been successfully removed.",
+      title: "Job Removed",
+      description: "The job has been successfully removed.",
     });
-    navigate("/elite-construction-project");
+    navigate("/contractor-job-posting");
   };
   
   return (
@@ -51,9 +51,9 @@ const ProjectDetailView: React.FC = () => {
           </Link>
           <nav className="hidden md:flex space-x-6 ml-12">
             <Link to="/contractor-dashboard" className="hover:text-[#FF4B55]">Dashboard</Link>
-            <Link to="/elite-construction-project" className="hover:text-[#FF4B55]">Projects</Link>
+            <Link to="/contractor-job-posting" className="hover:text-[#FF4B55]">Jobs</Link>
             <Link to="/workers" className="hover:text-[#FF4B55]">Workers</Link>
-            <Link to="#" className="hover:text-[#FF4B55]">Analytics</Link>
+            <Link to="/analytics" className="hover:text-[#FF4B55]">Analytics</Link>
           </nav>
         </div>
         <div className="flex items-center gap-4">
@@ -72,7 +72,7 @@ const ProjectDetailView: React.FC = () => {
             onClick={() => navigate(-1)}
             className="text-gray-600 hover:text-[#004A57] transition-all duration-300"
           >
-            <ArrowLeft className="mr-2 h-4 w-4" /> Back to Projects
+            <ArrowLeft className="mr-2 h-4 w-4" /> Back to Jobs
           </Button>
         </div>
       
@@ -106,7 +106,7 @@ const ProjectDetailView: React.FC = () => {
               
               <div className="text-right">
                 <div className="text-xl font-bold text-[#004A57]">{project.hourlyRate}/hr</div>
-                <div className="text-sm text-gray-500">{project.timeline} project</div>
+                <div className="text-sm text-gray-500">{project.timeline} job</div>
               </div>
             </div>
             
@@ -135,7 +135,7 @@ const ProjectDetailView: React.FC = () => {
                   value="details" 
                   className="py-3 data-[state=active]:border-b-2 data-[state=active]:border-[#FF4B55] data-[state=active]:text-[#FF4B55] rounded-none"
                 >
-                  Project Details
+                  Job Details
                 </TabsTrigger>
                 <TabsTrigger 
                   value="applications" 
@@ -155,7 +155,7 @@ const ProjectDetailView: React.FC = () => {
             <TabsContent value="details" className="p-6 mt-0">
               <div className="space-y-6">
                 <div>
-                  <h2 className="text-lg font-semibold mb-3">Project Description</h2>
+                  <h2 className="text-lg font-semibold mb-3">Job Description</h2>
                   <p className="text-gray-700 whitespace-pre-line">{project.jobDescription}</p>
                 </div>
                 
@@ -188,7 +188,7 @@ const ProjectDetailView: React.FC = () => {
                     className="border-[#FF4B55] text-[#FF4B55] hover:bg-[#FF4B55] hover:text-white transition-all duration-300 hover:scale-105"
                     onClick={handleRemoveProject}
                   >
-                    <Trash2 className="mr-2 h-4 w-4" /> Remove Project
+                    <Trash2 className="mr-2 h-4 w-4" /> Remove Job
                   </Button>
                   <Link to="/appoint-workers">
                     <Button 
@@ -199,7 +199,7 @@ const ProjectDetailView: React.FC = () => {
                     </Button>
                   </Link>
                   <Button variant="outline" className="border-[#004A57] text-[#004A57] hover:bg-[#004A57] hover:text-white transition-all duration-300 hover:scale-105">
-                    Edit Project
+                    Edit Job
                   </Button>
                 </div>
               </div>
@@ -212,7 +212,7 @@ const ProjectDetailView: React.FC = () => {
                 <p className="text-gray-500">
                   {project.applicantsCount ? 
                     "Applications need to be reviewed." : 
-                    "When professionals apply to your project, they will appear here."}
+                    "When professionals apply to your job, they will appear here."}
                 </p>
               </div>
             </TabsContent>
@@ -222,7 +222,7 @@ const ProjectDetailView: React.FC = () => {
                 <Users className="h-16 w-16 mx-auto text-gray-300 mb-3" />
                 <h3 className="text-lg font-medium text-gray-600">No Workers Assigned Yet</h3>
                 <p className="text-gray-500 mb-4">
-                  Assign workers to this project to see them listed here
+                  Assign workers to this job to see them listed here
                 </p>
                 <Link to="/appoint-workers">
                   <Button 

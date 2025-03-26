@@ -1,27 +1,14 @@
 
-import React, { ReactNode } from "react";
+import React from "react";
 import { Link } from "react-router-dom";
 
-interface LoginLayoutProps {
-  title: string;
-  subtitle: string;
-  stat1?: { value: string; label: string };
-  stat2?: { value: string; label: string };
-  testimonial?: {
-    quote: string;
-    author: string;
-    position: string;
-  };
-  children: ReactNode;
-}
-
-const LoginLayout: React.FC<LoginLayoutProps> = ({
+const LoginLayout = ({
   title,
   subtitle,
   stat1,
   stat2,
   testimonial,
-  children,
+  children
 }) => {
   return (
     <div className="flex min-h-screen">

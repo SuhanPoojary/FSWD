@@ -1,103 +1,47 @@
 
-import React, { useState } from "react";
-import { Link, useParams, useNavigate } from "react-router-dom";
+import React from "react";
+import { useParams, Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { 
-  MapPin, 
-  Calendar, 
-  Clock, 
-  Briefcase, 
-  DollarSign, 
-  CheckCircle, 
-  ChevronLeft, 
-  AlertCircle,
-  User,
-  Star,
-  Building,
-  FileText,
-  Globe
-} from "lucide-react";
-import { Separator } from "@/components/ui/separator";
 import { Badge } from "@/components/ui/badge";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Calendar, MapPin, Clock, User, Building, ArrowLeft, Trash2, Users } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogTrigger,
-} from "@/components/ui/alert-dialog";
+import { useProjectContext } from "@/components/PostProjectForm";
+import { motion } from "framer-motion";
 
 const ProjectDetailView = () => {
-  const navigate = useNavigate();
   const { id } = useParams();
+  const { projects, removeProject } = useProjectContext();
   const { toast } = useToast();
-  const [showApplyDialog, setShowApplyDialog] = useState(false);
-
-  // This would usually come from an API call based on the ID
-  const job = {
-    id,
-    title: "Commercial Construction Helper",
-    company: "ABC Construction Ltd",
-    companyRating: 4.7,
-    reviews: 128,
-    location: "Toronto, ON",
-    address: "123 Construction Ave, Toronto, ON M5V 2L7",
-    jobType: "Full-time",
-    duration: "3 months",
-    hourlyRate: "$22-25",
-    experience: "1-2 years",
-    education: "High School Diploma",
-    postedDate: "May 15, 2023",
-    startDate: "June 1, 2023",
-    deadline: "May 30, 2023",
-    schedule: "Monday to Friday, 7:00 AM - 4:00 PM",
-    description: "We are seeking reliable, hardworking Construction Helpers to join our team for a commercial building project in downtown Toronto. The ideal candidate has some construction experience, is reliable, and can work well in a team environment.",
-    responsibilities: [
-      "Assist skilled tradespeople with various tasks on the construction site",
-      "Transport materials, tools, and equipment to workers",
-      "Clean work areas, machines, tools, and remove debris",
-      "Set up and take down temporary structures like scaffolding",
-      "Follow safety protocols and report any hazards or unsafe conditions",
-      "Perform basic construction tasks as directed by supervisors"
-    ],
-    requirements: [
-      "1-2 years of experience in construction or related field preferred",
-      "Ability to lift up to 50 lbs and stand for extended periods",
-      "Valid driver's license is an asset",
-      "High school diploma or equivalent",
-      "Knowledge of basic construction tools and techniques",
-      "Reliable transportation to job sites"
-    ],
-    benefits: [
-      "Competitive hourly rate",
-      "Overtime opportunities",
-      "On-the-job training",
-      "Potential for permanent employment for top performers",
-      "Weekly pay schedule"
-    ],
-    skills: [
-      "Construction", "Material Handling", "Physical Stamina", "Team Collaboration", "Safety Compliance"
-    ]
-  };
-
-  const handleApply = () => {
-    // In a real app, you would submit the application to the backend
-    console.log("Applying for job:", job.id);
-    setShowApplyDialog(false);
-    
+  const navigate = useNavigate();
+  
+  const job = projects.find(p => p.id.toString() === id);
+  
+  if (!job) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-[#F6F6F7]">
+        <div className="text-center">
+          <h2 className="text-2xl font-bold mb-4">Job Not Found</h2>
+          <p className="text-gray-600 mb-6">The job you're looking for doesn't exist or has been removed.</p>
+          <Link to="/contractor-job-posting">
+            <Button variant="primary">Return to Jobs</Button>
+          </Link>
+        </div>
+      </div>
+    );
+  }
+  
+  const handleRemoveProject = () => {
+    removeProject(Number(id));
     toast({
-      title: "Application Submitted",
-      description: "Your job application has been successfully submitted.",
+      title: "Job Removed",
+      description: "The job has been successfully removed.",
     });
+    navigate("/contractor-job-posting");
   };
-
+  
   return (
-    <div className="min-h-screen bg-[#F5F5F5]">
+    <div className="min-h-screen bg-[#F6F6F7]">
       {/* Header */}
       <header className="bg-[#004A57] text-white p-4 flex justify-between items-center">
         <div className="flex items-center gap-4">
@@ -106,20 +50,21 @@ const ProjectDetailView = () => {
             <span className="text-[#EEE] text-xl font-medium">LabourNet</span>
           </Link>
           <nav className="hidden md:flex space-x-6 ml-12">
-            <Link to="/worker-dashboard" className="hover:text-[#FF4B55]">Dashboard</Link>
-            <Link to="/job-info/1742961196903" className="hover:text-[#FF4B55] text-[#FF4B55]">Jobs</Link>
-            <Link to="/active-work" className="hover:text-[#FF4B55]">Active Work</Link>
-            <Link to="/worker-profile" className="hover:text-[#FF4B55]">Profile</Link>
+            <Link to="/contractor-dashboard" className="hover:text-[#FF4B55]">Dashboard</Link>
+            <Link to="/contractor-job-posting" className="hover:text-[#FF4B55]">Jobs</Link>
+            <Link to="/workers" className="hover:text-[#FF4B55]">Workers</Link>
+            <Link to="/analytics" className="hover:text-[#FF4B55]">Analytics</Link>
           </nav>
         </div>
         <div className="flex items-center gap-4">
-          <Link to="/worker-profile">
+          <Link to="/company-profile">
             <div className="w-8 h-8 rounded-full bg-gray-300 cursor-pointer hover:ring-2 hover:ring-[#FF4B55] transition-all duration-300"></div>
           </Link>
         </div>
       </header>
 
-      <main className="container mx-auto py-8 px-4 max-w-4xl">
+      <main className="container mx-auto py-8 px-4 max-w-5xl">
+        {/* Back button */}
         <div className="mb-6">
           <Button 
             variant="outline" 
@@ -127,221 +72,170 @@ const ProjectDetailView = () => {
             onClick={() => navigate(-1)}
             className="text-gray-600 hover:text-[#004A57] transition-all duration-300"
           >
-            <ChevronLeft className="mr-2 h-4 w-4" /> Back
+            <ArrowLeft className="mr-2 h-4 w-4" /> Back to Jobs
           </Button>
         </div>
-        
-        <div className="bg-white rounded-lg shadow-sm overflow-hidden">
-          <div className="p-6 md:p-8">
-            <div className="flex flex-col md:flex-row justify-between md:items-center mb-6">
+      
+        <motion.div 
+          className="bg-white rounded-lg shadow-sm overflow-hidden mb-8"
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.3 }}
+        >
+          <div className="p-6">
+            <div className="flex flex-col md:flex-row justify-between gap-4">
               <div>
-                <Badge variant="outline" className="mb-2 bg-blue-50 text-blue-700 border-blue-200">
-                  {job.jobType}
-                </Badge>
-                <h1 className="text-2xl md:text-3xl font-bold">{job.title}</h1>
-                <div className="flex items-center mt-2">
-                  <Link to="/company/abc-construction" className="text-[#004A57] hover:underline font-medium">
-                    {job.company}
-                  </Link>
-                  <div className="flex items-center ml-3">
-                    <Star className="h-4 w-4 text-yellow-500 fill-yellow-500" />
-                    <span className="ml-1 text-sm">{job.companyRating}</span>
-                    <span className="ml-1 text-xs text-gray-500">({job.reviews} reviews)</span>
-                  </div>
-                </div>
-              </div>
-              
-              <div className="mt-6 md:mt-0">
-                <AlertDialog open={showApplyDialog} onOpenChange={setShowApplyDialog}>
-                  <AlertDialogTrigger asChild>
-                    <Button variant="primary" size="lg" className="w-full md:w-auto">
-                      Apply for Position
-                    </Button>
-                  </AlertDialogTrigger>
-                  <AlertDialogContent>
-                    <AlertDialogHeader>
-                      <AlertDialogTitle>Apply for this job?</AlertDialogTitle>
-                      <AlertDialogDescription>
-                        You are about to apply for the position of {job.title} at {job.company}. Your profile information will be shared with the employer.
-                      </AlertDialogDescription>
-                    </AlertDialogHeader>
-                    <AlertDialogFooter>
-                      <AlertDialogCancel>Cancel</AlertDialogCancel>
-                      <AlertDialogAction onClick={handleApply}>
-                        Confirm Application
-                      </AlertDialogAction>
-                    </AlertDialogFooter>
-                  </AlertDialogContent>
-                </AlertDialog>
-              </div>
-            </div>
-            
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-              <div className="space-y-3">
-                <div className="flex items-start gap-3">
-                  <MapPin className="h-5 w-5 text-[#004A57] mt-0.5" />
-                  <div>
-                    <div className="font-medium">Location</div>
-                    <div className="text-gray-600">{job.address}</div>
-                  </div>
-                </div>
-                
-                <div className="flex items-start gap-3">
-                  <Calendar className="h-5 w-5 text-[#004A57] mt-0.5" />
-                  <div>
-                    <div className="font-medium">Start Date</div>
-                    <div className="text-gray-600">{job.startDate}</div>
-                  </div>
-                </div>
-                
-                <div className="flex items-start gap-3">
-                  <Clock className="h-5 w-5 text-[#004A57] mt-0.5" />
-                  <div>
-                    <div className="font-medium">Schedule</div>
-                    <div className="text-gray-600">{job.schedule}</div>
-                  </div>
-                </div>
-              </div>
-              
-              <div className="space-y-3">
-                <div className="flex items-start gap-3">
-                  <Briefcase className="h-5 w-5 text-[#004A57] mt-0.5" />
-                  <div>
-                    <div className="font-medium">Job Type</div>
-                    <div className="text-gray-600">{job.jobType} | {job.duration}</div>
-                  </div>
-                </div>
-                
-                <div className="flex items-start gap-3">
-                  <DollarSign className="h-5 w-5 text-[#004A57] mt-0.5" />
-                  <div>
-                    <div className="font-medium">Compensation</div>
-                    <div className="text-gray-600">{job.hourlyRate} per hour</div>
-                  </div>
-                </div>
-                
-                <div className="flex items-start gap-3">
-                  <AlertCircle className="h-5 w-5 text-[#004A57] mt-0.5" />
-                  <div>
-                    <div className="font-medium">Application Deadline</div>
-                    <div className="text-gray-600">{job.deadline}</div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            
-            <Separator className="my-6" />
-            
-            <div className="mb-8">
-              <h2 className="text-xl font-semibold mb-4">Job Description</h2>
-              <p className="text-gray-700 whitespace-pre-line">{job.description}</p>
-            </div>
-            
-            <div className="mb-8">
-              <h2 className="text-xl font-semibold mb-4">Key Responsibilities</h2>
-              <ul className="list-disc pl-5 space-y-2">
-                {job.responsibilities.map((item, index) => (
-                  <li key={index} className="text-gray-700">{item}</li>
-                ))}
-              </ul>
-            </div>
-            
-            <div className="mb-8">
-              <h2 className="text-xl font-semibold mb-4">Requirements</h2>
-              <ul className="list-disc pl-5 space-y-2">
-                {job.requirements.map((item, index) => (
-                  <li key={index} className="text-gray-700">{item}</li>
-                ))}
-              </ul>
-            </div>
-            
-            <div className="mb-8">
-              <h2 className="text-xl font-semibold mb-4">Benefits</h2>
-              <ul className="list-disc pl-5 space-y-2">
-                {job.benefits.map((item, index) => (
-                  <li key={index} className="text-gray-700">{item}</li>
-                ))}
-              </ul>
-            </div>
-            
-            <div className="mb-8">
-              <h2 className="text-xl font-semibold mb-4">Required Skills</h2>
-              <div className="flex flex-wrap gap-2">
-                {job.skills.map((skill, index) => (
-                  <Badge key={index} variant="secondary" className="bg-gray-100">
-                    {skill}
+                <h1 className="text-2xl font-bold">{job.title}</h1>
+                <div className="flex items-center gap-2 text-gray-600 mt-2 flex-wrap">
+                  <MapPin className="h-4 w-4" />
+                  <span>{job.location}</span>
+                  
+                  <span className="mx-2">•</span>
+                  
+                  <Badge variant="outline" className="bg-gray-50">
+                    {job.projectType}
                   </Badge>
-                ))}
+                  
+                  <span className="mx-2">•</span>
+                  
+                  <Badge variant="outline" className="bg-gray-50">
+                    {job.employmentType}
+                  </Badge>
+                </div>
+              </div>
+              
+              <div className="text-right">
+                <div className="text-xl font-bold text-[#004A57]">{job.hourlyRate}/hr</div>
+                <div className="text-sm text-gray-500">{job.timeline} job</div>
               </div>
             </div>
             
-            <Separator className="my-6" />
-            
-            <div className="bg-[#F5F5F5] p-6 rounded-lg">
-              <div className="flex items-center mb-4">
-                <Building className="h-5 w-5 text-[#004A57] mr-2" />
-                <h2 className="text-xl font-semibold">About {job.company}</h2>
+            <div className="flex flex-wrap gap-4 mt-6">
+              <div className="flex items-center text-gray-600">
+                <Calendar className="h-4 w-4 mr-2" />
+                <span>Posted {job.postedAt || "recently"}</span>
               </div>
               
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div>
-                  <p className="text-gray-700 mb-4">
-                    ABC Construction Ltd is a leading construction company specializing in commercial and residential projects across Ontario. With over 25 years of experience, we pride ourselves on safety, quality workmanship, and timely project delivery.
-                  </p>
-                  
-                  <div className="flex items-center text-sm text-[#004A57] mt-4">
-                    <Globe className="h-4 w-4 mr-2" />
-                    <a href="#" className="hover:underline">Visit company website</a>
-                  </div>
-                  
-                  <div className="flex items-center text-sm text-[#004A57] mt-2">
-                    <FileText className="h-4 w-4 mr-2" />
-                    <a href="#" className="hover:underline">View all jobs from this company</a>
-                  </div>
-                </div>
-                
-                <div className="space-y-3">
-                  <div className="flex items-center justify-between">
-                    <span className="text-sm text-gray-600">Employees</span>
-                    <span className="text-sm font-medium">50-200</span>
-                  </div>
-                  
-                  <div className="flex items-center justify-between">
-                    <span className="text-sm text-gray-600">Founded</span>
-                    <span className="text-sm font-medium">1998</span>
-                  </div>
-                  
-                  <div className="flex items-center justify-between">
-                    <span className="text-sm text-gray-600">Industry</span>
-                    <span className="text-sm font-medium">Construction</span>
-                  </div>
-                  
-                  <div className="flex items-center justify-between">
-                    <span className="text-sm text-gray-600">Specializations</span>
-                    <span className="text-sm font-medium">Commercial, Residential</span>
-                  </div>
-                </div>
+              <div className="flex items-center text-gray-600">
+                <Clock className="h-4 w-4 mr-2" />
+                <span>Expires in {job.expiresAfter} days</span>
               </div>
-            </div>
-            
-            <div className="mt-8 flex justify-between">
-              <Button 
-                variant="outline" 
-                onClick={() => navigate(-1)}
-              >
-                Back to Jobs
-              </Button>
               
-              <AlertDialog open={showApplyDialog} onOpenChange={setShowApplyDialog}>
-                <AlertDialogTrigger asChild>
-                  <Button variant="primary">
-                    Apply for Position
-                  </Button>
-                </AlertDialogTrigger>
-              </AlertDialog>
+              <div className="flex items-center text-gray-600">
+                <User className="h-4 w-4 mr-2" />
+                <span>{job.applicantsCount || 0} applicants</span>
+              </div>
             </div>
           </div>
-        </div>
+          
+          <Tabs defaultValue="details" className="w-full">
+            <div className="px-6 border-b border-gray-200">
+              <TabsList className="bg-transparent mb-0 h-auto">
+                <TabsTrigger 
+                  value="details" 
+                  className="py-3 data-[state=active]:border-b-2 data-[state=active]:border-[#FF4B55] data-[state=active]:text-[#FF4B55] rounded-none"
+                >
+                  Job Details
+                </TabsTrigger>
+                <TabsTrigger 
+                  value="applications" 
+                  className="py-3 data-[state=active]:border-b-2 data-[state=active]:border-[#FF4B55] data-[state=active]:text-[#FF4B55] rounded-none"
+                >
+                  Applications
+                </TabsTrigger>
+                <TabsTrigger 
+                  value="workers" 
+                  className="py-3 data-[state=active]:border-b-2 data-[state=active]:border-[#FF4B55] data-[state=active]:text-[#FF4B55] rounded-none"
+                >
+                  Assigned Workers
+                </TabsTrigger>
+              </TabsList>
+            </div>
+            
+            <TabsContent value="details" className="p-6 mt-0">
+              <div className="space-y-6">
+                <div>
+                  <h2 className="text-lg font-semibold mb-3">Job Description</h2>
+                  <p className="text-gray-700 whitespace-pre-line">{job.jobDescription}</p>
+                </div>
+                
+                <div>
+                  <h2 className="text-lg font-semibold mb-3">Requirements</h2>
+                  <p className="text-gray-700 whitespace-pre-line">{job.requirements}</p>
+                </div>
+                
+                <div>
+                  <h2 className="text-lg font-semibold mb-3">Company</h2>
+                  <div className="flex items-center gap-3">
+                    <div className="w-12 h-12 bg-gray-200 rounded-lg flex items-center justify-center">
+                      <Building className="h-6 w-6 text-gray-500" />
+                    </div>
+                    <div>
+                      <h3 className="font-medium">{job.company}</h3>
+                      <Link 
+                        to="/company-profile" 
+                        className="text-[#FF4B55] text-sm hover:underline"
+                      >
+                        View Company Profile
+                      </Link>
+                    </div>
+                  </div>
+                </div>
+                
+                <div className="flex justify-end gap-4 pt-4 border-t border-gray-100">
+                  <Button 
+                    variant="outline" 
+                    className="border-[#FF4B55] text-[#FF4B55] hover:bg-[#FF4B55] hover:text-white transition-all duration-300 hover:scale-105"
+                    onClick={handleRemoveProject}
+                  >
+                    <Trash2 className="mr-2 h-4 w-4" /> Remove Job
+                  </Button>
+                  <Link to="/appoint-workers">
+                    <Button 
+                      variant="outline" 
+                      className="border-[#004A57] text-[#004A57] hover:bg-[#004A57] hover:text-white transition-all duration-300 hover:scale-105"
+                    >
+                      <Users className="mr-2 h-4 w-4" /> Appoint Workers
+                    </Button>
+                  </Link>
+                  <Button variant="outline" className="border-[#004A57] text-[#004A57] hover:bg-[#004A57] hover:text-white transition-all duration-300 hover:scale-105">
+                    Edit Job
+                  </Button>
+                </div>
+              </div>
+            </TabsContent>
+            
+            <TabsContent value="applications" className="p-6 mt-0">
+              <div className="text-center py-8">
+                <User className="h-16 w-16 mx-auto text-gray-300 mb-3" />
+                <h3 className="text-lg font-medium text-gray-600">No Applications Yet</h3>
+                <p className="text-gray-500">
+                  {job.applicantsCount ? 
+                    "Applications need to be reviewed." : 
+                    "When professionals apply to your job, they will appear here."}
+                </p>
+              </div>
+            </TabsContent>
+            
+            <TabsContent value="workers" className="p-6 mt-0">
+              <div className="text-center py-8">
+                <Users className="h-16 w-16 mx-auto text-gray-300 mb-3" />
+                <h3 className="text-lg font-medium text-gray-600">No Workers Assigned Yet</h3>
+                <p className="text-gray-500 mb-4">
+                  Assign workers to this job to see them listed here
+                </p>
+                <Link to="/appoint-workers">
+                  <Button 
+                    variant="primary" 
+                    className="bg-[#FF4B55] hover:bg-[#e03e48] transition-all duration-300 hover:scale-105"
+                  >
+                    <Users className="mr-2 h-4 w-4" /> Appoint Workers
+                  </Button>
+                </Link>
+              </div>
+            </TabsContent>
+          </Tabs>
+        </motion.div>
       </main>
     </div>
   );

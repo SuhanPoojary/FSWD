@@ -18,7 +18,7 @@ interface Job {
   distance: string;
   location: string;
   duration: string;
-  hourRate: string;
+  hourlyRate: string;
   address?: string;
   phone?: string;
   startDate?: string;
@@ -28,14 +28,34 @@ interface Job {
 const WorkerDashboard: React.FC = () => {
   const navigate = useNavigate();
   const [jobs, setJobs] = useState<Job[]>([
-    { id: "1", company: "Elite Builders", distance: "2.5 km", location: "Commercial Tower", duration: "3 months", hourRate: "$55/hr", address: "123 Construction Ave, Building Site 48", phone: "+1 (555) 123-4567", startDate: "2024-02-01 08:00 AM" },
-    { id: "2", company: "BuildRight Inc", distance: "4.8 km", location: "Office Building", duration: "6 months", hourRate: "$48/hr" },
-    { id: "3", company: "City Construction", distance: "1.2 km", location: "Shopping Mall", duration: "4 months", hourRate: "$52/hr" },
+    { id: "1", company: "Elite Builders", distance: "2.5 km", location: "Commercial Tower", duration: "3 months", hourlyRate: "$55/hr", address: "123 Construction Ave, Building Site 48", phone: "+1 (555) 123-4567", startDate: "2024-02-01 08:00 AM" },
+    { id: "2", company: "BuildRight Inc", distance: "4.8 km", location: "Office Building", duration: "6 months", hourlyRate: "$48/hr" },
+    { id: "3", company: "City Construction", distance: "1.2 km", location: "Shopping Mall", duration: "4 months", hourlyRate: "$52/hr" },
+  ]);
+  
+  const [recommendedJobs, setRecommendedJobs] = useState([
+    {
+      id: "4",
+      title: "Commercial Building Project",
+      company: "Arlington Construction",
+      hourlyRate: "$35/hr",
+      type: "Full-time",
+      skill: "Carpentry"
+    },
+    {
+      id: "5",
+      title: "Residential Renovation",
+      company: "HomeBuilders Inc",
+      hourlyRate: "$32/hr",
+      type: "Contract",
+      skill: "General Labor"
+    }
   ]);
   
   const [showAllJobs, setShowAllJobs] = useState(false);
   const [selectedJob, setSelectedJob] = useState<Job | null>(null);
   const [showAcceptDialog, setShowAcceptDialog] = useState(false);
+  const [activeJobs, setActiveJobs] = useState<Job[]>([]);
 
   const handleAccept = (job: Job) => {
     setSelectedJob(job);
@@ -44,9 +64,12 @@ const WorkerDashboard: React.FC = () => {
 
   const confirmAccept = () => {
     if (selectedJob) {
-      setJobs(jobs.map(j => 
+      const updatedJobs = jobs.map(j => 
         j.id === selectedJob.id ? { ...j, accepted: true } : j
-      ));
+      );
+      
+      setJobs(updatedJobs);
+      setActiveJobs([...activeJobs, {...selectedJob, accepted: true}]);
       setShowAcceptDialog(false);
     }
   };
@@ -67,6 +90,10 @@ const WorkerDashboard: React.FC = () => {
     navigate('/login?role=worker');
   };
 
+  const handleViewJobDetail = (jobId: string) => {
+    navigate(`/job-detail/${jobId}`);
+  };
+
   return (
     <div className="min-h-screen bg-[#F6F6F7]">
       {/* Header */}
@@ -78,7 +105,7 @@ const WorkerDashboard: React.FC = () => {
         <div className="flex items-center gap-4">
           <div className="relative">
             <div className="w-5 h-5 rounded-full bg-[#FF4B55] flex items-center justify-center text-white text-xs">
-              2
+              {activeJobs.length}
             </div>
           </div>
           <div className="flex items-center gap-2 cursor-pointer">
@@ -102,7 +129,14 @@ const WorkerDashboard: React.FC = () => {
               </Button>
             </div>
             <div className="space-y-4">
-              {jobs.map(job => (
+              {[...jobs, ...recommendedJobs.map(rj => ({
+                id: rj.id,
+                company: rj.company,
+                distance: "Nearby",
+                location: rj.title,
+                duration: "Variable",
+                hourlyRate: rj.hourlyRate
+              }))].map(job => (
                 <div key={job.id} className="bg-white rounded-lg p-4 shadow-sm">
                   <div className="flex justify-between items-start mb-2">
                     <div>
@@ -121,7 +155,7 @@ const WorkerDashboard: React.FC = () => {
                       </div>
                     </div>
                     <div className="text-right">
-                      <div className="text-lg font-semibold">{job.hourRate}</div>
+                      <div className="text-lg font-semibold">{job.hourlyRate}</div>
                     </div>
                   </div>
                   <div className="grid grid-cols-2 gap-3 mt-4">
@@ -157,7 +191,7 @@ const WorkerDashboard: React.FC = () => {
               </div>
               <div className="bg-white rounded-lg shadow-sm p-6">
                 <h2 className="text-gray-500 text-sm mb-2">Active Jobs</h2>
-                <p className="text-4xl font-bold">3</p>
+                <p className="text-4xl font-bold">{activeJobs.length}</p>
               </div>
             </div>
 
@@ -174,29 +208,19 @@ const WorkerDashboard: React.FC = () => {
                 <p className="mb-6">Find jobs matched to your skills and experience</p>
                 
                 <div className="grid grid-cols-1 gap-4">
-                  <div className="bg-white/10 p-4 rounded-lg hover:bg-white/20 transition-colors cursor-pointer">
-                    <div className="flex justify-between">
-                      <h3 className="font-semibold">Commercial Building Project</h3>
-                      <span className="text-sm">$35/hr</span>
+                  {recommendedJobs.map(job => (
+                    <div key={job.id} className="bg-white/10 p-4 rounded-lg hover:bg-white/20 transition-colors cursor-pointer" onClick={() => handleViewJobDetail(job.id)}>
+                      <div className="flex justify-between">
+                        <h3 className="font-semibold">{job.title}</h3>
+                        <span className="text-sm">{job.hourlyRate}</span>
+                      </div>
+                      <p className="text-sm opacity-80">{job.company}</p>
+                      <div className="flex gap-2 mt-2">
+                        <span className="text-xs bg-white/20 px-2 py-1 rounded">{job.type}</span>
+                        <span className="text-xs bg-white/20 px-2 py-1 rounded">{job.skill}</span>
+                      </div>
                     </div>
-                    <p className="text-sm opacity-80">Arlington Construction</p>
-                    <div className="flex gap-2 mt-2">
-                      <span className="text-xs bg-white/20 px-2 py-1 rounded">Full-time</span>
-                      <span className="text-xs bg-white/20 px-2 py-1 rounded">Carpentry</span>
-                    </div>
-                  </div>
-                  
-                  <div className="bg-white/10 p-4 rounded-lg hover:bg-white/20 transition-colors cursor-pointer">
-                    <div className="flex justify-between">
-                      <h3 className="font-semibold">Residential Renovation</h3>
-                      <span className="text-sm">$32/hr</span>
-                    </div>
-                    <p className="text-sm opacity-80">HomeBuilders Inc</p>
-                    <div className="flex gap-2 mt-2">
-                      <span className="text-xs bg-white/20 px-2 py-1 rounded">Contract</span>
-                      <span className="text-xs bg-white/20 px-2 py-1 rounded">General Labor</span>
-                    </div>
-                  </div>
+                  ))}
                 </div>
                 
                 <button 

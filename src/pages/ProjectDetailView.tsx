@@ -15,9 +15,9 @@ const ProjectDetailView: React.FC = () => {
   const { toast } = useToast();
   const navigate = useNavigate();
   
-  const project = projects.find(p => p.id.toString() === id);
+  const job = projects.find(p => p.id.toString() === id);
   
-  if (!project) {
+  if (!job) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-[#F6F6F7]">
         <div className="text-center">
@@ -85,45 +85,45 @@ const ProjectDetailView: React.FC = () => {
           <div className="p-6">
             <div className="flex flex-col md:flex-row justify-between gap-4">
               <div>
-                <h1 className="text-2xl font-bold">{project.title}</h1>
+                <h1 className="text-2xl font-bold">{job.title}</h1>
                 <div className="flex items-center gap-2 text-gray-600 mt-2 flex-wrap">
                   <MapPin className="h-4 w-4" />
-                  <span>{project.location}</span>
+                  <span>{job.location}</span>
                   
                   <span className="mx-2">•</span>
                   
                   <Badge variant="outline" className="bg-gray-50">
-                    {project.projectType}
+                    {job.projectType}
                   </Badge>
                   
                   <span className="mx-2">•</span>
                   
                   <Badge variant="outline" className="bg-gray-50">
-                    {project.employmentType}
+                    {job.employmentType}
                   </Badge>
                 </div>
               </div>
               
               <div className="text-right">
-                <div className="text-xl font-bold text-[#004A57]">{project.hourlyRate}/hr</div>
-                <div className="text-sm text-gray-500">{project.timeline} job</div>
+                <div className="text-xl font-bold text-[#004A57]">{job.hourlyRate}/hr</div>
+                <div className="text-sm text-gray-500">{job.timeline} job</div>
               </div>
             </div>
             
             <div className="flex flex-wrap gap-4 mt-6">
               <div className="flex items-center text-gray-600">
                 <Calendar className="h-4 w-4 mr-2" />
-                <span>Posted {project.postedAt || "recently"}</span>
+                <span>Posted {job.postedAt || "recently"}</span>
               </div>
               
               <div className="flex items-center text-gray-600">
                 <Clock className="h-4 w-4 mr-2" />
-                <span>Expires in {project.expiresAfter} days</span>
+                <span>Expires in {job.expiresAfter} days</span>
               </div>
               
               <div className="flex items-center text-gray-600">
                 <User className="h-4 w-4 mr-2" />
-                <span>{project.applicantsCount || 0} applicants</span>
+                <span>{job.applicantsCount || 0} applicants</span>
               </div>
             </div>
           </div>
@@ -156,12 +156,12 @@ const ProjectDetailView: React.FC = () => {
               <div className="space-y-6">
                 <div>
                   <h2 className="text-lg font-semibold mb-3">Job Description</h2>
-                  <p className="text-gray-700 whitespace-pre-line">{project.jobDescription}</p>
+                  <p className="text-gray-700 whitespace-pre-line">{job.jobDescription}</p>
                 </div>
                 
                 <div>
                   <h2 className="text-lg font-semibold mb-3">Requirements</h2>
-                  <p className="text-gray-700 whitespace-pre-line">{project.requirements}</p>
+                  <p className="text-gray-700 whitespace-pre-line">{job.requirements}</p>
                 </div>
                 
                 <div>
@@ -171,7 +171,7 @@ const ProjectDetailView: React.FC = () => {
                       <Building className="h-6 w-6 text-gray-500" />
                     </div>
                     <div>
-                      <h3 className="font-medium">{project.company}</h3>
+                      <h3 className="font-medium">{job.company}</h3>
                       <Link 
                         to="/company-profile" 
                         className="text-[#FF4B55] text-sm hover:underline"
@@ -210,7 +210,7 @@ const ProjectDetailView: React.FC = () => {
                 <User className="h-16 w-16 mx-auto text-gray-300 mb-3" />
                 <h3 className="text-lg font-medium text-gray-600">No Applications Yet</h3>
                 <p className="text-gray-500">
-                  {project.applicantsCount ? 
+                  {job.applicantsCount ? 
                     "Applications need to be reviewed." : 
                     "When professionals apply to your job, they will appear here."}
                 </p>

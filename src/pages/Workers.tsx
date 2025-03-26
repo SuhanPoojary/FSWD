@@ -199,14 +199,16 @@ const Workers: React.FC = () => {
                   <Button 
                     variant="outline" 
                     className="flex-1 border-[#004A57] text-[#004A57] hover:bg-[#004A57] hover:text-white"
+                    onClick={() => navigate(`/worker-profile/${worker.id}`)}
                   >
                     View Profile
                   </Button>
                   <Button 
                     variant="primary" 
                     className="flex-1"
+                    onClick={() => navigate('/appoint-workers')}
                   >
-                    Contact
+                    Appoint
                   </Button>
                 </div>
               </div>

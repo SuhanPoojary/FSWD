@@ -4,7 +4,7 @@ import { useLocation, Navigate } from "react-router-dom";
 import LoginLayout from "@/components/layout/LoginLayout";
 import LoginForm from "@/components/LoginForm";
 
-const Login = () => {
+const Login: React.FC = () => {
   const location = useLocation();
   const role = new URLSearchParams(location.search).get("role");
 
@@ -58,7 +58,7 @@ const Login = () => {
           actionButtonText: "Sign in to Dashboard",
           alternateActionText: "Need a contractor account?",
           alternateActionLinkText: "Register your business",
-          socialLogins: ["google", "microsoft"],
+          socialLogins: ["google", "microsoft"] as ("google" | "microsoft" | "apple")[],
           supportLink: true,
           redirectPath: "/contractor-dashboard"
         };

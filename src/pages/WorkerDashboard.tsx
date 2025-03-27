@@ -1,22 +1,33 @@
 
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import {
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
+  DialogDescription,
   DialogFooter
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { CheckIcon, XIcon, MapPinIcon, CalendarIcon, ClockIcon, BriefcaseIcon, PhoneIcon } from "lucide-react";
-import { useToast } from "@/hooks/use-toast";
 
-const WorkerDashboard = () => {
+interface Job {
+  id: string;
+  company: string;
+  distance: string;
+  location: string;
+  duration: string;
+  hourlyRate: string;
+  address?: string;
+  phone?: string;
+  startDate?: string;
+  accepted?: boolean;
+}
+
+const WorkerDashboard: React.FC = () => {
   const navigate = useNavigate();
-  const { toast } = useToast();
-  
-  const [jobs, setJobs] = useState([
+  const [jobs, setJobs] = useState<Job[]>([
     { id: "1", company: "Elite Builders", distance: "2.5 km", location: "Commercial Tower", duration: "3 months", hourlyRate: "$55/hr", address: "123 Construction Ave, Building Site 48", phone: "+1 (555) 123-4567", startDate: "2024-02-01 08:00 AM" },
     { id: "2", company: "BuildRight Inc", distance: "4.8 km", location: "Office Building", duration: "6 months", hourlyRate: "$48/hr" },
     { id: "3", company: "City Construction", distance: "1.2 km", location: "Shopping Mall", duration: "4 months", hourlyRate: "$52/hr" },
@@ -42,61 +53,29 @@ const WorkerDashboard = () => {
   ]);
   
   const [showAllJobs, setShowAllJobs] = useState(false);
-  const [selectedJob, setSelectedJob] = useState(null);
+  const [selectedJob, setSelectedJob] = useState<Job | null>(null);
   const [showAcceptDialog, setShowAcceptDialog] = useState(false);
-  const [activeJobs, setActiveJobs] = useState([]);
+  const [activeJobs, setActiveJobs] = useState<Job[]>([]);
 
-  // Load active jobs from localStorage on component mount
-  useEffect(() => {
-    const savedActiveJobs = localStorage.getItem('activeJobs');
-    if (savedActiveJobs) {
-      setActiveJobs(JSON.parse(savedActiveJobs));
-    }
-    
-    // Clean up jobs that have already been accepted
-    const savedAcceptedJobIds = localStorage.getItem('acceptedJobIds');
-    if (savedAcceptedJobIds) {
-      const acceptedIds = JSON.parse(savedAcceptedJobIds);
-      setJobs(prevJobs => prevJobs.filter(job => !acceptedIds.includes(job.id)));
-      setRecommendedJobs(prevJobs => prevJobs.filter(job => !acceptedIds.includes(job.id)));
-    }
-  }, []);
-
-  const handleAccept = (job) => {
+  const handleAccept = (job: Job) => {
     setSelectedJob(job);
     setShowAcceptDialog(true);
   };
 
   const confirmAccept = () => {
     if (selectedJob) {
-      // Add job to active jobs
-      const updatedActiveJobs = [...activeJobs, {...selectedJob, accepted: true}];
-      setActiveJobs(updatedActiveJobs);
+      const updatedJobs = jobs.map(j => 
+        j.id === selectedJob.id ? { ...j, accepted: true } : j
+      );
       
-      // Save to localStorage
-      localStorage.setItem('activeJobs', JSON.stringify(updatedActiveJobs));
-      
-      // Track accepted job IDs to remove them from available jobs
-      const acceptedJobIds = JSON.parse(localStorage.getItem('acceptedJobIds') || '[]');
-      acceptedJobIds.push(selectedJob.id);
-      localStorage.setItem('acceptedJobIds', JSON.stringify(acceptedJobIds));
-      
-      // Remove the job from available jobs
-      setJobs(jobs.filter(j => j.id !== selectedJob.id));
-      setRecommendedJobs(recommendedJobs.filter(j => j.id !== selectedJob.id));
-      
+      setJobs(updatedJobs);
+      setActiveJobs([...activeJobs, {...selectedJob, accepted: true}]);
       setShowAcceptDialog(false);
-      
-      toast({
-        title: "Job Accepted",
-        description: "The job has been added to your Active Work.",
-      });
     }
   };
 
-  const handleReject = (jobId) => {
+  const handleReject = (jobId: string) => {
     setJobs(jobs.filter(job => job.id !== jobId));
-    setRecommendedJobs(recommendedJobs.filter(job => job.id !== jobId));
   };
 
   const goToProfile = () => {
@@ -111,31 +90,9 @@ const WorkerDashboard = () => {
     navigate('/login?role=worker');
   };
 
-  const handleViewJobDetail = (jobId) => {
+  const handleViewJobDetail = (jobId: string) => {
     navigate(`/job-detail/${jobId}`);
   };
-
-  const allAvailableJobs = [
-    ...jobs.map(job => ({
-      id: job.id,
-      company: job.company,
-      distance: job.distance,
-      location: job.location,
-      duration: job.duration,
-      hourlyRate: job.hourlyRate,
-      address: job.address,
-      phone: job.phone,
-      startDate: job.startDate
-    })),
-    ...recommendedJobs.map(rj => ({
-      id: rj.id,
-      company: rj.company,
-      distance: "Nearby",
-      location: rj.title,
-      duration: "Variable",
-      hourlyRate: rj.hourlyRate
-    }))
-  ];
 
   return (
     <div className="min-h-screen bg-[#F6F6F7]">
@@ -172,7 +129,14 @@ const WorkerDashboard = () => {
               </Button>
             </div>
             <div className="space-y-4">
-              {allAvailableJobs.map(job => (
+              {[...jobs, ...recommendedJobs.map(rj => ({
+                id: rj.id,
+                company: rj.company,
+                distance: "Nearby",
+                location: rj.title,
+                duration: "Variable",
+                hourlyRate: rj.hourlyRate
+              }))].map(job => (
                 <div key={job.id} className="bg-white rounded-lg p-4 shadow-sm">
                   <div className="flex justify-between items-start mb-2">
                     <div>
@@ -361,7 +325,7 @@ const WorkerDashboard = () => {
                     <path d="M12 6V12L16 14" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
                     <circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="2"/>
                   </svg>
-                  <span>{selectedJob.hourlyRate}</span>
+                  <span>{selectedJob.hourRate}</span>
                 </div>
                 <div className="flex items-start gap-2">
                   <CheckIcon className="h-4 w-4 text-green-500 mt-0.5" />

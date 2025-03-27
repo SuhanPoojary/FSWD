@@ -5,13 +5,19 @@ import { Textarea } from "@/components/ui/textarea";
 import { Star } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
-const ReviewForm = ({ onClose, entityName, entityType }) => {
+interface ReviewFormProps {
+  onClose?: () => void;
+  entityName: string;
+  entityType: "professional" | "contractor";
+}
+
+const ReviewForm: React.FC<ReviewFormProps> = ({ onClose, entityName, entityType }) => {
   const { toast } = useToast();
   const [rating, setRating] = useState(0);
   const [hoverRating, setHoverRating] = useState(0);
   const [review, setReview] = useState("");
 
-  const handleSubmit = (e) => {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     
     if (rating === 0) {

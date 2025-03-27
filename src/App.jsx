@@ -27,7 +27,6 @@ import Workers from "./pages/Workers";
 import AppointWorkers from "./pages/AppointWorkers";
 import Analytics from "./pages/Analytics";
 import { ProjectProvider } from "./components/PostProjectForm";
-import { LanguageProvider } from "./contexts/LanguageContext";
 
 const queryClient = new QueryClient();
 
@@ -71,43 +70,41 @@ const SmoothScroll = ({ children }) => {
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
-    <LanguageProvider>
-      <ProjectProvider>
-        <TooltipProvider>
-          <Toaster />
-          <Sonner />
-          <SmoothScroll>
-            <BrowserRouter>
-              <Routes>
-                <Route path="/" element={<Index />} />
-                <Route path="/journey" element={<Journey />} />
-                <Route path="/login" element={<Login />} />
-                <Route path="/worker-dashboard" element={<WorkerDashboard />} />
-                <Route path="/worker-profile" element={<WorkerProfile />} />
-                <Route path="/active-work" element={<ActiveWork />} />
-                <Route path="/job-detail/:id" element={<JobInfo />} />
-                <Route path="/job-info/:id" element={<JobInfo />} />
-                <Route path="/professional-dashboard" element={<ProfessionalDashboard />} />
-                <Route path="/professional-profile" element={<ProfessionalProfile />} />
-                <Route path="/project-details/:id" element={<ProjectDetails />} />
-                <Route path="/project-view/:id" element={<ProjectView />} />
-                <Route path="/professional-messages" element={<ProfessionalMessages />} />
-                <Route path="/professional-projects" element={<ProfessionalProjects />} />
-                <Route path="/contractor-dashboard" element={<ContractorDashboard />} />
-                <Route path="/contractor-job-posting" element={<ContractorJobPosting />} />
-                <Route path="/company-profile" element={<CompanyProfile />} />
-                <Route path="/project-detail-view/:id" element={<ProjectDetailView />} />
-                <Route path="/workers" element={<Workers />} />
-                <Route path="/appoint-workers" element={<AppointWorkers />} />
-                <Route path="/analytics" element={<Analytics />} />
-                {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-                <Route path="*" element={<NotFound />} />
-              </Routes>
-            </BrowserRouter>
-          </SmoothScroll>
-        </TooltipProvider>
-      </ProjectProvider>
-    </LanguageProvider>
+    <ProjectProvider>
+      <TooltipProvider>
+        <Toaster />
+        <Sonner />
+        <SmoothScroll>
+          <BrowserRouter>
+            <Routes>
+              <Route path="/" element={<Index />} />
+              <Route path="/journey" element={<Journey />} />
+              <Route path="/login" element={<Login />} />
+              <Route path="/worker-dashboard" element={<WorkerDashboard />} />
+              <Route path="/worker-profile" element={<WorkerProfile />} />
+              <Route path="/active-work" element={<ActiveWork />} />
+              <Route path="/job-detail/:id" element={<JobInfo />} />
+              <Route path="/job-info/:id" element={<JobInfo />} />
+              <Route path="/professional-dashboard" element={<ProfessionalDashboard />} />
+              <Route path="/professional-profile" element={<ProfessionalProfile />} />
+              <Route path="/project-details/:id" element={<ProjectDetails />} />
+              <Route path="/project-view/:id" element={<ProjectView />} />
+              <Route path="/professional-messages" element={<ProfessionalMessages />} />
+              <Route path="/professional-projects" element={<ProfessionalProjects />} />
+              <Route path="/contractor-dashboard" element={<ContractorDashboard />} />
+              <Route path="/contractor-job-posting" element={<ContractorJobPosting />} />
+              <Route path="/company-profile" element={<CompanyProfile />} />
+              <Route path="/project-detail-view/:id" element={<ProjectDetailView />} />
+              <Route path="/workers" element={<Workers />} />
+              <Route path="/appoint-workers" element={<AppointWorkers />} />
+              <Route path="/analytics" element={<Analytics />} />
+              {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+              <Route path="*" element={<NotFound />} />
+            </Routes>
+          </BrowserRouter>
+        </SmoothScroll>
+      </TooltipProvider>
+    </ProjectProvider>
   </QueryClientProvider>
 );
 

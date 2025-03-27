@@ -1,6 +1,8 @@
 
 import React from "react";
 import { Link } from "react-router-dom";
+import { useLanguage } from "../../contexts/LanguageContext";
+import LanguageSelector from "../LanguageSelector";
 
 const LoginLayout = ({
   title,
@@ -10,15 +12,20 @@ const LoginLayout = ({
   testimonial,
   children
 }) => {
+  const { currentLanguage } = useLanguage();
+
   return (
     <div className="flex min-h-screen">
       {/* Left panel - dark teal background */}
       <div className="w-1/2 bg-[#004A57] p-10 flex flex-col max-md:hidden">
-        <div className="mb-10">
+        <div className="mb-10 flex justify-between items-center">
           <Link to="/" className="flex items-center gap-2">
             <div className="w-6 h-6 bg-[#FF4B55] transform rotate-45" />
             <span className="text-[#EEE] text-xl font-medium">LabourNet</span>
           </Link>
+          <div className="text-white">
+            <LanguageSelector />
+          </div>
         </div>
 
         <div className="mt-16">
@@ -71,7 +78,13 @@ const LoginLayout = ({
 
       {/* Right panel - white background with form */}
       <div className="w-1/2 bg-white p-10 flex items-center justify-center max-md:w-full">
-        <div className="w-full max-w-md">{children}</div>
+        <div className="w-full max-w-md">
+          {/* Mobile-only language selector */}
+          <div className="md:hidden mb-6 flex justify-end">
+            <LanguageSelector />
+          </div>
+          {children}
+        </div>
       </div>
     </div>
   );

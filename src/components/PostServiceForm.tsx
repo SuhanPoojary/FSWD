@@ -8,8 +8,40 @@ import { Calendar, MapPin, DollarSign, Clock, Upload } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { motion } from "framer-motion";
 
+// Create a context to share contractor service data across components
+export const ServiceContext = React.createContext<{
+  services: any[];
+  addService: (service: any) => void;
+  removeService: (id: number) => void;
+}>({
+  services: [],
+  addService: () => {},
+  removeService: () => {},
+});
+
+export const useServiceContext = () => React.useContext(ServiceContext);
+
+export const ServiceProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  const [services, setServices] = useState<any[]>([]);
+
+  const addService = (service: any) => {
+    setServices((prev) => [...prev, service]);
+  };
+
+  const removeService = (id: number) => {
+    setServices((prev) => prev.filter(service => service.id !== id));
+  };
+
+  return (
+    <ServiceContext.Provider value={{ services, addService, removeService }}>
+      {children}
+    </ServiceContext.Provider>
+  );
+};
+
 const PostServiceForm: React.FC = () => {
   const { toast } = useToast();
+  const { addService } = useServiceContext();
   const [formData, setFormData] = useState({
     projectTitle: "",
     projectLocation: "",
@@ -20,6 +52,7 @@ const PostServiceForm: React.FC = () => {
     materialsEquipment: "",
     insuranceRequired: false,
     permitsRequired: false,
+    status: "posted",
   });
 
   const handleChange = (
@@ -44,6 +77,12 @@ const PostServiceForm: React.FC = () => {
     e.preventDefault();
     console.log("Post Service Form submitted:", formData);
     
+    // Add the new service to context
+    addService({
+      id: Date.now(),
+      ...formData,
+    });
+    
     // Here you would normally send the data to your backend
     toast({
       title: "Service Posted",
@@ -61,6 +100,7 @@ const PostServiceForm: React.FC = () => {
       materialsEquipment: "",
       insuranceRequired: false,
       permitsRequired: false,
+      status: "posted",
     });
   };
 

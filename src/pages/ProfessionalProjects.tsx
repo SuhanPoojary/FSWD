@@ -5,7 +5,8 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Search, MapPin, Calendar, Plus } from "lucide-react";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
-import PostServiceForm from "@/components/PostServiceForm";
+import PostProjectForm from "@/components/PostProjectForm";
+import Footer from "@/components/layout/Footer";
 
 const ProfessionalProjects: React.FC = () => {
   const [searchQuery, setSearchQuery] = useState("");
@@ -91,7 +92,7 @@ const ProfessionalProjects: React.FC = () => {
   });
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-white flex flex-col">
       {/* Header */}
       <header className="bg-[#004A57] text-white py-3 px-6 flex justify-between items-center">
         <Link to="/" className="flex items-center gap-2">
@@ -99,11 +100,10 @@ const ProfessionalProjects: React.FC = () => {
           <span className="text-[#EEE] text-xl font-medium">LabourNet</span>
         </Link>
         <nav className="hidden md:flex items-center space-x-6">
-          <Link to="/professional-dashboard" className="hover:text-[#FF4B55]">Find Work</Link>
+          <Link to="/professional-dashboard" className="hover:text-[#FF4B55]">Dashboard</Link>
           <Link to="/professional-projects" className="hover:text-[#FF4B55] text-[#FF4B55]">Projects</Link>
           <Link to="/professional-profile" className="hover:text-[#FF4B55]">My Profile</Link>
           <Link to="/professional-messages" className="hover:text-[#FF4B55]">Messages</Link>
-          <Link to="/about" className="hover:text-[#FF4B55]">About</Link>
         </nav>
         <div className="flex items-center gap-4">
           <Dialog>
@@ -113,23 +113,30 @@ const ProfessionalProjects: React.FC = () => {
                 Post a Project
               </Button>
             </DialogTrigger>
-            <DialogContent className="max-w-4xl w-full">
-              <PostServiceForm />
+            <DialogContent className="max-w-4xl max-h-[90vh] overflow-hidden">
+              <div className="max-h-[calc(90vh-80px)] overflow-y-auto pr-2">
+                <PostProjectForm />
+              </div>
             </DialogContent>
           </Dialog>
+          <Link to="/professional-profile">
+            <div className="w-8 h-8 rounded-full bg-gray-300"></div>
+          </Link>
         </div>
       </header>
 
       {/* Main Content */}
-      <main className="container mx-auto py-8 px-4 max-w-6xl">
+      <main className="container mx-auto py-8 px-4 max-w-6xl flex-grow">
         <div className="flex justify-between items-center mb-8">
           <h1 className="text-2xl font-bold">Available Projects</h1>
           <Dialog>
             <DialogTrigger asChild>
               <Button variant="primary">Post a Project</Button>
             </DialogTrigger>
-            <DialogContent className="max-w-4xl w-full">
-              <PostServiceForm />
+            <DialogContent className="max-w-4xl max-h-[90vh] overflow-hidden">
+              <div className="max-h-[calc(90vh-80px)] overflow-y-auto pr-2">
+                <PostProjectForm />
+              </div>
             </DialogContent>
           </Dialog>
         </div>
@@ -248,9 +255,11 @@ const ProfessionalProjects: React.FC = () => {
                   </div>
                   
                   <div className="flex gap-2">
-                    <Button variant="outline" className="text-[#FF4B55] border-[#FF4B55] hover:bg-[#FF4B55] hover:text-white">
-                      View Details
-                    </Button>
+                    <Link to={`/project-view/${project.id}`}>
+                      <Button variant="outline" className="text-[#FF4B55] border-[#FF4B55] hover:bg-[#FF4B55] hover:text-white">
+                        View Details
+                      </Button>
+                    </Link>
                     <Button variant="primary">
                       Save Project
                     </Button>
@@ -261,6 +270,9 @@ const ProfessionalProjects: React.FC = () => {
           </div>
         </div>
       </main>
+      
+      {/* Footer */}
+      <Footer />
     </div>
   );
 };

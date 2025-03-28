@@ -7,6 +7,7 @@ import { motion } from "framer-motion";
 import Footer from "@/components/layout/Footer";
 import { useProjectContext } from "@/components/PostProjectForm";
 import { Briefcase, Calendar, MapPin, Clock } from "lucide-react";
+import ProfessionalNavbar from "@/components/layout/ProfessionalNavbar";
 
 const ProfessionalDashboard: React.FC = () => {
   const { projects } = useProjectContext();
@@ -33,46 +34,7 @@ const ProfessionalDashboard: React.FC = () => {
   return (
     <div className="min-h-screen bg-[#F6F6F7] flex flex-col">
       {/* Header */}
-      <header className="bg-[#004A57] text-white p-4 flex justify-between items-center">
-        <div className="flex items-center gap-4">
-          <Link to="/" className="flex items-center gap-2">
-            <div className="w-6 h-6 bg-[#FF4B55] transform rotate-45" />
-            <span className="text-[#EEE] text-xl font-medium">LabourNet</span>
-          </Link>
-          <nav className="hidden md:flex space-x-6 ml-12">
-            <Link to="/professional-dashboard" className="text-[#FF4B55]">Dashboard</Link>
-            <Link to="/professional-projects" className="hover:text-[#FF4B55]">Projects</Link>
-            <Link to="/professional-profile" className="hover:text-[#FF4B55]">My Profile</Link>
-            <Link to="/professional-messages" className="hover:text-[#FF4B55]">Messages</Link>
-          </nav>
-        </div>
-        <div className="flex items-center gap-4">
-          <Dialog>
-            <DialogTrigger asChild>
-              <motion.div
-                whileHover={{ scale: 1.03 }}
-                whileTap={{ scale: 0.97 }}
-              >
-                <button className="bg-[#FF4B55] text-white px-4 py-2 rounded hover:bg-[#E43F49] transition-colors">
-                  Post Project
-                </button>
-              </motion.div>
-            </DialogTrigger>
-            <DialogContent className="max-w-4xl max-h-[90vh] overflow-hidden">
-              <DialogTitle>Post Your Project</DialogTitle>
-              <DialogDescription>
-                Fill out the form below to create a new project.
-              </DialogDescription>
-              <div className="max-h-[calc(90vh-120px)] overflow-y-auto pr-2">
-                <PostProjectForm />
-              </div>
-            </DialogContent>
-          </Dialog>
-          <Link to="/professional-profile">
-            <div className="w-8 h-8 rounded-full bg-gray-300"></div>
-          </Link>
-        </div>
-      </header>
+      <ProfessionalNavbar />
 
       {/* Main Content */}
       <main className="container mx-auto py-8 px-4 flex-grow">

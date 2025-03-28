@@ -3,10 +3,11 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Search, MapPin, Calendar, Plus } from "lucide-react";
+import { Search, Plus } from "lucide-react";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import PostProjectForm from "@/components/PostProjectForm";
 import Footer from "@/components/layout/Footer";
+import ProfessionalNavbar from "@/components/layout/ProfessionalNavbar";
 
 const ProfessionalProjects: React.FC = () => {
   const [searchQuery, setSearchQuery] = useState("");
@@ -94,36 +95,7 @@ const ProfessionalProjects: React.FC = () => {
   return (
     <div className="min-h-screen bg-white flex flex-col">
       {/* Header */}
-      <header className="bg-[#004A57] text-white py-3 px-6 flex justify-between items-center">
-        <Link to="/" className="flex items-center gap-2">
-          <div className="w-6 h-6 bg-[#FF4B55] transform rotate-45" />
-          <span className="text-[#EEE] text-xl font-medium">LabourNet</span>
-        </Link>
-        <nav className="hidden md:flex items-center space-x-6">
-          <Link to="/professional-dashboard" className="hover:text-[#FF4B55]">Dashboard</Link>
-          <Link to="/professional-projects" className="hover:text-[#FF4B55] text-[#FF4B55]">Projects</Link>
-          <Link to="/professional-profile" className="hover:text-[#FF4B55]">My Profile</Link>
-          <Link to="/professional-messages" className="hover:text-[#FF4B55]">Messages</Link>
-        </nav>
-        <div className="flex items-center gap-4">
-          <Dialog>
-            <DialogTrigger asChild>
-              <Button variant="primary" className="flex items-center gap-2">
-                <Plus size={18} />
-                Post a Project
-              </Button>
-            </DialogTrigger>
-            <DialogContent className="max-w-4xl max-h-[90vh] overflow-hidden">
-              <div className="max-h-[calc(90vh-80px)] overflow-y-auto pr-2">
-                <PostProjectForm />
-              </div>
-            </DialogContent>
-          </Dialog>
-          <Link to="/professional-profile">
-            <div className="w-8 h-8 rounded-full bg-gray-300"></div>
-          </Link>
-        </div>
-      </header>
+      <ProfessionalNavbar />
 
       {/* Main Content */}
       <main className="container mx-auto py-8 px-4 max-w-6xl flex-grow">

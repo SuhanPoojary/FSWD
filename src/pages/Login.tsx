@@ -18,7 +18,7 @@ const Login: React.FC = () => {
     switch (role) {
       case "worker":
         return {
-          title: "Welcome, Builder!",
+          title: "Welcome, Worker!",
           subtitle: "Access your profile, track job applications, and connect with top contractors in your area.",
           stats: {
             stat1: { value: "2,500+", label: "Active Job Listings" },
@@ -29,7 +29,7 @@ const Login: React.FC = () => {
         };
       case "professional":
         return {
-          title: "Welcome, Skilled Professional!",
+          title: "Welcome, Professional Builder!",
           subtitle: "Access your professional dashboard, manage your services, and connect with clients.",
           stats: {
             stat1: { value: "1,200+", label: "Active Projects" },

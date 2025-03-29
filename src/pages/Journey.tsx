@@ -28,7 +28,7 @@ const Journey: React.FC = () => {
     },
     {
       id: "professional",
-      title: "Skilled Professional",
+      title: "Professional Builder",
       icon: "public/lovable-uploads/f1cebe40-9e7f-4534-9c92-38664e054dd0.png",
       description: "For licensed professionals in electrical, plumbing, carpentry and other specialized trades. Connect with clients and projects directly.",
       features: [

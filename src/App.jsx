@@ -1,4 +1,3 @@
-
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -32,16 +31,12 @@ const queryClient = new QueryClient();
 
 const SmoothScroll = ({ children }) => {
   useEffect(() => {
-    // Apply smooth scrolling behavior to the entire app
     document.documentElement.style.scrollBehavior = "smooth";
-    
-    // Add smooth transitions to all buttons
     const style = document.createElement('style');
     style.innerHTML = `
       button {
         transition: all 0.3s ease;
       }
-      
       .bg-[#FF4B55]:hover, 
       button:has(.bg-[#FF4B55]):hover,
       button.bg-[#FF4B55]:hover,
@@ -50,7 +45,6 @@ const SmoothScroll = ({ children }) => {
         transform: translateY(-2px);
         box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
       }
-      
       .card-hover:hover {
         transform: translateY(-5px);
         box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
@@ -58,7 +52,6 @@ const SmoothScroll = ({ children }) => {
       }
     `;
     document.head.appendChild(style);
-    
     return () => {
       document.documentElement.style.scrollBehavior = "auto";
       document.head.removeChild(style);
@@ -98,7 +91,6 @@ const App = () => (
               <Route path="/workers" element={<Workers />} />
               <Route path="/appoint-workers" element={<AppointWorkers />} />
               <Route path="/analytics" element={<Analytics />} />
-              {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
               <Route path="*" element={<NotFound />} />
             </Routes>
           </BrowserRouter>

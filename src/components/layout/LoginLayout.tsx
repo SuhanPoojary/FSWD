@@ -29,7 +29,9 @@ const LoginLayout: React.FC<LoginLayoutProps> = ({
       <div className="w-1/2 bg-[#004A57] p-10 flex flex-col max-md:hidden">
         <div className="mb-10">
           <Link to="/" className="flex items-center gap-2">
-            <div className="w-6 h-6 bg-[#FF4B55] transform rotate-45" />
+          <div className="w-6 h-6">
+          <img src="/LabourNet_logo.png" alt="LabourNet Logo" className="w-full h-full object-contain" />
+          </div>
             <span className="text-[#EEE] text-xl font-medium">LabourNet</span>
           </Link>
         </div>

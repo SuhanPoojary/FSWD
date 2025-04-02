@@ -4,7 +4,8 @@ import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import { PageHeader } from "@/components/PageHeader";
 import { RoleCard } from "@/components/RoleCard";
-import { Button } from "@/components/ui/button";
+import { Button } from "../components/ui/button";
+
 
 const Journey = () => {
   const navigate = useNavigate();

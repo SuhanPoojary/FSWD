@@ -1,7 +1,7 @@
 
 import React from "react";
 import { Link, useParams, useNavigate } from "react-router-dom";
-import { Button } from "@/components/ui/button";
+import { Button } from "../components/ui/button";
 import { 
   MapPin, 
   Calendar, 
@@ -14,9 +14,9 @@ import {
   FileText,
   Globe
 } from "lucide-react";
-import { Separator } from "@/components/ui/separator";
-import { Badge } from "@/components/ui/badge";
-import { useToast } from "@/hooks/use-toast";
+import { Separator } from "../components/ui/separator";
+import { Badge } from "../components/ui/badge";
+import { useToast } from "../hooks/use-toast";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -27,7 +27,7 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
   AlertDialogTrigger,
-} from "@/components/ui/alert-dialog";
+} from "../components/ui/alert-dialog";
 
 const JobInfo = () => {
   const navigate = useNavigate();

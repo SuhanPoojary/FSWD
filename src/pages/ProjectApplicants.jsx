@@ -1,12 +1,12 @@
 
 import React from "react";
 import { useParams, Link, useNavigate } from "react-router-dom";
-import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Button } from "../components/ui/button";
+import { Badge } from "../components/ui/badge";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "../components/ui/tabs";
 import { Calendar, MapPin, Clock, User, Building, ArrowLeft, Check, X } from "lucide-react";
-import { useToast } from "@/hooks/use-toast";
-import { useProjectContext } from "@/components/PostProjectForm";
+import { useToast } from "../hooks/use-toast";
+import { useProjectContext } from "../components/PostProjectForm";
 import { motion } from "framer-motion";
 
 // Mock applicant data - in a real app, this would come from an API

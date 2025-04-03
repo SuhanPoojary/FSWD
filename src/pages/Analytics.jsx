@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { Button } from "@/components/ui/button";
+import { Button } from "../components/ui/button";
 import { 
   BarChart, 
   Bar, 
@@ -17,7 +17,7 @@ import {
   Cell
 } from "recharts";
 import { Building, Users, PieChart as PieChartIcon, Calendar, BarChartIcon } from "lucide-react";
-import { useProjectContext } from "@/components/PostProjectForm";
+import { useProjectContext } from "../components/PostProjectForm";
 
 const progressData = [
   { name: 'Week 1', planned: 10, actual: 8 },

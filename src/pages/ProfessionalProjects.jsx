@@ -1,13 +1,13 @@
 
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
+import { Button } from "../components/ui/button";
+import { Input } from "../components/ui/input";
 import { Search, Plus } from "lucide-react";
-import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
-import PostProjectForm from "@/components/PostProjectForm";
-import Footer from "@/components/layout/Footer";
-import ProfessionalNavbar from "@/components/layout/ProfessionalNavbar";
+import { Dialog, DialogContent, DialogTrigger } from "../components/ui/dialog";
+import PostProjectForm from "../components/PostProjectForm";
+import Footer from "../components/layout/Footer";
+import ProfessionalNavbar from "../components/layout/ProfessionalNavbar";
 
 const ProfessionalProjects = () => {
   const [searchQuery, setSearchQuery] = useState("");

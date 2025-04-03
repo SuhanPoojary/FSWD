@@ -1,10 +1,10 @@
 
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import PostProjectForm from "@/components/PostProjectForm";
-import { useProjectContext } from "@/components/PostProjectForm";
-import { Button } from "@/components/ui/button";
-import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
+import PostProjectForm from "../components/PostProjectForm";
+import { useProjectContext } from "../components/PostProjectForm";
+import { Button } from "../components/ui/button";
+import { Dialog, DialogContent, DialogTrigger } from "../components/ui/dialog";
 import { Plus, Calendar, User, Building, ArrowRight, Users } from "lucide-react";
 import { motion } from "framer-motion";
 

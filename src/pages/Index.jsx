@@ -1,11 +1,11 @@
 import React from "react";
-import Header from "@/components/layout/Header";
-import Footer from "@/components/layout/Footer";
-import HeroSection from "@/components/sections/HeroSection";
-import AchievementsSection from "@/components/sections/AchievementsSection";
-import GallerySection from "@/components/sections/GallerySection";
-import ContactForm from "@/components/ContactForm";
-import NewsletterSignup from "@/components/NewsletterSignup";
+import Header from "../components/layout/Header";
+import Footer from "../components/layout/Footer";
+import HeroSection from "../components/sections/HeroSection";
+import AchievementsSection from "../components/sections/AchievementsSection";
+import GallerySection from "../components/sections/GallerySection";
+import ContactForm from "../components/ContactForm";
+import NewsletterSignup from "../components/NewsletterSignup";
 
 const Index = () => {
   return (

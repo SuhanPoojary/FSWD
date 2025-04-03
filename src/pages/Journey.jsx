@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import Header from "@/components/layout/Header";
-import Footer from "@/components/layout/Footer";
-import { PageHeader } from "@/components/PageHeader";
-import { RoleCard } from "@/components/RoleCard";
+import Header from "../components/layout/Header";
+import Footer from "../components/layout/Footer";
+import { PageHeader } from "../components/PageHeader";
+import  RoleCard  from "../components/RoleCard";
 import { Button } from "../components/ui/button";
 
 

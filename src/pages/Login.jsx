@@ -1,8 +1,8 @@
 
 import React from "react";
 import { useLocation, Navigate } from "react-router-dom";
-import LoginLayout from "@/components/layout/LoginLayout";
-import LoginForm from "@/components/LoginForm";
+import LoginLayout from "../components/layout/LoginLayout";
+import LoginForm from "../components/LoginForm";
 
 const Login = () => {
   const location = useLocation();

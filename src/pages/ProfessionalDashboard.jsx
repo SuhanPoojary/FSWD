@@ -1,13 +1,13 @@
 
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import { Dialog, DialogContent, DialogTitle, DialogDescription, DialogTrigger } from "@/components/ui/dialog";
-import PostProjectForm from "@/components/PostProjectForm";
+import { Dialog, DialogContent, DialogTitle, DialogDescription, DialogTrigger } from "../components/ui/dialog";
+import PostProjectForm from "../components/PostProjectForm";
 import { motion } from "framer-motion";
-import Footer from "@/components/layout/Footer";
-import { useProjectContext } from "@/components/PostProjectForm";
+import Footer from "../components/layout/Footer";
+import { useProjectContext } from "../components/PostProjectForm";
 import { Briefcase, Calendar, MapPin, Clock } from "lucide-react";
-import ProfessionalNavbar from "@/components/layout/ProfessionalNavbar";
+import ProfessionalNavbar from "../components/layout/ProfessionalNavbar";
 
 const ProfessionalDashboard= () => {
   const { projects } = useProjectContext();

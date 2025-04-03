@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { Button } from "@/components/ui/button";
+import { Button } from "../components/ui/button";
 import { Briefcase, MapPin, Calendar, Clock, CheckCircle, X, ChevronDown } from "lucide-react";
-import { Separator } from "@/components/ui/separator";
+import { Separator } from "../components/ui/separator";
 
 const ActiveWork = () => {
   const navigate = useNavigate();

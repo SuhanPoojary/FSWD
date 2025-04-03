@@ -1,7 +1,5 @@
 import * as React from "react";
 
-import { ToastActionElement, ToastProps } from "../components/ui/toast";
-
 const TOAST_LIMIT = 1;
 const TOAST_REMOVE_DELAY = 1000000;
 
@@ -18,6 +16,12 @@ function genId() {
   count = (count + 1) % Number.MAX_SAFE_INTEGER;
   return count.toString();
 }
+
+// Define the types we need instead of importing them
+const ToastActionElement = React.forwardRef((props, ref) => (
+  <button ref={ref} {...props} />
+));
+ToastActionElement.displayName = "ToastActionElement";
 
 const toastTimeouts = new Map();
 

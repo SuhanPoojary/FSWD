@@ -17,6 +17,7 @@ export default defineConfig(({ mode }) => ({
       '@components': path.resolve(__dirname, 'src/components'),
       '@utils': path.resolve(__dirname, 'src/utils'),
       '@pages': path.resolve(__dirname, 'src/pages'),
+      'src': path.resolve(__dirname, 'src'), // Add this line to support src/ imports
     },
   },
   server: {

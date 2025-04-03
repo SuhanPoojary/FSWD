@@ -1,10 +1,13 @@
+
 import React, { useState } from "react";
 import { Button } from "../components/ui/button";
 import { Input } from "../components/ui/input";
 import { Label } from "../components/ui/label";
 import { Map, Phone } from "lucide-react";
+import { useToast } from "../hooks/use-toast";
 
 const ContactForm = () => {
+  const { toast } = useToast();
   const [formData, setFormData] = useState({
     companyName: "",
     contactName: "",
@@ -25,7 +28,10 @@ const ContactForm = () => {
     e.preventDefault();
     console.log("Form submitted:", formData);
     setFormData({ companyName: "", contactName: "", email: "", phone: "", message: "" });
-    alert("Thank you for your message! We'll get back to you soon.");
+    toast({
+      title: "Success!",
+      description: "Thank you for your message! We'll get back to you soon.",
+    });
   };
 
   return (

@@ -1,3 +1,4 @@
+
 import * as React from "react";
 import * as ToastPrimitives from "@radix-ui/react-toast";
 import { cva } from "class-variance-authority";
@@ -58,6 +59,12 @@ const ToastAction = React.forwardRef(({ className, ...props }, ref) => (
 ));
 ToastAction.displayName = ToastPrimitives.Action.displayName;
 
+// Add ToastActionElement which was missing
+const ToastActionElement = React.forwardRef((props, ref) => (
+  <button ref={ref} {...props} />
+));
+ToastActionElement.displayName = "ToastActionElement";
+
 const ToastClose = React.forwardRef(({ className, ...props }, ref) => (
   <ToastPrimitives.Close
     ref={ref}
@@ -99,4 +106,5 @@ export {
   ToastDescription,
   ToastClose,
   ToastAction,
+  ToastActionElement
 };

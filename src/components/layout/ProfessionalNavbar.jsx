@@ -1,11 +1,12 @@
+
 import React from "react";
 import { Link, useLocation } from "react-router-dom";
-import { Avatar, AvatarFallback, AvatarImage } from "../components/ui/avatar";
+import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import {
   NavigationMenu,
   NavigationMenuList,
   NavigationMenuItem,
-} from "../components/ui/navigation-menu";
+} from "../ui/navigation-menu";
 import { cn } from "../../lib/utils";
 
 const ProfessionalNavbar = () => {

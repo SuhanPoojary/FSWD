@@ -1,5 +1,231 @@
 import React, { useState } from 'react';
 
+// Import the PostProjectForm from the second file
+const PostProjectForm = () => {
+  const [formData, setFormData] = useState({
+    title: "",
+    location: "",
+    employmentType: "",
+    hourlyRate: "",
+    jobDescription: "",
+    requirements: "",
+    company: "Bharati Construction Ltd",
+    projectType: "Commercial",
+    timeline: "3 months",
+    expiresAfter: "30",
+    postedDate: new Date().toISOString(),
+  });
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    // Form validation logic here
+    console.log("Post Job Form submitted:", formData);
+    alert("Job Posted Successfully!");
+    // Reset form
+  };
+
+  return (
+    <div className="p-6 max-h-[80vh] overflow-y-auto">
+      <h2 className="text-2xl font-bold mb-2 text-[#FF4B55]">Post New Project</h2>
+      <p className="text-gray-500 mb-8">Fill in the details to post your new construction project</p>
+
+      <form onSubmit={handleSubmit} className="space-y-8">
+        <div className="bg-gray-50 p-6 rounded-lg border-l-4 border-[#FF4B55] shadow-sm">
+          <h3 className="text-lg font-semibold mb-4">Basic Information</h3>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+            <div>
+              <label className="block text-sm font-medium mb-1">Job Title</label>
+              <input
+                id="title"
+                name="title"
+                value={formData.title}
+                onChange={handleChange}
+                placeholder="e.g. Site Engineer"
+                className="w-full p-2 border rounded mt-1"
+                required
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium mb-1">Location</label>
+              <input
+                id="location"
+                name="location"
+                value={formData.location}
+                onChange={handleChange}
+                placeholder="e.g. Mumbai, Maharashtra"
+                className="w-full p-2 border rounded mt-1"
+                required
+              />
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div>
+              <label className="block text-sm font-medium mb-1">Employment Type</label>
+              <select
+                id="employmentType"
+                name="employmentType"
+                value={formData.employmentType}
+                onChange={handleChange}
+                className="w-full mt-1 p-2 border rounded"
+                required
+              >
+                <option value="">Select Type</option>
+                <option value="Full-time">Full-time</option>
+                <option value="Part-time">Part-time</option>
+                <option value="Contract">Contract</option>
+                <option value="Temporary">Temporary</option>
+              </select>
+            </div>
+            <div>
+              <label className="block text-sm font-medium mb-1">Salary Range</label>
+              <input
+                id="hourlyRate"
+                name="hourlyRate"
+                value={formData.hourlyRate}
+                onChange={handleChange}
+                placeholder="e.g. ₹25,000-35,000"
+                className="w-full p-2 border rounded mt-1"
+                required
+              />
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
+            <div>
+              <label className="block text-sm font-medium mb-1">Project Type</label>
+              <select
+                id="projectType"
+                name="projectType"
+                value={formData.projectType}
+                onChange={handleChange}
+                className="w-full mt-1 p-2 border rounded"
+                required
+              >
+                <option value="Commercial">Commercial</option>
+                <option value="Residential">Residential</option>
+                <option value="Industrial">Industrial</option>
+                <option value="Infrastructure">Infrastructure</option>
+                <option value="Government">Government</option>
+              </select>
+            </div>
+            <div>
+              <label className="block text-sm font-medium mb-1">Project Timeline</label>
+              <select
+                id="timeline"
+                name="timeline"
+                value={formData.timeline}
+                onChange={handleChange}
+                className="w-full mt-1 p-2 border rounded"
+                required
+              >
+                <option value="1 month">1 month</option>
+                <option value="3 months">3 months</option>
+                <option value="6 months">6 months</option>
+                <option value="1 year">1 year</option>
+                <option value="2+ years">2+ years</option>
+              </select>
+            </div>
+          </div>
+
+          <div className="mt-6">
+            <label className="block text-sm font-medium mb-1">Remove Job After</label>
+            <select
+              id="expiresAfter"
+              name="expiresAfter"
+              value={formData.expiresAfter}
+              onChange={handleChange}
+              className="w-full mt-1 p-2 border rounded"
+            >
+              <option value="7">7 days</option>
+              <option value="14">14 days</option>
+              <option value="30">30 days</option>
+              <option value="60">60 days</option>
+              <option value="90">90 days</option>
+              <option value="never">Don't remove</option>
+            </select>
+          </div>
+        </div>
+
+        <div className="bg-gray-50 p-6 rounded-lg border-l-4 border-[#FF4B55] shadow-sm">
+          <h3 className="text-lg font-semibold mb-4">Job Details</h3>
+
+          <div className="mb-6">
+            <label className="block text-sm font-medium mb-1">Job Description</label>
+            <textarea
+              id="jobDescription"
+              name="jobDescription"
+              value={formData.jobDescription}
+              onChange={handleChange}
+              rows={5}
+              className="w-full mt-1 p-2 border rounded"
+              placeholder="Describe the job responsibilities, daily tasks, and expectations..."
+              required
+            ></textarea>
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium mb-1">Requirements</label>
+            <textarea
+              id="requirements"
+              name="requirements"
+              value={formData.requirements}
+              onChange={handleChange}
+              rows={5}
+              className="w-full mt-1 p-2 border rounded"
+              placeholder="List qualifications, skills, experience, and education requirements..."
+              required
+            ></textarea>
+          </div>
+        </div>
+
+        <div className="bg-gray-50 p-6 rounded-lg border-l-4 border-[#FF4B55] shadow-sm">
+          <h3 className="text-lg font-semibold mb-4">Project Images</h3>
+
+          <div className="border-2 border-dashed border-gray-300 rounded-lg p-8 text-center">
+            <div className="flex flex-col items-center justify-center">
+              <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-gray-400 mb-4">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                <polyline points="17 8 12 3 7 8"></polyline>
+                <line x1="12" y1="3" x2="12" y2="15"></line>
+              </svg>
+              <p className="text-gray-600 mb-2">Upload Project Images</p>
+              <p className="text-gray-400 text-sm mb-4">Drag and drop files here or click to browse</p>
+              <input type="file" className="hidden" multiple accept="image/*" id="file-upload" />
+              <label htmlFor="file-upload">
+                <button type="button" className="px-4 py-2 border rounded-md text-gray-600 hover:bg-[#FF4B55] hover:text-white transition-all">
+                  Select Files
+                </button>
+              </label>
+            </div>
+          </div>
+        </div>
+
+        <div className="flex justify-end gap-4 mt-8">
+          <button type="button" className="px-4 py-2 border rounded-md">
+            Save as Draft
+          </button>
+          <button
+            type="submit"
+            className="bg-[#FF4B55] text-white px-4 py-2 rounded-md hover:bg-[#E43F49] shadow-md hover:shadow-lg"
+          >
+            Post Job
+          </button>
+        </div>
+      </form>
+    </div>
+  );
+};
+
 const ContractorDashboard = () => {
   const [isPostJobDialogOpen, setPostJobDialogOpen] = useState(false);
   const [isContactDialogOpen, setContactDialogOpen] = useState(false);
@@ -43,55 +269,20 @@ const ContractorDashboard = () => {
               Post Job
             </button>
             {isPostJobDialogOpen && (
-              <dialog className="max-w-4xl w-full max-h-[90vh] overflow-y-auto p-6 rounded-lg" open>
-                <div>
-                  <div>
-                    <h2 className="text-lg font-semibold">Post a New Job</h2>
-                    <p className="text-gray-500">Fill out the form below to post a new job listing</p>
-                  </div>
-                  <div>
-                    <form className="mt-4">
-                      <div className="space-y-4">
-                        <div>
-                          <label className="block text-sm font-medium mb-1">Job Title</label>
-                          <input type="text" className="w-full p-2 border rounded" />
-                        </div>
-                        <div>
-                          <label className="block text-sm font-medium mb-1">Job Type</label>
-                          <select className="w-full p-2 border rounded">
-                            <option>Commercial</option>
-                            <option>Residential</option>
-                            <option>Industrial</option>
-                          </select>
-                        </div>
-                        <div>
-                          <label className="block text-sm font-medium mb-1">Location</label>
-                          <input type="text" className="w-full p-2 border rounded" />
-                        </div>
-                        <div>
-                          <label className="block text-sm font-medium mb-1">Duration</label>
-                          <input type="text" className="w-full p-2 border rounded" />
-                        </div>
-                        <div>
-                          <label className="block text-sm font-medium mb-1">Pay Rate</label>
-                          <input type="text" className="w-full p-2 border rounded" />
-                        </div>
-                        <div>
-                          <button type="submit" className="bg-[#FF4B55] text-white px-4 py-2 rounded-md">
-                            Post Job
-                          </button>
-                          <button
-                            type="button"
-                            onClick={closePostJobDialog}
-                            className="ml-2 px-4 py-2 border rounded-md"
-                          >
-                            Cancel
-                          </button>
-                        </div>
-                      </div>
-                    </form>
-                  </div>
+              <dialog className="max-w-4xl w-full max-h-[90vh] overflow-y-auto p-0 rounded-lg" open>
+                <div className="sticky top-0 flex justify-between items-center bg-white p-4 border-b z-10">
+                  <h2 className="text-lg font-semibold">Post a New Job</h2>
+                  <button 
+                    onClick={closePostJobDialog}
+                    className="text-gray-500 hover:text-gray-700"
+                  >
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                      <line x1="18" y1="6" x2="6" y2="18"></line>
+                      <line x1="6" y1="6" x2="18" y2="18"></line>
+                    </svg>
+                  </button>
                 </div>
+                <PostProjectForm />
               </dialog>
             )}
           </div>

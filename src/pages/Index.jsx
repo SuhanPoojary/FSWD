@@ -18,7 +18,7 @@ const Index = () => {
         <AchievementsSection />
         <GallerySection />
 
-        <section className="bg-[#EDEEF1] px-8 py-16">
+        <section id = "contact" className="bg-[#EDEEF1] px-8 py-16">
           <div className="max-w-6xl mx-auto">
             <h2 className="text-black text-4xl mb-8 text-center">
               Get in Touch
@@ -41,7 +41,7 @@ const Index = () => {
                         href="mailto:info@labournet.com"
                         className="text-[#004A57] hover:underline"
                       >
-                        info@labournet.com
+                        aasthabuilders@gmail.com
                       </a>
                     </div>
                     <div className="flex items-center gap-2">
@@ -50,12 +50,12 @@ const Index = () => {
                         href="tel:+1234567890"
                         className="text-[#004A57] hover:underline"
                       >
-                        +1 (234) 567-890
+                        +91-98335 03591
                       </a>
                     </div>
                     <div className="flex items-center gap-2">
                       <span className="font-bold">Address:</span>
-                      <span>123 Builder Street, Construction City</span>
+                      <span>Aastha Residency, 004 Near Aai Ekveera Devi Mandir, Titwala(E) </span>
                     </div>
                   </div>
                 </div>

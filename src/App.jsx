@@ -9,6 +9,7 @@ import Index from "./pages/Index";
 import Journey from "./pages/Journey";
 import Login from "./pages/Login";
 import NotFound from "./pages/NotFound";
+import OurStory from "./pages/OurStory";
 import WorkerDashboard from "./pages/WorkerDashboard";
 import WorkerProfile from "./pages/WorkerProfile";
 import ActiveWork from "./pages/ActiveWork";
@@ -94,6 +95,7 @@ const App = () => (
                 <Route path="/appoint-workers" element={<AppointWorkers />} />
                 <Route path="/analytics" element={<Analytics />} />
                 <Route path="*" element={<NotFound />} />
+                <Route path="/Our-story" element={<OurStory />} />
               </Routes>
             </BrowserRouter>
           </SmoothScroll>

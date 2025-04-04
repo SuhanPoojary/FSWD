@@ -10,13 +10,13 @@ const WorkerProfile = () => {
   const { toast } = useToast();
   const [isEditing, setIsEditing] = useState(false);
   const [profile, setProfile] = useState({
-    name: "Michael Thompson",
+    name: "Rajesh Kumar",
     title: "Professional Carpenter",
-    email: "mthompson@email.com",
+    email: "rajesh6@gmail.com",
     phone: "(+91)77755-55555",
-    location: "VESIT, CHEMBUR",
+    location: "Bhoirwadi,Kalyan",
     experience: "15",
-    hourlyRate: "45",
+    hourlyRate: "200",
     about: "Skilled carpenter with expertise in custom furniture, home renovations, and architectural woodworking. Specializing in hardwood installations and custom cabinetry."
   });
 
@@ -153,7 +153,7 @@ const WorkerProfile = () => {
             </div>
             
             <div>
-              <label className="block text-sm font-medium mb-1">Hourly Rate ($)</label>
+              <label className="block text-sm font-medium mb-1">Hourly Rate (₹)</label>
               {isEditing ? (
                 <Input 
                   name="hourlyRate" 

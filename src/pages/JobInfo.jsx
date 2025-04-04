@@ -1,4 +1,3 @@
-
 import React from "react";
 import { Link, useParams, useNavigate } from "react-router-dom";
 import { Button } from "../components/ui/button";
@@ -35,52 +34,131 @@ const JobInfo = () => {
   const { toast } = useToast();
   const [showApplyDialog, setShowApplyDialog] = React.useState(false);
 
-  // This would usually come from an API call based on the ID
-  const job = {
-    id,
-    title: "Commercial Construction Helper",
-    company: "ABC Construction Ltd",
-    companyRating: 4.7,
-    reviews: 128,
-    location: "Toronto, ON",
-    address: "123 Construction Ave, Toronto, ON M5V 2L7",
-    jobType: "Full-time",
-    duration: "3 months",
-    hourlyRate: "$22-25",
-    experience: "1-2 years",
-    education: "High School Diploma",
-    postedDate: "May 15, 2023",
-    startDate: "June 1, 2023",
-    deadline: "May 30, 2023",
-    schedule: "Monday to Friday, 7:00 AM - 4:00 PM",
-    description: "We are seeking reliable, hardworking Construction Helpers to join our team for a commercial building project in downtown Toronto. The ideal candidate has some construction experience, is reliable, and can work well in a team environment.",
-    responsibilities: [
-      "Assist skilled tradespeople with various tasks on the construction site",
-      "Transport materials, tools, and equipment to workers",
-      "Clean work areas, machines, tools, and remove debris",
-      "Set up and take down temporary structures like scaffolding",
-      "Follow safety protocols and report any hazards or unsafe conditions",
-      "Perform basic construction tasks as directed by supervisors"
-    ],
-    requirements: [
-      "1-2 years of experience in construction or related field preferred",
-      "Ability to lift up to 50 lbs and stand for extended periods",
-      "Valid driver's license is an asset",
-      "High school diploma or equivalent",
-      "Knowledge of basic construction tools and techniques",
-      "Reliable transportation to job sites"
-    ],
-    benefits: [
-      "Competitive hourly rate",
-      "Overtime opportunities",
-      "On-the-job training",
-      "Potential for permanent employment for top performers",
-      "Weekly pay schedule"
-    ],
-    skills: [
-      "Construction", "Material Handling", "Physical Stamina", "Team Collaboration", "Safety Compliance"
-    ]
+  // Sample job data with Indian context
+  const jobs = {
+    "1": {
+      id: "1",
+      title: "Commercial Construction Helper",
+      company: "Ashoka Builders Pvt Ltd",
+      companyRating: 4.3,
+      reviews: 86,
+      location: "Mumbai, MH",
+      address: "123 Andheri East, Mumbai, Maharashtra 400069",
+      jobType: "Full-time",
+      duration: "3 months",
+      hourlyRate: "₹150-180",
+      experience: "1-2 years",
+      education: "10th Pass",
+      postedDate: "10 April, 2025",
+      startDate: "20 April, 2025",
+      deadline: "18 April, 2025",
+      schedule: "Monday to Saturday, 8:00 AM - 5:00 PM",
+      description: "We are seeking reliable, hardworking Construction Helpers for our commercial project in Mumbai. The ideal candidate has some construction experience and works well in a team.",
+      responsibilities: [
+        "Assist skilled workers at construction site",
+        "Transport materials and tools as needed",
+        "Clean work areas and remove debris",
+        "Follow safety protocols and report hazards"
+      ],
+      requirements: [
+        "1-2 years experience in construction",
+        "Ability to lift up to 25 kg",
+        "Basic knowledge of construction tools",
+        "Reliable attendance"
+      ],
+      benefits: [
+        "PF and ESI benefits",
+        "Weekly payment",
+        "On-site accommodation available",
+        "Possibility of permanent role"
+      ],
+      skills: [
+        "Construction", "Labour Work", "Teamwork", "Safety Compliance"
+      ]
+    },
+    "2": {
+      id: "2",
+      title: "Data Entry Operator",
+      company: "TechMind Solutions",
+      companyRating: 4.1,
+      reviews: 52,
+      location: "Bengaluru, KA",
+      address: "42 Koramangala, Bengaluru, Karnataka 560034",
+      jobType: "Part-time",
+      duration: "6 months",
+      hourlyRate: "₹120-140",
+      experience: "0-1 years",
+      education: "12th Pass",
+      postedDate: "8 April, 2025",
+      startDate: "22 April, 2025",
+      deadline: "19 April, 2025",
+      schedule: "Monday to Friday, 10:00 AM - 4:00 PM",
+      description: "Looking for accurate and fast Data Entry Operators to join our growing team in Bengaluru.",
+      responsibilities: [
+        "Enter data into company systems",
+        "Verify data accuracy",
+        "Update records and databases",
+        "Scan and organize documents"
+      ],
+      requirements: [
+        "Good typing speed (40+ WPM)",
+        "Basic computer knowledge",
+        "Attention to detail",
+        "English communication skills"
+      ],
+      benefits: [
+        "Flexible work hours",
+        "Monthly incentives for accuracy",
+        "Free snacks and tea",
+        "Transportation allowance"
+      ],
+      skills: [
+        "Data Entry", "MS Excel", "Typing", "Record Keeping"
+      ]
+    },
+    "3": {
+      id: "3",
+      title: "Delivery Associate",
+      company: "Swiggy",
+      companyRating: 4.0,
+      reviews: 205,
+      location: "Delhi NCR",
+      address: "Various locations across Delhi NCR",
+      jobType: "Full-time",
+      duration: "Permanent",
+      hourlyRate: "₹130-200",
+      experience: "No experience required",
+      education: "8th Pass",
+      postedDate: "5 April, 2025",
+      startDate: "Immediate",
+      deadline: "20 April, 2025",
+      schedule: "Flexible shifts, 8-hour rotations",
+      description: "Join India's leading food delivery platform as a Delivery Associate and earn competitive pay with flexible hours.",
+      responsibilities: [
+        "Pick up and deliver food orders",
+        "Navigate city streets efficiently",
+        "Maintain delivery vehicle in good condition",
+        "Provide excellent customer service"
+      ],
+      requirements: [
+        "Own two-wheeler with valid driving license",
+        "Smartphone with internet connectivity",
+        "Knowledge of city roads",
+        "Aadhaar card and PAN card"
+      ],
+      benefits: [
+        "Daily payouts available",
+        "Accident insurance",
+        "Fuel allowance",
+        "Incentives during peak hours"
+      ],
+      skills: [
+        "Driving", "Navigation", "Customer Service", "Time Management"
+      ]
+    }
   };
+
+  const job = jobs[id] || jobs["1"];
 
   const handleApply = () => {
     // In a real app, you would submit the application to the backend
@@ -96,48 +174,48 @@ const JobInfo = () => {
   return (
     <div className="min-h-screen bg-[#F5F5F5]">
       {/* Header */}
-      <header className="bg-[#004A57] text-white p-4 flex justify-between items-center">
+      <header className="bg-[#004a57] text-white p-4 flex justify-between items-center">
         <div className="flex items-center gap-4">
           <Link to="/" className="flex items-center gap-2">
-            <div className="w-6 h-6 bg-[#FF4B55] transform rotate-45" />
+            <div className="w-6 h-6 bg-[#FF0000] transform rotate-45" />
             <span className="text-[#EEE] text-xl font-medium">LabourNet</span>
           </Link>
           <nav className="hidden md:flex space-x-6 ml-12">
-            <Link to="/worker-dashboard" className="hover:text-[#FF4B55]">Dashboard</Link>
-            <Link to="/job-info/1742961196903" className="hover:text-[#FF4B55] text-[#FF4B55]">Jobs</Link>
-            <Link to="/active-work" className="hover:text-[#FF4B55]">Active Work</Link>
-            <Link to="/worker-profile" className="hover:text-[#FF4B55]">Profile</Link>
+            <Link to="/worker-dashboard" className="hover:text-[#FFC300]">Dashboard</Link>
+            <Link to="/job-info/1" className="hover:text-[#FFC300] text-[#FFC300]">Jobs</Link>
+            <Link to="/active-work" className="hover:text-[#FFC300]">Active Work</Link>
+            <Link to="/worker-profile" className="hover:text-[#FFC300]">Profile</Link>
           </nav>
         </div>
         <div className="flex items-center gap-4">
           <Link to="/worker-profile">
-            <div className="w-8 h-8 rounded-full bg-gray-300 cursor-pointer hover:ring-2 hover:ring-[#FF4B55] transition-all duration-300"></div>
+            <div className="w-8 h-8 rounded-full bg-gray-300 cursor-pointer hover:ring-2 hover:ring-[#FFC300] transition-all duration-300"></div>
           </Link>
         </div>
       </header>
 
-      <main className="container mx-auto py-8 px-4 max-w-4xl">
-        <div className="mb-6">
+      <main className="container mx-auto py-6 px-4 max-w-4xl">
+        <div className="mb-4">
           <Button 
             variant="outline" 
             size="sm" 
             onClick={() => navigate(-1)}
-            className="text-gray-600 hover:text-[#004A57] transition-all duration-300"
+            className="text-gray-600 hover:text-[#FF5733] transition-all duration-300"
           >
             <ChevronLeft className="mr-2 h-4 w-4" /> Back
           </Button>
         </div>
         
         <div className="bg-white rounded-lg shadow-sm overflow-hidden">
-          <div className="p-6 md:p-8">
-            <div className="flex flex-col md:flex-row justify-between md:items-center mb-6">
+          <div className="p-5 md:p-6">
+            <div className="flex flex-col md:flex-row justify-between md:items-center mb-4">
               <div>
                 <Badge variant="outline" className="mb-2 bg-blue-50 text-blue-700 border-blue-200">
                   {job.jobType}
                 </Badge>
-                <h1 className="text-2xl md:text-3xl font-bold">{job.title}</h1>
+                <h1 className="text-xl md:text-2xl font-bold">{job.title}</h1>
                 <div className="flex items-center mt-2">
-                  <Link to="/company/abc-construction" className="text-[#004A57] hover:underline font-medium">
+                  <Link to={`/company/${job.id}`} className="text-[#FF5733] hover:underline font-medium">
                     {job.company}
                   </Link>
                   <div className="flex items-center ml-3">
@@ -148,11 +226,11 @@ const JobInfo = () => {
                 </div>
               </div>
               
-              <div className="mt-6 md:mt-0">
+              <div className="mt-4 md:mt-0">
                 <AlertDialog open={showApplyDialog} onOpenChange={setShowApplyDialog}>
                   <AlertDialogTrigger asChild>
-                    <Button variant="primary" size="lg" className="w-full md:w-auto">
-                      Apply for Position
+                    <Button variant="primary" size="lg" className="w-full md:w-auto bg-[#FF5733] hover:bg-[#E24B2C]">
+                      Apply
                     </Button>
                   </AlertDialogTrigger>
                   <AlertDialogContent>
@@ -164,7 +242,7 @@ const JobInfo = () => {
                     </AlertDialogHeader>
                     <AlertDialogFooter>
                       <AlertDialogCancel>Cancel</AlertDialogCancel>
-                      <AlertDialogAction onClick={handleApply}>
+                      <AlertDialogAction onClick={handleApply} className="bg-[#FF5733]">
                         Confirm Application
                       </AlertDialogAction>
                     </AlertDialogFooter>
@@ -173,26 +251,26 @@ const JobInfo = () => {
               </div>
             </div>
             
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-              <div className="space-y-3">
-                <div className="flex items-start gap-3">
-                  <MapPin className="h-5 w-5 text-[#004A57] mt-0.5" />
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+              <div className="space-y-2">
+                <div className="flex items-start gap-2">
+                  <MapPin className="h-5 w-5 text-[#FF5733] mt-0.5" />
                   <div>
                     <div className="font-medium">Location</div>
                     <div className="text-gray-600">{job.address}</div>
                   </div>
                 </div>
                 
-                <div className="flex items-start gap-3">
-                  <Calendar className="h-5 w-5 text-[#004A57] mt-0.5" />
+                <div className="flex items-start gap-2">
+                  <Calendar className="h-5 w-5 text-[#FF5733] mt-0.5" />
                   <div>
                     <div className="font-medium">Start Date</div>
                     <div className="text-gray-600">{job.startDate}</div>
                   </div>
                 </div>
                 
-                <div className="flex items-start gap-3">
-                  <Clock className="h-5 w-5 text-[#004A57] mt-0.5" />
+                <div className="flex items-start gap-2">
+                  <Clock className="h-5 w-5 text-[#FF5733] mt-0.5" />
                   <div>
                     <div className="font-medium">Schedule</div>
                     <div className="text-gray-600">{job.schedule}</div>
@@ -200,25 +278,25 @@ const JobInfo = () => {
                 </div>
               </div>
               
-              <div className="space-y-3">
-                <div className="flex items-start gap-3">
-                  <Briefcase className="h-5 w-5 text-[#004A57] mt-0.5" />
+              <div className="space-y-2">
+                <div className="flex items-start gap-2">
+                  <Briefcase className="h-5 w-5 text-[#FF5733] mt-0.5" />
                   <div>
                     <div className="font-medium">Job Type</div>
                     <div className="text-gray-600">{job.jobType} | {job.duration}</div>
                   </div>
                 </div>
                 
-                <div className="flex items-start gap-3">
-                  <DollarSign className="h-5 w-5 text-[#004A57] mt-0.5" />
+                <div className="flex items-start gap-2">
+                  <DollarSign className="h-5 w-5 text-[#FF5733] mt-0.5" />
                   <div>
-                    <div className="font-medium">Compensation</div>
+                    <div className="font-medium">Pay</div>
                     <div className="text-gray-600">{job.hourlyRate} per hour</div>
                   </div>
                 </div>
                 
-                <div className="flex items-start gap-3">
-                  <Calendar className="h-5 w-5 text-[#004A57] mt-0.5" />
+                <div className="flex items-start gap-2">
+                  <Calendar className="h-5 w-5 text-[#FF5733] mt-0.5" />
                   <div>
                     <div className="font-medium">Application Deadline</div>
                     <div className="text-gray-600">{job.deadline}</div>
@@ -227,42 +305,42 @@ const JobInfo = () => {
               </div>
             </div>
             
-            <Separator className="my-6" />
+            <Separator className="my-4" />
             
-            <div className="mb-8">
-              <h2 className="text-xl font-semibold mb-4">Job Description</h2>
-              <p className="text-gray-700 whitespace-pre-line">{job.description}</p>
+            <div className="mb-4">
+              <h2 className="text-lg font-semibold mb-2">Job Description</h2>
+              <p className="text-gray-700">{job.description}</p>
             </div>
             
-            <div className="mb-8">
-              <h2 className="text-xl font-semibold mb-4">Key Responsibilities</h2>
-              <ul className="list-disc pl-5 space-y-2">
+            <div className="mb-4">
+              <h2 className="text-lg font-semibold mb-2">Key Responsibilities</h2>
+              <ul className="list-disc pl-5 space-y-1">
                 {job.responsibilities.map((item, index) => (
                   <li key={index} className="text-gray-700">{item}</li>
                 ))}
               </ul>
             </div>
             
-            <div className="mb-8">
-              <h2 className="text-xl font-semibold mb-4">Requirements</h2>
-              <ul className="list-disc pl-5 space-y-2">
+            <div className="mb-4">
+              <h2 className="text-lg font-semibold mb-2">Requirements</h2>
+              <ul className="list-disc pl-5 space-y-1">
                 {job.requirements.map((item, index) => (
                   <li key={index} className="text-gray-700">{item}</li>
                 ))}
               </ul>
             </div>
             
-            <div className="mb-8">
-              <h2 className="text-xl font-semibold mb-4">Benefits</h2>
-              <ul className="list-disc pl-5 space-y-2">
+            <div className="mb-4">
+              <h2 className="text-lg font-semibold mb-2">Benefits</h2>
+              <ul className="list-disc pl-5 space-y-1">
                 {job.benefits.map((item, index) => (
                   <li key={index} className="text-gray-700">{item}</li>
                 ))}
               </ul>
             </div>
             
-            <div className="mb-8">
-              <h2 className="text-xl font-semibold mb-4">Required Skills</h2>
+            <div className="mb-4">
+              <h2 className="text-lg font-semibold mb-2">Required Skills</h2>
               <div className="flex flex-wrap gap-2">
                 {job.skills.map((skill, index) => (
                   <Badge key={index} variant="secondary" className="bg-gray-100">
@@ -272,71 +350,79 @@ const JobInfo = () => {
               </div>
             </div>
             
-            <Separator className="my-6" />
+            <Separator className="my-4" />
             
-            <div className="bg-[#F5F5F5] p-6 rounded-lg">
-              <div className="flex items-center mb-4">
-                <Building className="h-5 w-5 text-[#004A57] mr-2" />
-                <h2 className="text-xl font-semibold">About {job.company}</h2>
+            <div className="bg-[#FFF8E8] p-4 rounded-lg">
+              <div className="flex items-center mb-3">
+                <Building className="h-5 w-5 text-[#FF5733] mr-2" />
+                <h2 className="text-lg font-semibold">About {job.company}</h2>
               </div>
               
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div>
-                  <p className="text-gray-700 mb-4">
-                    ABC Construction Ltd is a leading construction company specializing in commercial and residential projects across Ontario. With over 25 years of experience, we pride ourselves on safety, quality workmanship, and timely project delivery.
-                  </p>
-                  
-                  <div className="flex items-center text-sm text-[#004A57] mt-4">
-                    <Globe className="h-4 w-4 mr-2" />
-                    <a href="#" className="hover:underline">Visit company website</a>
-                  </div>
-                  
-                  <div className="flex items-center text-sm text-[#004A57] mt-2">
-                    <FileText className="h-4 w-4 mr-2" />
-                    <a href="#" className="hover:underline">View all jobs from this company</a>
-                  </div>
+              <div className="space-y-2 text-sm">
+                <div className="flex items-center justify-between">
+                  <span className="text-gray-600">Employees</span>
+                  <span className="font-medium">50-200</span>
                 </div>
                 
-                <div className="space-y-3">
-                  <div className="flex items-center justify-between">
-                    <span className="text-sm text-gray-600">Employees</span>
-                    <span className="text-sm font-medium">50-200</span>
-                  </div>
-                  
-                  <div className="flex items-center justify-between">
-                    <span className="text-sm text-gray-600">Founded</span>
-                    <span className="text-sm font-medium">1998</span>
-                  </div>
-                  
-                  <div className="flex items-center justify-between">
-                    <span className="text-sm text-gray-600">Industry</span>
-                    <span className="text-sm font-medium">Construction</span>
-                  </div>
-                  
-                  <div className="flex items-center justify-between">
-                    <span className="text-sm text-gray-600">Specializations</span>
-                    <span className="text-sm font-medium">Commercial, Residential</span>
-                  </div>
+                <div className="flex items-center justify-between">
+                  <span className="text-gray-600">Founded</span>
+                  <span className="font-medium">2008</span>
                 </div>
+                
+                <div className="flex items-center justify-between">
+                  <span className="text-gray-600">Industry</span>
+                  <span className="font-medium">
+                    {id === "1" ? "Construction" : 
+                     id === "2" ? "IT" : "Food Delivery"}
+                  </span>
+                </div>
+              </div>
+              
+              <div className="flex items-center text-sm text-[#FF5733] mt-3">
+                <FileText className="h-4 w-4 mr-2" />
+                <a href="#" className="hover:underline">View all jobs from this company</a>
               </div>
             </div>
             
-            <div className="mt-8 flex justify-between">
+            <div className="mt-6 flex justify-between">
               <Button 
                 variant="outline" 
-                onClick={() => navigate(-1)}
+                onClick={() => navigate('/job-listing')}
               >
-                Back to Jobs
+                View All Jobs
               </Button>
               
               <AlertDialog open={showApplyDialog} onOpenChange={setShowApplyDialog}>
                 <AlertDialogTrigger asChild>
-                  <Button variant="primary">
-                    Apply for Position
+                  <Button variant="primary" className="bg-[#FF5733] hover:bg-[#E24B2C]">
+                    Apply
                   </Button>
                 </AlertDialogTrigger>
               </AlertDialog>
             </div>
+          </div>
+        </div>
+        
+        {/* Job Navigation */}
+        <div className="mt-6 p-4 bg-white rounded-lg shadow-sm">
+          <h3 className="font-medium mb-3">Similar Jobs</h3>
+          <div className="space-y-2">
+            {Object.values(jobs)
+              .filter(j => j.id !== id)
+              .map(otherJob => (
+                <Link 
+                  key={otherJob.id} 
+                  to={`/job-info/${otherJob.id}`}
+                  className="flex justify-between items-center p-2 hover:bg-gray-50 rounded-md"
+                >
+                  <div>
+                    <div className="font-medium">{otherJob.title}</div>
+                    <div className="text-sm text-gray-600">{otherJob.company} • {otherJob.location}</div>
+                  </div>
+                  <div className="text-[#FF5733]">{otherJob.hourlyRate}</div>
+                </Link>
+              ))
+            }
           </div>
         </div>
       </main>

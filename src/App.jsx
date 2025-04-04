@@ -6,6 +6,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { useEffect } from "react";
 import { LanguageProvider } from "./contexts/LanguageContext";
 import Index from "./pages/Index";
+import JobDetails from "./pages/JobDetails";
 import Journey from "./pages/Journey";
 import Login from "./pages/Login";
 import NotFound from "./pages/NotFound";
@@ -96,6 +97,7 @@ const App = () => (
                 <Route path="/analytics" element={<Analytics />} />
                 <Route path="*" element={<NotFound />} />
                 <Route path="/Our-story" element={<OurStory />} />
+                <Route path="/job-details/:jobId" element={<JobDetails />} />
               </Routes>
             </BrowserRouter>
           </SmoothScroll>

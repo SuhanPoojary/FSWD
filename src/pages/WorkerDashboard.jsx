@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import {
@@ -17,25 +16,25 @@ const WorkerDashboard = () => {
   const { toast } = useToast();
   
   const [jobs, setJobs] = useState([
-    { id: "1", company: "Elite Builders", distance: "2.5 km", location: "Commercial Tower", duration: "3 months", hourlyRate: "$55/hr", address: "123 Construction Ave, Building Site 48", phone: "+1 (555) 123-4567", startDate: "2024-02-01 08:00 AM" },
-    { id: "2", company: "BuildRight Inc", distance: "4.8 km", location: "Office Building", duration: "6 months", hourlyRate: "$48/hr" },
-    { id: "3", company: "City Construction", distance: "1.2 km", location: "Shopping Mall", duration: "4 months", hourlyRate: "$52/hr" },
+    { id: "1", company: "Larsen & Toubro", distance: "2.5 km", location: "Commercial Tower", duration: "3 months", hourlyRate: "₹550/hr", address: "Hiranandani Gardens, Powai, Mumbai - 400076", phone: "+91 9876543210", startDate: "2024-02-01 08:00 AM" },
+    { id: "2", company: "Shapoorji Pallonji", distance: "4.8 km", location: "Office Building", duration: "6 months", hourlyRate: "₹480/hr" },
+    { id: "3", company: "Tata Projects", distance: "1.2 km", location: "Shopping Mall", duration: "4 months", hourlyRate: "₹520/hr" },
   ]);
   
   const [recommendedJobs, setRecommendedJobs] = useState([
     {
       id: "4",
       title: "Commercial Building Project",
-      company: "Arlington Construction",
-      hourlyRate: "$35/hr",
+      company: "Godrej Properties",
+      hourlyRate: "₹350/hr",
       type: "Full-time",
       skill: "Carpentry"
     },
     {
       id: "5",
       title: "Residential Renovation",
-      company: "HomeBuilders Inc",
-      hourlyRate: "$32/hr",
+      company: "DLF Builders",
+      hourlyRate: "₹320/hr",
       type: "Contract",
       skill: "General Labor"
     }
@@ -113,6 +112,7 @@ const WorkerDashboard = () => {
 
   const handleViewJobDetail = (jobId) => {
     navigate(`/job-detail/${jobId}`);
+
   };
 
   const allAvailableJobs = [
@@ -123,9 +123,9 @@ const WorkerDashboard = () => {
       location: job.location,
       duration: job.duration,
       hourlyRate: job.hourlyRate,
-      address: job.address,
-      phone: job.phone,
-      startDate: job.startDate
+      address: job.address || "Bandra Kurla Complex, Mumbai - 400051",
+      phone: job.phone || "+91 8765432109",
+      startDate: job.startDate || "2024-03-01 09:00 AM"
     })),
     ...recommendedJobs.map(rj => ({
       id: rj.id,
@@ -133,7 +133,10 @@ const WorkerDashboard = () => {
       distance: "Nearby",
       location: rj.title,
       duration: "Variable",
-      hourlyRate: rj.hourlyRate
+      hourlyRate: rj.hourlyRate,
+      address: "Andheri East, Mumbai - 400069",
+      phone: "+91 7654321098",
+      startDate: "2024-03-15 08:30 AM"
     }))
   ];
 
@@ -142,18 +145,18 @@ const WorkerDashboard = () => {
       {/* Header */}
       <header className="bg-[#004A57] text-white py-3 px-6 flex justify-between items-center">
         <Link to="/" className="flex items-center gap-2">
-          <div className="w-6 h-6 bg-[#FF4B55] transform rotate-45" />
+          <div className="w-6 h-6 bg-[#5D8AA8] transform rotate-45" />
           <span className="text-[#EEE] text-xl font-medium">LabourNet</span>
         </Link>
         <div className="flex items-center gap-4">
           <div className="relative">
-            <div className="w-5 h-5 rounded-full bg-[#FF4B55] flex items-center justify-center text-white text-xs">
+            <div className="w-5 h-5 rounded-full bg-[#5D8AA8] flex items-center justify-center text-white text-xs">
               {activeJobs.length}
             </div>
           </div>
           <div className="flex items-center gap-2 cursor-pointer">
             <div className="w-8 h-8 rounded-full bg-gray-300"></div>
-            <span>John Doe</span>
+            <span>Rajesh Kumar</span>
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path d="M6 9L12 15L18 9" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
             </svg>
@@ -203,7 +206,7 @@ const WorkerDashboard = () => {
                       <CheckIcon className="w-4 h-4 mr-1" /> Accept
                     </Button>
                     <Button 
-                      className="flex items-center justify-center bg-[#FF4B55] hover:bg-[#E43F49] text-white" 
+                      className="flex items-center justify-center bg-[#5D8AA8] hover:bg-[#4A7A96] text-white" 
                       onClick={() => handleReject(job.id)}
                     >
                       <XIcon className="w-4 h-4 mr-1" /> Reject
@@ -233,7 +236,7 @@ const WorkerDashboard = () => {
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-8">
               {/* Recommended Jobs */}
-              <div className="col-span-2 bg-[#FF4B55] text-white rounded-lg shadow-sm p-6">
+              <div className="col-span-2 bg-[#5D8AA8] text-white rounded-lg shadow-sm p-6">
                 <div className="flex items-center gap-2 mb-4">
                   <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M22 11.0801V12.0001C21.9988 14.1565 21.3005 16.2548 20.0093 17.9819C18.7182 19.7091 16.9033 20.9726 14.8354 21.5839C12.7674 22.1952 10.5573 22.1218 8.53447 21.3746C6.51168 20.6274 4.78465 19.2462 3.61096 17.4372C2.43727 15.6281 1.87979 13.4882 2.02168 11.3364C2.16356 9.18467 2.99721 7.13643 4.39828 5.49718C5.79935 3.85793 7.69279 2.71549 9.79619 2.24025C11.8996 1.76502 14.1003 1.98245 16.07 2.86011" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
@@ -261,7 +264,7 @@ const WorkerDashboard = () => {
                 
                 <button 
                   onClick={() => setShowAllJobs(true)}
-                  className="mt-4 bg-white text-[#FF4B55] font-medium py-2 px-4 rounded hover:bg-gray-100 transition-colors"
+                  className="mt-4 bg-white text-[#5D8AA8] font-medium py-2 px-4 rounded hover:bg-gray-100 transition-colors"
                 >
                   View All Jobs
                 </button>
@@ -270,7 +273,7 @@ const WorkerDashboard = () => {
               {/* Profile & Active Work */}
               <div className="flex flex-col gap-6">
                 <div 
-                  className="bg-white rounded-lg shadow-sm p-6 hover:border-[#FF4B55] hover:border cursor-pointer transition-colors"
+                  className="bg-white rounded-lg shadow-sm p-6 hover:border-[#5D8AA8] hover:border cursor-pointer transition-colors"
                   onClick={goToProfile}
                 >
                   <div className="flex items-center gap-2 mb-4">
@@ -284,7 +287,7 @@ const WorkerDashboard = () => {
                 </div>
                 
                 <div 
-                  className="bg-white rounded-lg shadow-sm p-6 hover:border-[#FF4B55] hover:border cursor-pointer transition-colors"
+                  className="bg-white rounded-lg shadow-sm p-6 hover:border-[#5D8AA8] hover:border cursor-pointer transition-colors"
                   onClick={goToActiveWork}
                 >
                   <div className="flex items-center gap-2 mb-4">
@@ -301,7 +304,7 @@ const WorkerDashboard = () => {
                 </div>
                 
                 <button 
-                  className="bg-[#FF4B55] text-white font-medium py-3 px-4 rounded hover:bg-[#E43F49] transition-colors w-full"
+                  className="bg-[#5D8AA8] text-white font-medium py-3 px-4 rounded hover:bg-[#4A7A96] transition-colors w-full"
                   onClick={handleLogout}
                 >
                   Log Out
@@ -334,15 +337,15 @@ const WorkerDashboard = () => {
                 </div>
                 <div className="flex items-start gap-2">
                   <MapPinIcon className="h-4 w-4 text-gray-500 mt-0.5" />
-                  <span>{selectedJob.address || "Address information not available"}</span>
+                  <span>{selectedJob.address || "Worli, Mumbai - 400018"}</span>
                 </div>
                 <div className="flex items-start gap-2">
                   <PhoneIcon className="h-4 w-4 text-gray-500 mt-0.5" />
-                  <span>{selectedJob.phone || "Contact information not available"}</span>
+                  <span>{selectedJob.phone || "+91 9876543210"}</span>
                 </div>
                 <div className="flex items-start gap-2">
                   <ClockIcon className="h-4 w-4 text-gray-500 mt-0.5" />
-                  <span>{selectedJob.startDate || "Start date not specified"}</span>
+                  <span>{selectedJob.startDate || "2024-02-15 09:00 AM"}</span>
                 </div>
               </div>
               

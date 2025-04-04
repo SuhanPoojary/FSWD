@@ -61,7 +61,7 @@ const ContactForm = () => {
           
           <div>
             <Label htmlFor="phone" className="text-sm block mb-2">Phone Number</Label>
-            <Input type="tel" id="phone" name="phone" value={formData.phone} onChange={handleChange} required className="w-full" placeholder="+1 (123) 456-7890" />
+            <Input type="tel" id="phone" name="phone" value={formData.phone} onChange={handleChange} required className="w-full" placeholder="+91-XXXXX XXXXX" />
           </div>
           
           <div className="col-span-1 md:col-span-2">
@@ -92,7 +92,7 @@ const ContactForm = () => {
           </div>
           <div>
             <p className="text-sm text-gray-500">Call Us</p>
-            <p className="font-medium">(555) 123-4567</p>
+            <p className="font-medium">+91-92333 44455</p>
           </div>
         </div>
       </div>

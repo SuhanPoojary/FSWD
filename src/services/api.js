@@ -20,5 +20,10 @@ export const api = {
   // Users/Profile
   getProfile: () => axios.get(`${API_URL}/users/me`),
   updateProfile: (data) => axios.put(`${API_URL}/users/me`, data),
-  getWorkers: () => axios.get(`${API_URL}/users?role=worker`)
+  getWorkers: () => axios.get(`${API_URL}/users?role=worker`),
+
+  // Profiles
+  post: (endpoint, data) => axios.post(`${API_URL}${endpoint}`, data),
+  get: (endpoint) => axios.get(`${API_URL}${endpoint}`),
+  put: (endpoint, data) => axios.put(`${API_URL}${endpoint}`, data)
 }; 

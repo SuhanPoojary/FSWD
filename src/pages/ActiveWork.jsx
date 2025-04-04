@@ -1,24 +1,24 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Button } from "../components/ui/button";
-import { Briefcase, MapPin, Calendar, Clock, CheckCircle, X, ChevronDown } from "lucide-react";
+import { Briefcase, MapPin, Calendar, Clock, CheckCircle, X, ChevronDown, Phone, Mail, User } from "lucide-react";
 import { Separator } from "../components/ui/separator";
 
 const ActiveWork = () => {
   const navigate = useNavigate();
   const [expandedJob, setExpandedJob] = useState(null);
   
-  // Sample active jobs data
+  // Updated active jobs data with Indian companies and locations
   const activeJobs = [
     {
       id: "1742961196906",
-      title: "Highway Expansion Project",
-      company: "RoadWorks Construction",
-      location: "Edmonton, AB",
-      hourlyRate: "$24-28",
+      title: "Metro Line Extension Project",
+      company: "L&T Infrastructure",
+      location: "Mumbai, Maharashtra",
+      hourlyRate: "₹280-320",
       startDate: "June 5, 2023",
       endDate: "August 30, 2023",
-      schedule: "Mon-Fri, 7am-4pm",
+      schedule: "Mon-Sat, 8am-5pm",
       attendance: 15,
       totalDays: 20,
       shifts: [
@@ -41,13 +41,13 @@ const ActiveWork = () => {
     },
     {
       id: "1742961196907",
-      title: "Office Building Renovation",
-      company: "Urban Development Corp",
-      location: "Toronto, ON",
-      hourlyRate: "$26-30",
+      title: "IT Park Development",
+      company: "Godrej Properties",
+      location: "Bengaluru, Karnataka",
+      hourlyRate: "₹300-350",
       startDate: "May 15, 2023",
       endDate: "July 25, 2023",
-      schedule: "Mon-Fri, 8am-5pm",
+      schedule: "Mon-Fri, 9am-6pm",
       attendance: 8,
       totalDays: 10,
       shifts: [
@@ -61,6 +61,56 @@ const ActiveWork = () => {
         { date: "May 24, 2023", status: "missed", hours: 0 },
         { date: "May 25, 2023", status: "upcoming" },
         { date: "May 26, 2023", status: "upcoming" },
+      ]
+    },
+    {
+      id: "1742961196908",
+      title: "Residential Complex Construction",
+      company: "DLF Builders",
+      location: "Gurgaon, Haryana",
+      hourlyRate: "₹250-300",
+      startDate: "July 10, 2023",
+      endDate: "October 20, 2023",
+      schedule: "Mon-Sat, 7am-4pm",
+      attendance: 5,
+      totalDays: 15,
+      shifts: [
+        { date: "July 10, 2023", status: "completed", hours: 8 },
+        { date: "July 11, 2023", status: "completed", hours: 8 },
+        { date: "July 12, 2023", status: "completed", hours: 8 },
+        { date: "July 13, 2023", status: "completed", hours: 8 },
+        { date: "July 14, 2023", status: "completed", hours: 8 },
+        { date: "July 17, 2023", status: "upcoming" },
+        { date: "July 18, 2023", status: "upcoming" },
+        { date: "July 19, 2023", status: "upcoming" },
+        { date: "July 20, 2023", status: "upcoming" },
+        { date: "July 21, 2023", status: "upcoming" },
+      ]
+    },
+    {
+      id: "1742961196909",
+      title: "Highway Repair & Maintenance",
+      company: "GMR Infrastructure",
+      location: "Chennai, Tamil Nadu",
+      hourlyRate: "₹220-270",
+      startDate: "June 20, 2023",
+      endDate: "September 5, 2023",
+      schedule: "Mon-Fri, 6am-3pm",
+      attendance: 7,
+      totalDays: 12,
+      shifts: [
+        { date: "June 20, 2023", status: "completed", hours: 8 },
+        { date: "June 21, 2023", status: "completed", hours: 8 },
+        { date: "June 22, 2023", status: "completed", hours: 8 },
+        { date: "June 23, 2023", status: "completed", hours: 8 },
+        { date: "June 26, 2023", status: "completed", hours: 8 },
+        { date: "June 27, 2023", status: "completed", hours: 8 },
+        { date: "June 28, 2023", status: "missed", hours: 0 },
+        { date: "June 29, 2023", status: "completed", hours: 8 },
+        { date: "June 30, 2023", status: "upcoming" },
+        { date: "July 3, 2023", status: "upcoming" },
+        { date: "July 4, 2023", status: "upcoming" },
+        { date: "July 5, 2023", status: "upcoming" },
       ]
     }
   ];
@@ -125,7 +175,7 @@ const ActiveWork = () => {
                     <Button 
                       variant="outline" 
                       size="sm"
-                      onClick={() => navigate(`/active-work/${job.id}`)}
+                      onClick={() => navigate(`/job-details/${job.id}`)}
                       className="border-[#004A57] text-[#004A57] hover:bg-[#004A57] hover:text-white"
                     >
                       Job Details

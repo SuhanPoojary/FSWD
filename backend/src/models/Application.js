@@ -17,7 +17,15 @@ const applicationSchema = new mongoose.Schema({
     default: 'pending'
   },
   coverLetter: String,
-  expectedRate: Number
+  expectedRate: Number,
+  contractorDetails: {
+    businessName: String,
+    businessType: String,
+    yearsOfExperience: Number,
+    licenseNumber: String,
+    insuranceInfo: String,
+    projectTypes: [String]
+  }
 }, {
   timestamps: true
 });

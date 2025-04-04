@@ -1,20 +1,28 @@
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { AuthProvider, useAuth } from './contexts/AuthContext';
-import { ProjectProvider } from './components/PostProjectForm';
+import { ProjectProvider } from "./components/PostProjectForm";
+import { JobProvider } from "./components/PostJobForm";
+import { Toaster } from "./components/ui/toaster";
+import { Toaster as Sonner } from "./components/ui/sonner";
 import { TooltipProvider } from "./components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { LanguageProvider } from "./contexts/LanguageContext";
-import { Toaster } from "./components/ui/toaster";
-import { Toaster as Sonner } from "./components/ui/sonner";
 
-// Import all pages
+// Removed: import SmoothScroll from './components/SmoothScroll';
+
 import Index from "./pages/Index";
+import JobDetails from "./pages/JobDetails";
 import Journey from "./pages/Journey";
 import Login from './pages/Login';
+import SignUp from "./pages/SignUp";
 import NotFound from './pages/NotFound';
+import OurStory from "./pages/OurStory";
 import WorkerDashboard from "./pages/WorkerDashboard";
 import WorkerProfile from "./pages/WorkerProfile";
+import WorkerPortfolio from "./pages/WorkerPortfolio";
+import ProfessionalPortfolio from "./pages/ProfessionalPortfolio";
+import ContractorPortfolio from "./pages/ContractorPortfolio";
 import ActiveWork from "./pages/ActiveWork";
 import JobInfo from './pages/JobInfo';
 import ProfessionalDashboard from './pages/ProfessionalDashboard';
@@ -30,93 +38,81 @@ import ProjectDetailView from "./pages/ProjectDetailView";
 import Workers from "./pages/Workers";
 import AppointWorkers from './pages/AppointWorkers';
 import Analytics from './pages/Analytics';
+import EditWorkerProfile from "./pages/EditWorkerProfile";
+import EditProfessionalProfile from "./pages/EditProfessionalProfile";
+import EditContractorProfile from "./pages/EditContractorProfile";
 import PostProjectForm from './components/PostProjectForm';
 
 const queryClient = new QueryClient();
 
-// Protected Route component
 const ProtectedRoute = ({ children }) => {
   const { user, loading } = useAuth();
-
-  if (loading) {
-    return <div>Loading...</div>;
-  }
-
-  if (!user) {
-    return <Navigate to="/login" />;
-  }
-
+  if (loading) return <div>Loading...</div>;
+  if (!user) return <Navigate to="/login" />;
   return children;
 };
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
-    <Router>
-      <AuthProvider>
-        <LanguageProvider>
-          <ProjectProvider>
+    <AuthProvider>
+      <LanguageProvider>
+        <ProjectProvider>
+          <JobProvider>
             <TooltipProvider>
               <Toaster />
               <Sonner />
-              <Routes>
-                <Route path="/" element={<Index />} />
-                <Route path="/journey" element={<Journey />} />
-                <Route path="/login" element={<Login />} />
-                <Route path="/worker-dashboard" element={<WorkerDashboard />} />
-                <Route path="/worker-profile" element={<WorkerProfile />} />
-                <Route path="/active-work" element={<ActiveWork />} />
-                <Route path="/job-detail/:id" element={<JobInfo />} />
-                <Route path="/job-info/:id" element={<JobInfo />} />
-                <Route
-                  path="/professional-dashboard"
-                  element={
-                    <ProtectedRoute>
-                      <ProfessionalDashboard />
-                    </ProtectedRoute>
-                  }
-                />
-                <Route
-                  path="/contractor-dashboard"
-                  element={
-                    <ProtectedRoute>
-                      <ContractorDashboard />
-                    </ProtectedRoute>
-                  }
-                />
-                <Route
-                  path="/contractor-job-posting"
-                  element={
-                    <ProtectedRoute>
-                      <ContractorJobPosting />
-                    </ProtectedRoute>
-                  }
-                />
-                <Route path="/professional-profile" element={<ProfessionalProfile />} />
-                <Route path="/project-details/:id" element={<ProjectDetails />} />
-                <Route path="/project-view/:id" element={<ProjectView />} />
-                <Route path="/professional-messages" element={<ProfessionalMessages />} />
-                <Route path="/professional-projects" element={<ProfessionalProjects />} />
-                <Route path="/company-profile" element={<CompanyProfile />} />
-                <Route path="/project-detail-view/:id" element={<ProjectDetailView />} />
-                <Route path="/workers" element={<Workers />} />
-                <Route path="/appoint-workers" element={<AppointWorkers />} />
-                <Route path="/analytics" element={<Analytics />} />
-                <Route
-                  path="/post-project"
-                  element={
-                    <ProtectedRoute>
-                      <PostProjectForm />
-                    </ProtectedRoute>
-                  }
-                />
-                <Route path="*" element={<NotFound />} />
-              </Routes>
+              {/* Removed <SmoothScroll> wrapper */}
+              <BrowserRouter>
+                <Routes>
+                  <Route path="/" element={<Index />} />
+                  <Route path="/journey" element={<Journey />} />
+                  <Route path="/login" element={<Login />} />
+                  <Route path="/signup" element={<SignUp />} />
+                  <Route path="/worker-dashboard" element={<WorkerDashboard />} />
+                  <Route path="/worker-profile" element={<WorkerProfile />} />
+                  <Route path="/worker-portfolio" element={<WorkerPortfolio />} />
+                  <Route path="/professional-portfolio" element={<ProfessionalPortfolio />} />
+                  <Route path="/contractor-portfolio" element={<ContractorPortfolio />} />
+                  <Route path="/active-work" element={<ActiveWork />} />
+                  <Route path="/job-detail/:id" element={<JobInfo />} />
+                  <Route path="/job-info/:id" element={<JobInfo />} />
+                  <Route path="/professional-dashboard" element={<ProfessionalDashboard />} />
+                  <Route path="/professional-profile" element={<ProfessionalProfile />} />
+                  <Route path="/project-details/:id" element={<ProjectDetails />} />
+                  <Route path="/project-view/:id" element={<ProjectView />} />
+                  <Route path="/professional-messages" element={<ProfessionalMessages />} />
+                  <Route path="/professional-projects" element={<ProfessionalProjects />} />
+                  <Route path="/contractor-dashboard" element={<ContractorDashboard />} />
+                  <Route path="/contractor-job-posting" element={<ContractorJobPosting />} />
+                  <Route path="/company-profile" element={<CompanyProfile />} />
+                  <Route path="/project-detail-view/:id" element={<ProjectDetailView />} />
+                  <Route path="/workers" element={<Workers />} />
+                  <Route path="/appoint-workers" element={<AppointWorkers />} />
+                  <Route path="/analytics" element={<Analytics />} />
+                  <Route path="/edit-worker-profile" element={<EditWorkerProfile />} />
+                  <Route path="/edit-professional-profile" element={<EditProfessionalProfile />} />
+                  <Route path="/edit-contractor-profile" element={<EditContractorProfile />} />
+                  <Route path="/Our-story" element={<OurStory />} />
+                  <Route path="/job-details/:jobId" element={<JobDetails />} />
+                  <Route
+                    path="/post-project"
+                    element={
+                      <ProtectedRoute>
+                        <PostProjectForm />
+                      </ProtectedRoute>
+                    }
+                  />
+                  <Route path="*" element={<NotFound />} />
+                </Routes>
+              </BrowserRouter>
+              {/* Removed </SmoothScroll> */}
             </TooltipProvider>
-          </ProjectProvider>
-        </LanguageProvider>
-      </AuthProvider>
-    </Router>
+          </JobProvider>
+        </ProjectProvider>
+      </LanguageProvider>
+    </AuthProvider>
   </QueryClientProvider>
 );
 
 export default App;
+

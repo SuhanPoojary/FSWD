@@ -1,9 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { api } from '../services/api';
 import { useNavigate } from 'react-router-dom';
+import { useToast } from '../components/ui/use-toast';
+import axios from 'axios';
 
 const ContractorDashboard = () => {
   const navigate = useNavigate();
+  const { toast } = useToast();
   const [isPostJobDialogOpen, setPostJobDialogOpen] = useState(false);
   const [isContactDialogOpen, setContactDialogOpen] = useState(false);
   const [projects, setProjects] = useState([]);
@@ -17,6 +20,7 @@ const ContractorDashboard = () => {
     hourlyRate: '',
     description: ''
   });
+  const [user, setUser] = useState(null);
 
   useEffect(() => {
     const fetchProjects = async () => {
@@ -31,6 +35,21 @@ const ContractorDashboard = () => {
     };
 
     fetchProjects();
+  }, []);
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      try {
+        const response = await api.getProfile();
+        setUser(response.data);
+      } catch (error) {
+        console.error('Error fetching user:', error);
+        setError('Failed to fetch user');
+        setLoading(false);
+      }
+    };
+
+    fetchUser();
   }, []);
 
   const handleInputChange = (e) => {
@@ -71,14 +90,49 @@ const ContractorDashboard = () => {
 
   const handleApplyNow = async (projectId) => {
     try {
-      await api.applyToProject({
+      if (!user) {
+        toast({
+          title: "Authentication Required",
+          description: "Please login to apply for projects",
+          variant: "destructive",
+        });
+        navigate('/login?role=contractor');
+        return;
+      }
+
+      // Get contractor's profile details
+      const profileResponse = await api.getProfile();
+      const contractorProfile = profileResponse.data;
+
+      const applicationData = {
         project: projectId,
-        worker: 'current-user-id', // This should be replaced with actual user ID
-        status: 'pending'
+        worker: user._id,
+        status: 'pending',
+        coverLetter: "I am interested in working on this project",
+        expectedRate: 35,
+        contractorDetails: {
+          businessName: contractorProfile.businessName,
+          businessType: contractorProfile.businessType,
+          yearsOfExperience: contractorProfile.yearsOfExperience,
+          licenseNumber: contractorProfile.licenseNumber,
+          insuranceInfo: contractorProfile.insuranceInfo,
+          projectTypes: contractorProfile.projectTypes
+        }
+      };
+
+      await api.applyToProject(applicationData);
+      
+      toast({
+        title: "Success",
+        description: "Your application has been submitted successfully",
       });
-      alert('Application submitted successfully!');
-    } catch (err) {
-      alert('Failed to submit application');
+    } catch (error) {
+      console.error('Error submitting application:', error);
+      toast({
+        title: "Error",
+        description: error.response?.data?.message || "Failed to submit application",
+        variant: "destructive",
+      });
     }
   };
 

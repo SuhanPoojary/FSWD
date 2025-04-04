@@ -18,7 +18,13 @@ router.get('/project/:projectId', async (req, res) => {
 // Apply to project
 router.post('/', async (req, res) => {
   try {
-    const application = new Application(req.body);
+    // Ensure contractor details are included
+    const applicationData = {
+      ...req.body,
+      contractorDetails: req.body.contractorDetails || {}
+    };
+    
+    const application = new Application(applicationData);
     await application.save();
     
     // Update project applicants count

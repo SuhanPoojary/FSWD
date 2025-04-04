@@ -2,10 +2,20 @@ const express = require('express');
 const router = express.Router();
 const Project = require('../models/Project');
 
-// Get all projects
+// Get all projects with optional filtering
 router.get('/', async (req, res) => {
   try {
-    const projects = await Project.find();
+    const { builder, contractor } = req.query;
+    let query = {};
+
+    if (builder) {
+      query.builder = builder;
+    }
+    if (contractor) {
+      query.contractor = contractor;
+    }
+
+    const projects = await Project.find(query);
     res.json(projects);
   } catch (error) {
     res.status(500).json({ message: error.message });

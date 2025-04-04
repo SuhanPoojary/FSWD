@@ -1,11 +1,11 @@
+
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Header from "../components/layout/Header";
 import Footer from "../components/layout/Footer";
 import { PageHeader } from "../components/PageHeader";
-import  RoleCard  from "../components/RoleCard";
+import RoleCard from "../components/RoleCard";
 import { Button } from "../components/ui/button";
-
 
 const Journey = () => {
   const navigate = useNavigate();
@@ -58,6 +58,14 @@ const Journey = () => {
 
   const handleCreateProfile = () => {
     if (selectedRole) {
+      navigate(`/signup?role=${selectedRole}`);
+    } else {
+      alert("Please select a role first");
+    }
+  };
+
+  const handleLogin = () => {
+    if (selectedRole) {
       navigate(`/login?role=${selectedRole}`);
     } else {
       alert("Please select a role first");
@@ -101,13 +109,22 @@ const Journey = () => {
             <p className="text-[rgba(113,123,158,1)] text-lg mb-8">
               Ready to take the next step? Create your profile and start exploring opportunities.
             </p>
-            <Button 
-              variant="primary" 
-              size="lg"
-              onClick={handleCreateProfile}
-            >
-              Create Your Profile
-            </Button>
+            <div className="flex justify-center gap-4">
+              <Button 
+                variant="primary" 
+                size="lg"
+                onClick={handleCreateProfile}
+              >
+                Sign Up
+              </Button>
+              <Button 
+                variant="outline" 
+                size="lg"
+                onClick={handleLogin}
+              >
+                Login
+              </Button>
+            </div>
           </div>
         </div>
       </main>

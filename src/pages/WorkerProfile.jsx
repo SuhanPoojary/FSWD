@@ -1,41 +1,34 @@
 
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { Avatar, AvatarFallback, AvatarImage } from "../components/ui/avatar";
 import { Button } from "../components/ui/button";
-import { Input } from "../components/ui/input";
-import { Textarea } from "../components/ui/textarea";
-import { useToast } from "../hooks/use-toast";
+import { Badge } from "../components/ui/badge";
+import { CheckCircle2, MapPin, Phone, Mail, Clock, DollarSign } from "lucide-react";
 
 const WorkerProfile = () => {
-  const { toast } = useToast();
-  const [isEditing, setIsEditing] = useState(false);
-  const [profile, setProfile] = useState({
-    name: "Michael Thompson",
-    title: "Professional Carpenter",
-    email: "mthompson@email.com",
-    phone: "(+91)77755-55555",
-    location: "VESIT, CHEMBUR",
-    experience: "15",
-    hourlyRate: "45",
-    about: "Skilled carpenter with expertise in custom furniture, home renovations, and architectural woodworking. Specializing in hardwood installations and custom cabinetry."
-  });
+  const navigate = useNavigate();
+  const [profile, setProfile] = useState(null);
 
-  const [formData, setFormData] = useState({ ...profile });
-
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
-  };
-
-  const handleEditToggle = () => {
-    if (isEditing) {
-      setProfile(formData);
-      toast({
-        title: "Profile Updated",
-        description: "Your profile has been successfully updated.",
-      });
+  useEffect(() => {
+    // Load profile data from localStorage
+    const savedProfile = localStorage.getItem("workerProfile");
+    if (savedProfile) {
+      setProfile(JSON.parse(savedProfile));
+    } else {
+      // If no profile exists, redirect to create one
+      navigate("/worker-portfolio");
     }
-    setIsEditing(!isEditing);
+  }, [navigate]);
+
+  // If profile is still loading
+  if (!profile) {
+    return <div className="min-h-screen bg-[#F6F6F7] flex items-center justify-center">Loading profile...</div>;
+  }
+
+  // Get initial for avatar fallback
+  const getInitials = () => {
+    return profile?.fullName ? profile.fullName.charAt(0).toUpperCase() : "W";
   };
 
   return (
@@ -46,160 +39,117 @@ const WorkerProfile = () => {
           <div className="w-6 h-6 bg-[#FF4B55] transform rotate-45" />
           <span className="text-[#EEE] text-xl font-medium">LabourNet</span>
         </Link>
+        <nav className="hidden md:flex items-center space-x-6">
+          <Link to="/worker-dashboard" className="hover:text-[#FF4B55]">Dashboard</Link>
+          <Link to="/active-work" className="hover:text-[#FF4B55]">Active Work</Link>
+          <Link to="/worker-profile" className="hover:text-[#FF4B55] text-[#FF4B55]">My Profile</Link>
+        </nav>
+        <div className="flex items-center gap-4">
+          <Avatar className="h-8 w-8 bg-gray-300">
+            <AvatarImage src={profile.profileImage} alt={profile.fullName} />
+            <AvatarFallback>{getInitials()}</AvatarFallback>
+          </Avatar>
+        </div>
       </header>
 
       {/* Main Content */}
-      <main className="container mx-auto py-8 px-4 max-w-3xl">
-        <div className="bg-white rounded-lg shadow-sm p-8">
-          <div className="flex justify-between items-center mb-6">
-            <h1 className="text-2xl font-bold">Profile Information</h1>
-            <Button 
-              variant="primary" 
-              onClick={handleEditToggle}
-            >
-              {isEditing ? "Save Profile" : "Edit Profile"}
-            </Button>
-          </div>
-          
-          <div className="flex flex-col md:flex-row gap-6 items-start">
-            <div className="w-32 h-32 rounded-full bg-gray-200 border-2 border-[#FF4B55] flex items-center justify-center text-gray-400">
-              120 × 120
-            </div>
-            
-            <div className="flex-1">
-              {isEditing ? (
-                <div className="space-y-4">
-                  <div>
-                    <label htmlFor="name" className="block text-sm font-medium mb-1">Full Name</label>
-                    <Input 
-                      id="name" 
-                      name="name" 
-                      value={formData.name} 
-                      onChange={handleChange}
-                    />
+      <main className="container mx-auto py-8 px-4">
+        <div className="max-w-4xl mx-auto">
+          {/* Profile Header */}
+          <div className="bg-white rounded-lg p-6 shadow-sm mb-6">
+            <div className="flex flex-col md:flex-row items-center md:items-start gap-6">
+              <Avatar className="h-24 w-24 border-4 border-[#FF4B55]">
+                <AvatarImage src={profile.profileImage} alt={profile.fullName} />
+                <AvatarFallback className="text-2xl">{getInitials()}</AvatarFallback>
+              </Avatar>
+              
+              <div className="flex-1 text-center md:text-left">
+                <h1 className="text-2xl font-bold">{profile.fullName}</h1>
+                <p className="text-gray-600 mb-3">{profile.availability || "Worker"}</p>
+                
+                <div className="flex flex-wrap gap-2 justify-center md:justify-start">
+                  <div className="flex items-center gap-1 text-sm text-gray-600">
+                    <MapPin className="h-4 w-4" />
+                    <span>{profile.location}</span>
                   </div>
-                  <div>
-                    <label htmlFor="title" className="block text-sm font-medium mb-1">Professional Title</label>
-                    <Input 
-                      id="title" 
-                      name="title" 
-                      value={formData.title} 
-                      onChange={handleChange}
-                    />
+                  <div className="flex items-center gap-1 text-sm text-gray-600">
+                    <Clock className="h-4 w-4" />
+                    <span>{profile.experience} years experience</span>
                   </div>
+                  {profile.hourlyRate && (
+                    <div className="flex items-center gap-1 text-sm text-gray-600">
+                      <DollarSign className="h-4 w-4" />
+                      <span>₹{profile.hourlyRate}/hour</span>
+                    </div>
+                  )}
                 </div>
-              ) : (
-                <div>
-                  <h2 className="text-2xl font-bold">{profile.name}</h2>
-                  <p className="text-gray-600">{profile.title}</p>
-                </div>
-              )}
-            </div>
-          </div>
-          
-          <div className="mt-8 grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div>
-              <label className="block text-sm font-medium mb-1">Email</label>
-              {isEditing ? (
-                <Input 
-                  name="email" 
-                  type="email" 
-                  value={formData.email} 
-                  onChange={handleChange}
-                />
-              ) : (
-                <div className="border rounded p-2">{profile.email}</div>
-              )}
-            </div>
-            
-            <div>
-              <label className="block text-sm font-medium mb-1">Phone</label>
-              {isEditing ? (
-                <Input 
-                  name="phone" 
-                  value={formData.phone} 
-                  onChange={handleChange}
-                />
-              ) : (
-                <div className="border rounded p-2">{profile.phone}</div>
-              )}
-            </div>
-            
-            <div>
-              <label className="block text-sm font-medium mb-1">Location</label>
-              {isEditing ? (
-                <Input 
-                  name="location" 
-                  value={formData.location} 
-                  onChange={handleChange}
-                />
-              ) : (
-                <div className="border rounded p-2">{profile.location}</div>
-              )}
-            </div>
-            
-            <div>
-              <label className="block text-sm font-medium mb-1">Years of Experience</label>
-              {isEditing ? (
-                <Input 
-                  name="experience" 
-                  type="number" 
-                  value={formData.experience} 
-                  onChange={handleChange}
-                />
-              ) : (
-                <div className="border rounded p-2">{profile.experience}</div>
-              )}
-            </div>
-            
-            <div>
-              <label className="block text-sm font-medium mb-1">Hourly Rate ($)</label>
-              {isEditing ? (
-                <Input 
-                  name="hourlyRate" 
-                  type="number" 
-                  value={formData.hourlyRate} 
-                  onChange={handleChange}
-                />
-              ) : (
-                <div className="border rounded p-2">{profile.hourlyRate}</div>
-              )}
-            </div>
-          </div>
-          
-          <div className="mt-6">
-            <label className="block text-sm font-medium mb-1">About</label>
-            {isEditing ? (
-              <Textarea 
-                name="about" 
-                className="min-h-[100px]" 
-                value={formData.about} 
-                onChange={handleChange}
-              />
-            ) : (
-              <div className="border rounded p-2">{profile.about}</div>
-            )}
-          </div>
-          
-          <div className="mt-8 flex justify-between">
-            <Button 
-              variant="default" 
-              onClick={() => window.history.back()}
-            >
-              Back to Dashboard
-            </Button>
-            
-            {isEditing && (
+              </div>
+              
               <Button 
-                variant="outline" 
-                onClick={() => {
-                  setFormData({...profile});
-                  setIsEditing(false);
-                }}
+                onClick={() => navigate("/worker-portfolio")}
+                className="bg-[#FF4B55] text-white hover:bg-[#E43F49]"
               >
-                Cancel
+                Edit Profile
               </Button>
+            </div>
+          </div>
+          
+          {/* Bio Section */}
+          {profile.bio && (
+            <div className="bg-white rounded-lg p-6 shadow-sm mb-6">
+              <h2 className="text-lg font-semibold mb-2">About Me</h2>
+              <p className="text-gray-600">
+                {profile.bio}
+              </p>
+            </div>
+          )}
+          
+          {/* Skills Section */}
+          <div className="bg-white rounded-lg p-6 shadow-sm mb-6">
+            <h2 className="text-lg font-semibold mb-4">Skills</h2>
+            {profile.skills && profile.skills.length > 0 ? (
+              <div className="flex flex-wrap gap-2">
+                {profile.skills.map((skill, index) => (
+                  <Badge key={index} className="bg-[#004A57] hover:bg-[#003540]">
+                    {skill}
+                  </Badge>
+                ))}
+              </div>
+            ) : (
+              <p className="text-gray-600">No skills listed yet.</p>
             )}
+          </div>
+          
+          {/* Contact Information */}
+          <div className="bg-white rounded-lg p-6 shadow-sm mb-6">
+            <h2 className="text-lg font-semibold mb-4">Contact Information</h2>
+            <div className="space-y-3">
+              <div className="flex items-center gap-2">
+                <Phone className="h-5 w-5 text-[#004A57]" />
+                <span>{profile.phoneNumber}</span>
+              </div>
+              {profile.email && (
+                <div className="flex items-center gap-2">
+                  <Mail className="h-5 w-5 text-[#004A57]" />
+                  <span>{profile.email}</span>
+                </div>
+              )}
+              <div className="flex items-center gap-2">
+                <MapPin className="h-5 w-5 text-[#004A57]" />
+                <span>{profile.location}</span>
+              </div>
+            </div>
+          </div>
+          
+          {/* Work History */}
+          <div className="bg-white rounded-lg p-6 shadow-sm">
+            <h2 className="text-lg font-semibold mb-4">Work History</h2>
+            <p className="text-gray-600 mb-4">No work history recorded yet. Complete jobs to build your work history.</p>
+            <Link to="/active-work">
+              <Button className="w-full md:w-auto bg-[#004A57] hover:bg-[#003540]">
+                Find Work
+              </Button>
+            </Link>
           </div>
         </div>
       </main>

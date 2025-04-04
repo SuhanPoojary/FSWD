@@ -4,6 +4,9 @@ import { useNavigate } from 'react-router-dom';
 import { useToast } from '../components/ui/use-toast';
 import axios from 'axios';
 
+// Correct the PostProjectForm import and usage
+import PostProjectForm from '../components/PostProjectForm'; // Ensure this file exists and is correctly implemented
+
 const ContractorDashboard = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
@@ -173,97 +176,20 @@ const ContractorDashboard = () => {
               Post Job
             </button>
             {isPostJobDialogOpen && (
-              <dialog className="max-w-4xl w-full max-h-[90vh] overflow-y-auto p-6 rounded-lg" open>
-                <div>
-                  <div>
-                    <h2 className="text-lg font-semibold">Post a New Job</h2>
-                    <p className="text-gray-500">Fill out the form below to post a new job listing</p>
-                  </div>
-                  <div>
-                    <form onSubmit={handleSubmit} className="mt-4">
-                      <div className="space-y-4">
-                        <div>
-                          <label className="block text-sm font-medium mb-1">Job Title</label>
-                          <input
-                            type="text"
-                            name="title"
-                            value={formData.title}
-                            onChange={handleInputChange}
-                            className="w-full p-2 border rounded"
-                            required
-                          />
-                        </div>
-                        <div>
-                          <label className="block text-sm font-medium mb-1">Job Type</label>
-                          <select
-                            name="projectType"
-                            value={formData.projectType}
-                            onChange={handleInputChange}
-                            className="w-full p-2 border rounded"
-                            required
-                          >
-                            <option value="Commercial">Commercial</option>
-                            <option value="Residential">Residential</option>
-                            <option value="Industrial">Industrial</option>
-                          </select>
-                        </div>
-                        <div>
-                          <label className="block text-sm font-medium mb-1">Location</label>
-                          <input
-                            type="text"
-                            name="location"
-                            value={formData.location}
-                            onChange={handleInputChange}
-                            className="w-full p-2 border rounded"
-                            required
-                          />
-                        </div>
-                        <div>
-                          <label className="block text-sm font-medium mb-1">Duration</label>
-                          <input
-                            type="text"
-                            name="timeline"
-                            value={formData.timeline}
-                            onChange={handleInputChange}
-                            className="w-full p-2 border rounded"
-                          />
-                        </div>
-                        <div>
-                          <label className="block text-sm font-medium mb-1">Pay Rate Range (e.g., 30-45)</label>
-                          <input
-                            type="text"
-                            name="hourlyRate"
-                            value={formData.hourlyRate}
-                            onChange={handleInputChange}
-                            className="w-full p-2 border rounded"
-                          />
-                        </div>
-                        <div>
-                          <label className="block text-sm font-medium mb-1">Job Description</label>
-                          <textarea
-                            name="description"
-                            value={formData.description}
-                            onChange={handleInputChange}
-                            className="w-full p-2 border rounded"
-                            rows="4"
-                          />
-                        </div>
-                        <div>
-                          <button type="submit" className="bg-[#FF4B55] text-white px-4 py-2 rounded-md">
-                            Post Job
-                          </button>
-                          <button
-                            type="button"
-                            onClick={closePostJobDialog}
-                            className="ml-2 px-4 py-2 border rounded-md"
-                          >
-                            Cancel
-                          </button>
-                        </div>
-                      </div>
-                    </form>
-                  </div>
+              <dialog className="max-w-4xl w-full max-h-[90vh] overflow-y-auto p-0 rounded-lg" open>
+                <div className="sticky top-0 flex justify-between items-center bg-white p-4 border-b z-10">
+                  <h2 className="text-lg font-semibold">Post a New Job</h2>
+                  <button 
+                    onClick={closePostJobDialog}
+                    className="text-gray-500 hover:text-gray-700"
+                  >
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                      <line x1="18" y1="6" x2="6" y2="18"></line>
+                      <line x1="6" y1="6" x2="18" y2="18"></line>
+                    </svg>
+                  </button>
                 </div>
+                <PostProjectForm />
               </dialog>
             )}
           </div>

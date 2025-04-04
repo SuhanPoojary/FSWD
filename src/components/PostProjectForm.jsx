@@ -44,15 +44,20 @@ const PostProjectForm = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { user } = useAuth();
 
+  // Fix duplicate `hourlyRate` and remove unnecessary fields
   const [formData, setFormData] = useState({
     title: "",
     location: "",
-    projectType: "Commercial",
+    employmentType: "",
     hourlyRate: "",
-    description: "",
-    timeline: "",
+    jobDescription: "",
+    requirements: "",
+    company: "Bharati Construction Ltd",
+    projectType: "Commercial",
+    timeline: "3 months",
+    expiresAfter: "30",
+    postedDate: new Date().toISOString(),
     status: "active",
-    employmentType: "Contract"
   });
 
   const handleChange = (e) => {
@@ -75,18 +80,18 @@ const PostProjectForm = () => {
         variant: "destructive",
       });
       setIsSubmitting(false);
-      navigate('/login');
+      navigate("/login");
       return;
     }
 
     // Validate form
-    const requiredFields = ['title', 'location', 'projectType', 'hourlyRate', 'description', 'employmentType'];
-    const missingFields = requiredFields.filter(field => !formData[field]);
+    const requiredFields = ["title", "location", "projectType", "hourlyRate", "jobDescription"];
+    const missingFields = requiredFields.filter((field) => !formData[field]);
 
     if (missingFields.length > 0) {
       toast({
         title: "Missing Information",
-        description: `Please fill in the following fields: ${missingFields.join(', ')}`,
+        description: `Please fill in the following fields: ${missingFields.join(", ")}`,
         variant: "destructive",
       });
       setIsSubmitting(false);
@@ -94,34 +99,32 @@ const PostProjectForm = () => {
     }
 
     try {
-      // Format the hourly rate
-      const [minRate, maxRate] = formData.hourlyRate.split('-').map(rate => parseInt(rate.trim().replace('$', '')));
-      
+      // Validate and parse hourlyRate
+      const [minRate, maxRate] = formData.hourlyRate
+        .split("-")
+        .map((rate) => parseInt(rate.trim().replace("₹", "")));
+
+      if (isNaN(minRate) || isNaN(maxRate)) {
+        throw new Error("Invalid hourly rate format. Use 'min-max' format.");
+      }
+
       // Prepare project data for API
       const projectData = {
-        title: formData.title,
-        location: formData.location,
-        projectType: formData.projectType,
-        description: formData.description,
-        hourlyRate: {
-          min: minRate,
-          max: maxRate
-        },
+        ...formData,
+        hourlyRate: { min: minRate, max: maxRate },
         timeline: {
           startDate: new Date(),
-          endDate: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000) // 30 days from now
+          endDate: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000), // 30 days from now
         },
         contractor: user._id,
-        employmentType: formData.employmentType,
-        status: 'active'
       };
 
-      console.log('Sending project data:', projectData);
+      console.log("Sending project data:", projectData);
 
       // Send data to backend
       const response = await api.createProject(projectData);
-      
-      console.log('API Response:', response);
+
+      console.log("API Response:", response);
 
       // Show success toast notification
       toast({
@@ -129,11 +132,10 @@ const PostProjectForm = () => {
         description: "Your job has been posted and is now visible to professionals.",
       });
 
-      // Navigate to dashboard
-      navigate("/professional-dashboard");
-
+      // Navigate to contractor dashboard
+      navigate("/contractor-dashboard");
     } catch (error) {
-      console.error('Error posting project:', error);
+      console.error("Error posting project:", error);
       toast({
         title: "Error",
         description: error.response?.data?.message || "Failed to post the job. Please try again.",
@@ -142,52 +144,97 @@ const PostProjectForm = () => {
     } finally {
       setIsSubmitting(false);
     }
+
+    // Reset form
+    setFormData({
+      title: "",
+      location: "",
+      employmentType: "",
+      hourlyRate: "",
+      jobDescription: "",
+      requirements: "",
+      company: "Bharati Construction Ltd",
+      projectType: "Commercial",
+      timeline: "3 months",
+      expiresAfter: "30",
+      postedDate: new Date().toISOString(),
+      status: "active",
+    });
+  };
+
+  // Animation variants for enhanced animations
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: { 
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.1
+      }
+    }
+  };
+  
+  const itemVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: { 
+      opacity: 1, 
+      y: 0,
+      transition: { 
+        type: "spring", 
+        stiffness: 100 
+      }
+    }
   };
 
   return (
     <motion.div
       className="p-6 max-h-[80vh] overflow-y-auto"
-      initial={{ opacity: 0, y: 10 }}
+      initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.3 }}
+      transition={{ duration: 0.4, ease: "easeOut" }}
     >
-      <h2 className="text-2xl font-bold mb-6">{t("project.postNew")}</h2>
-      <p className="text-gray-500 mb-8">{t("project.fillDetails")}</p>
+      <h2 className="text-2xl font-bold mb-2 text-[#FF4B55]">
+        {t("project.postNew") || "Post New Project"}
+      </h2>
+      <p className="text-gray-500 mb-8">
+        {t("project.fillDetails") || "Fill in the details to post your new construction project"}
+      </p>
 
       <form onSubmit={handleSubmit} className="space-y-8">
         <motion.div
-          className="bg-gray-50 p-6 rounded-lg"
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.3, delay: 0.1 }}
+          className="bg-gray-50 p-6 rounded-lg border-l-4 border-[#FF4B55] shadow-sm"
+          variants={containerVariants}
+          initial="hidden"
+          animate="visible"
         >
-          <h3 className="text-lg font-semibold mb-4">{t("project.basicInfo")}</h3>
+          <motion.h3 variants={itemVariants} className="text-lg font-semibold mb-4">
+            {t("project.basicInfo") || "Basic Information"}
+          </motion.h3>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-            <div>
-              <Label htmlFor="title">{t("project.jobTitle")}</Label>
+            <motion.div variants={itemVariants}>
+              <Label htmlFor="title">{t("project.jobTitle") || "Job Title"}</Label>
               <Input
                 id="title"
                 name="title"
                 value={formData.title}
                 onChange={handleChange}
-                placeholder="e.g. Construction Manager"
+                placeholder="e.g. Site Engineer"
                 className="mt-1"
                 required
               />
-            </div>
-            <div>
-              <Label htmlFor="location">{t("project.location")}</Label>
+            </motion.div>
+            <motion.div variants={itemVariants}>
+              <Label htmlFor="location">{t("project.location") || "Location"}</Label>
               <Input
                 id="location"
                 name="location"
                 value={formData.location}
                 onChange={handleChange}
-                placeholder="e.g. San Francisco, CA"
+                placeholder="e.g. Mumbai, Maharashtra"
                 className="mt-1"
                 required
               />
-            </div>
+            </motion.div>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -231,7 +278,7 @@ const PostProjectForm = () => {
                 name="hourlyRate"
                 value={formData.hourlyRate}
                 onChange={handleChange}
-                placeholder="e.g. 25-35"
+                placeholder="e.g. ₹25,000-35,000"
                 className="mt-1"
                 required
               />

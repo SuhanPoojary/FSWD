@@ -1,3 +1,4 @@
+
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Input } from "../components/ui/input";
@@ -5,6 +6,7 @@ import { Button } from "../components/ui/button";
 import { Checkbox } from "../components/ui/checkbox";
 import { Eye, EyeOff } from "lucide-react";
 import { toast } from "sonner";
+import { useAuth } from "../contexts/AuthContext";
 
 const LoginForm = ({
   title,
@@ -24,17 +26,34 @@ const LoginForm = ({
   const [password, setPassword] = useState("");
   const [rememberMe, setRememberMe] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  
   const navigate = useNavigate();
+  const { login } = useAuth();
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log({ email, password, rememberMe });
-    toast.success("Successfully signed in");
-    navigate(redirectPath);
+    
+    if (!email || !password) {
+      toast.error("Please enter both email and password");
+      return;
+    }
+    
+    try {
+      setIsSubmitting(true);
+      await login({ email, password });
+      navigate(redirectPath);
+    } catch (error) {
+      console.error("Login error:", error);
+      // Error is already handled in the auth context
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const handleSocialLogin = (provider) => {
     toast.info(`Redirecting to ${provider} login...`);
+    // This would be implemented with actual OAuth providers
     setTimeout(() => {
       navigate(redirectPath);
     }, 1500);
@@ -60,6 +79,7 @@ const LoginForm = ({
             placeholder={emailPlaceholder}
             required
             className="w-full focus:border-[#FF4B55] hover:border-[#FF4B55] transition-colors"
+            disabled={isSubmitting}
           />
         </div>
 
@@ -84,6 +104,7 @@ const LoginForm = ({
               placeholder="••••••••"
               required
               className="w-full pr-10 focus:border-[#FF4B55] hover:border-[#FF4B55] transition-colors"
+              disabled={isSubmitting}
             />
             {showPasswordToggle && (
               <button
@@ -103,6 +124,7 @@ const LoginForm = ({
               id="remember"
               checked={rememberMe}
               onCheckedChange={(checked) => setRememberMe(checked)}
+              disabled={isSubmitting}
             />
             <label
               htmlFor="remember"
@@ -113,8 +135,12 @@ const LoginForm = ({
           </div>
         )}
 
-        <Button type="submit" className="w-full bg-[#FF4B55] hover:bg-[#E43F49] text-white">
-          {actionButtonText}
+        <Button 
+          type="submit" 
+          className="w-full bg-[#FF4B55] hover:bg-[#E43F49] text-white"
+          disabled={isSubmitting}
+        >
+          {isSubmitting ? "Signing in..." : actionButtonText}
         </Button>
       </form>
 
@@ -132,7 +158,12 @@ const LoginForm = ({
           </div>
           <div className="grid grid-cols-2 gap-3 mt-4">
             {socialLogins.map((provider) => (
-              <button key={provider} onClick={() => handleSocialLogin(provider)} className="flex items-center justify-center gap-2 border border-gray-300 rounded py-2 px-4 text-sm hover:bg-gray-50 hover:border-[#FF4B55] transition-colors">
+              <button 
+                key={provider} 
+                onClick={() => handleSocialLogin(provider)} 
+                className="flex items-center justify-center gap-2 border border-gray-300 rounded py-2 px-4 text-sm hover:bg-gray-50 hover:border-[#FF4B55] transition-colors"
+                disabled={isSubmitting}
+              >
                 {provider}
               </button>
             ))}

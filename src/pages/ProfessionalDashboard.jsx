@@ -2,10 +2,10 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { Dialog, DialogContent, DialogTitle, DialogDescription, DialogTrigger } from "../components/ui/dialog";
-import PostProjectForm from "../components/PostProjectForm";
+import PostServiceForm from "../components/PostServiceForm";
 import { motion } from "framer-motion";
 import Footer from "../components/layout/Footer";
-import { useProjectContext } from "../components/PostProjectForm";
+import { useProjectContext } from "../components/PostServiceForm";
 import { Briefcase, Calendar, MapPin, Clock } from "lucide-react";
 import ProfessionalNavbar from "../components/layout/ProfessionalNavbar";
 
@@ -174,7 +174,7 @@ const ProfessionalDashboard= () => {
                     Fill out the form below to create a new project.
                   </DialogDescription>
                   <div className="max-h-[calc(90vh-120px)] overflow-y-auto pr-2">
-                    <PostProjectForm />
+                    <PostServiceForm />
                   </div>
                 </DialogContent>
               </Dialog>
@@ -201,7 +201,7 @@ const ProfessionalDashboard= () => {
           </div>
           <div>
             <p className="text-2xl font-bold text-[#121224]">8</p>
-            <p className="text-[#717B9E]">Workers Hired</p>
+            <p className="text-[#717B9E]">Contractors Hired</p>
           </div>
           <div>
             <p className="text-2xl font-bold text-[#121224]">4.8/5</p>

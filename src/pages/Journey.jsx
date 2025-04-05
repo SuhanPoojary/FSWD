@@ -118,7 +118,7 @@ const Journey = () => {
                 Sign Up
               </Button>
               <Button 
-                variant="outline" 
+                className="bg-[#004A57] text-[#EEE] hover:bg-[#00424E] "
                 size="lg"
                 onClick={handleLogin}
               >

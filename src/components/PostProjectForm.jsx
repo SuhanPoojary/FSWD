@@ -7,8 +7,6 @@ import { useToast } from "../hooks/use-toast";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import { useLanguage } from "../contexts/LanguageContext";
-import { api } from "../services/api";
-import { useAuth } from "../contexts/AuthContext";
 
 // Create a context to share project data across components
 export const ProjectContext = React.createContext({
@@ -40,11 +38,9 @@ export const ProjectProvider = ({ children }) => {
 const PostProjectForm = () => {
   const { toast } = useToast();
   const navigate = useNavigate();
+  const { addProject } = useProjectContext();
   const { t } = useLanguage();
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const { user } = useAuth();
 
-  // Fix duplicate `hourlyRate` and remove unnecessary fields
   const [formData, setFormData] = useState({
     title: "",
     location: "",
@@ -57,7 +53,6 @@ const PostProjectForm = () => {
     timeline: "3 months",
     expiresAfter: "30",
     postedDate: new Date().toISOString(),
-    status: "active",
   });
 
   const handleChange = (e) => {
@@ -68,82 +63,48 @@ const PostProjectForm = () => {
     }));
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
-    setIsSubmitting(true);
-
-    // Check if user is authenticated
-    if (!user) {
-      toast({
-        title: "Authentication Required",
-        description: "Please login to post a project.",
-        variant: "destructive",
-      });
-      setIsSubmitting(false);
-      navigate("/login");
-      return;
-    }
 
     // Validate form
-    const requiredFields = ["title", "location", "projectType", "hourlyRate", "jobDescription"];
-    const missingFields = requiredFields.filter((field) => !formData[field]);
-
-    if (missingFields.length > 0) {
+    if (
+      !formData.title ||
+      !formData.location ||
+      !formData.employmentType ||
+      !formData.hourlyRate ||
+      !formData.jobDescription ||
+      !formData.requirements
+    ) {
       toast({
         title: "Missing Information",
-        description: `Please fill in the following fields: ${missingFields.join(", ")}`,
+        description: "Please fill all required fields before posting the job.",
         variant: "destructive",
       });
-      setIsSubmitting(false);
       return;
     }
 
-    try {
-      // Validate and parse hourlyRate
-      const [minRate, maxRate] = formData.hourlyRate
-        .split("-")
-        .map((rate) => parseInt(rate.trim().replace("₹", "")));
+    console.log("Post Job Form submitted:", formData);
 
-      if (isNaN(minRate) || isNaN(maxRate)) {
-        throw new Error("Invalid hourly rate format. Use 'min-max' format.");
-      }
+    // Add the new project to context
+    addProject({
+      id: Date.now(),
+      ...formData,
+      applicants: 0,
+      status: "active",
+      postedAt: new Date().toLocaleDateString(),
+      applicantsCount: Math.floor(Math.random() * 15),
+    });
 
-      // Prepare project data for API
-      const projectData = {
-        ...formData,
-        hourlyRate: { min: minRate, max: maxRate },
-        timeline: {
-          startDate: new Date(),
-          endDate: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000), // 30 days from now
-        },
-        contractor: user._id,
-      };
+    // Show success toast notification
+    toast({
+      title: "Job Posted Successfully!",
+      description: "Your job has been posted and is now visible to professionals.",
+    });
 
-      console.log("Sending project data:", projectData);
-
-      // Send data to backend
-      const response = await api.createProject(projectData);
-
-      console.log("API Response:", response);
-
-      // Show success toast notification
-      toast({
-        title: "Job Posted Successfully!",
-        description: "Your job has been posted and is now visible to professionals.",
-      });
-
-      // Navigate to contractor dashboard
-      navigate("/contractor-dashboard");
-    } catch (error) {
-      console.error("Error posting project:", error);
-      toast({
-        title: "Error",
-        description: error.response?.data?.message || "Failed to post the job. Please try again.",
-        variant: "destructive",
-      });
-    } finally {
-      setIsSubmitting(false);
-    }
+    // Navigate to dashboard
+    setTimeout(() => {
+      navigate("/professional-dashboard");
+    }, 1500);
 
     // Reset form
     setFormData({
@@ -158,7 +119,6 @@ const PostProjectForm = () => {
       timeline: "3 months",
       expiresAfter: "30",
       postedDate: new Date().toISOString(),
-      status: "active",
     });
   };
 
@@ -238,23 +198,8 @@ const PostProjectForm = () => {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div>
-              <Label htmlFor="projectType">{t("project.projectType")}</Label>
-              <select
-                id="projectType"
-                name="projectType"
-                value={formData.projectType}
-                onChange={handleChange}
-                className="w-full mt-1 p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#FF4B55]"
-                required
-              >
-                <option value="Commercial">Commercial</option>
-                <option value="Residential">Residential</option>
-                <option value="Industrial">Industrial</option>
-              </select>
-            </div>
-            <div>
-              <Label htmlFor="employmentType">{t("project.employmentType")}</Label>
+            <motion.div variants={itemVariants}>
+              <Label htmlFor="employmentType">{t("project.employmentType") || "Employment Type"}</Label>
               <select
                 id="employmentType"
                 name="employmentType"
@@ -263,16 +208,15 @@ const PostProjectForm = () => {
                 className="w-full mt-1 p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#FF4B55]"
                 required
               >
-                <option value="Full-time">Full-time</option>
-                <option value="Part-time">Part-time</option>
-                <option value="Contract">Contract</option>
+                <option value="">{t("project.selectType") || "Select Type"}</option>
+                <option value="Full-time">{t("project.fullTime") || "Full-time"}</option>
+                <option value="Part-time">{t("project.partTime") || "Part-time"}</option>
+                <option value="Contract">{t("project.contract") || "Contract"}</option>
+                <option value="Temporary">{t("project.temporary") || "Temporary"}</option>
               </select>
-            </div>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div>
-              <Label htmlFor="hourlyRate">{t("project.hourlyRate")}</Label>
+            </motion.div>
+            <motion.div variants={itemVariants}>
+              <Label htmlFor="hourlyRate">{t("project.hourlyRate") || "Salary Range"}</Label>
               <Input
                 id="hourlyRate"
                 name="hourlyRate"
@@ -282,39 +226,156 @@ const PostProjectForm = () => {
                 className="mt-1"
                 required
               />
-            </div>
+            </motion.div>
           </div>
 
-          <div className="mt-6">
-            <Label htmlFor="description">{t("project.jobDescription")}</Label>
-            <textarea
-              id="description"
-              name="description"
-              value={formData.description}
-              onChange={handleChange}
-              placeholder="Describe the project details..."
-              className="w-full mt-1 p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#FF4B55]"
-              rows="4"
-              required
-            />
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
+            <motion.div variants={itemVariants}>
+              <Label htmlFor="projectType">{t("project.jobType") || "Project Type"}</Label>
+              <select
+                id="projectType"
+                name="projectType"
+                value={formData.projectType}
+                onChange={handleChange}
+                className="w-full mt-1 p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#FF4B55]"
+                required
+              >
+                <option value="Commercial">{t("project.commercial") || "Commercial"}</option>
+                <option value="Residential">{t("project.residential") || "Residential"}</option>
+                <option value="Industrial">{t("project.industrial") || "Industrial"}</option>
+                <option value="Infrastructure">{t("project.infrastructure") || "Infrastructure"}</option>
+                <option value="Government">{t("project.government") || "Government"}</option>
+              </select>
+            </motion.div>
+            <motion.div variants={itemVariants}>
+              <Label htmlFor="timeline">{t("project.timeline") || "Project Timeline"}</Label>
+              <select
+                id="timeline"
+                name="timeline"
+                value={formData.timeline}
+                onChange={handleChange}
+                className="w-full mt-1 p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#FF4B55]"
+                required
+              >
+                <option value="1 month">{t("project.1month") || "1 month"}</option>
+                <option value="3 months">{t("project.3months") || "3 months"}</option>
+                <option value="6 months">{t("project.6months") || "6 months"}</option>
+                <option value="1 year">{t("project.1year") || "1 year"}</option>
+                <option value="2+ years">{t("project.2years") || "2+ years"}</option>
+              </select>
+            </motion.div>
           </div>
+
+          <motion.div variants={itemVariants} className="mt-6">
+            <Label htmlFor="expiresAfter">{t("project.removeAfter") || "Remove Job After"}</Label>
+            <select
+              id="expiresAfter"
+              name="expiresAfter"
+              value={formData.expiresAfter}
+              onChange={handleChange}
+              className="w-full mt-1 p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#FF4B55]"
+            >
+              <option value="7">{t("project.7days") || "7 days"}</option>
+              <option value="14">{t("project.14days") || "14 days"}</option>
+              <option value="30">{t("project.30days") || "30 days"}</option>
+              <option value="60">{t("project.60days") || "60 days"}</option>
+              <option value="90">{t("project.90days") || "90 days"}</option>
+              <option value="never">{t("project.dontRemove") || "Don't remove"}</option>
+            </select>
+          </motion.div>
         </motion.div>
 
-        <div className="flex justify-end gap-4">
-          <Button
-            type="button"
-            variant="outline"
-            onClick={() => navigate("/professional-dashboard")}
+        <motion.div
+          className="bg-gray-50 p-6 rounded-lg border-l-4 border-[#FF4B55] shadow-sm"
+          variants={containerVariants}
+          initial="hidden"
+          animate="visible"
+          transition={{ delay: 0.2 }}
+        >
+          <motion.h3 variants={itemVariants} className="text-lg font-semibold mb-4">
+            {t("project.jobDetails") || "Job Details"}
+          </motion.h3>
+
+          <motion.div variants={itemVariants} className="mb-6">
+            <Label htmlFor="jobDescription">{t("project.description") || "Job Description"}</Label>
+            <textarea
+              id="jobDescription"
+              name="jobDescription"
+              value={formData.jobDescription}
+              onChange={handleChange}
+              rows={5}
+              className="w-full mt-1 p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#FF4B55]"
+              placeholder={t("project.descriptionPlaceholder") || "Describe the job responsibilities, daily tasks, and expectations..."}
+              required
+            />
+          </motion.div>
+
+          <motion.div variants={itemVariants}>
+            <Label htmlFor="requirements">{t("project.requirements") || "Requirements"}</Label>
+            <textarea
+              id="requirements"
+              name="requirements"
+              value={formData.requirements}
+              onChange={handleChange}
+              rows={5}
+              className="w-full mt-1 p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#FF4B55]"
+              placeholder={t("project.requirementsPlaceholder") || "List qualifications, skills, experience, and education requirements..."}
+              required
+            />
+          </motion.div>
+        </motion.div>
+
+        <motion.div
+          className="bg-gray-50 p-6 rounded-lg border-l-4 border-[#FF4B55] shadow-sm"
+          variants={containerVariants}
+          initial="hidden"
+          animate="visible"
+          transition={{ delay: 0.4 }}
+        >
+          <motion.h3 variants={itemVariants} className="text-lg font-semibold mb-4">
+            {t("project.images") || "Project Images"}
+          </motion.h3>
+
+          <motion.div
+            variants={itemVariants}
+            className="border-2 border-dashed border-gray-300 rounded-lg p-8 text-center"
+            whileHover={{ boxShadow: "0 4px 12px rgba(0,0,0,0.1)" }}
           >
-            Cancel
-          </Button>
-          <Button
-            type="submit"
-            className="bg-[#FF4B55] text-white hover:bg-[#E43F49]"
-            disabled={isSubmitting}
+            <div className="flex flex-col items-center justify-center">
+              <Upload className="h-12 w-12 text-gray-400 mb-4" />
+              <p className="text-gray-600 mb-2">{t("project.uploadImages") || "Upload Project Images"}</p>
+              <p className="text-gray-400 text-sm mb-4">{t("project.dragDrop") || "Drag and drop files here or click to browse"}</p>
+              <input type="file" className="hidden" multiple accept="image/*" id="file-upload" />
+              <label htmlFor="file-upload">
+                <Button type="button" variant="outline" className="text-gray-600 hover:bg-[#FF4B55] hover:text-white transition-all">
+                  {t("project.selectFiles") || "Select Files"}
+                </Button>
+              </label>
+            </div>
+          </motion.div>
+        </motion.div>
+
+        <div className="flex justify-end gap-4 mt-8">
+          <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
+            <Button type="button" variant="outline">
+              {t("project.saveAsDraft") || "Save as Draft"}
+            </Button>
+          </motion.div>
+          <motion.div
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.6 }}
           >
-            {isSubmitting ? "Posting..." : "Post Job"}
-          </Button>
+            <Button
+              type="submit"
+              variant="primary"
+              className="bg-[#FF4B55] text-white transition-all duration-300 ease-in-out hover:bg-[#E43F49] shadow-md hover:shadow-lg"
+            >
+              {t("project.post") || "Post Job"}
+            </Button>
+          </motion.div>
         </div>
       </form>
     </motion.div>

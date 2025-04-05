@@ -1,184 +1,241 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { Button } from '../components/ui/button';
-import { Input } from '../components/ui/input';
-import { Label } from '../components/ui/label';
-import { Textarea } from '../components/ui/textarea';
-import { useToast } from '../components/ui/use-toast';
+
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import Header from "../components/layout/Header";
+import Footer from "../components/layout/Footer";
+import { Input } from "../components/ui/input";
+import { Label } from "../components/ui/label";
+import { Button } from "../components/ui/button";
+import { toast } from "sonner";
 
 const WorkerPortfolio = () => {
-  const [formData, setFormData] = useState({
-    fullName: '',
-    yearsOfExperience: '',
-    skills: '',
-    certifications: '',
-    hourlyRate: '',
-    availability: '',
-    description: '',
-    phoneNumber: ''
-  });
-  const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
-  const { toast } = useToast();
+  const userData = JSON.parse(localStorage.getItem("userData") || "{}");
+  
+  const [formData, setFormData] = useState({
+    fullName: userData.fullName || "",
+    phoneNumber: "",
+    location: "",
+    experience: "",
+    skills: [],
+    hourlyRate: "",
+    availability: "",
+    bio: "",
+    profileImage: null
+  });
+
+  const skillOptions = [
+    "Carpentry", "Plumbing", "Electrical", "Masonry", 
+    "Painting", "Roofing", "Concrete", "Flooring", 
+    "HVAC", "Demolition", "Landscaping", "Equipment Operation"
+  ];
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData(prev => ({
-      ...prev,
+    setFormData(prevState => ({
+      ...prevState,
       [name]: value
     }));
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setIsLoading(true);
-
-    try {
-      // TODO: Replace with actual API call
-      await new Promise(resolve => setTimeout(resolve, 1000));
+  const handleSkillToggle = (skill) => {
+    setFormData(prevState => {
+      const currentSkills = [...prevState.skills];
+      const skillIndex = currentSkills.indexOf(skill);
       
-      navigate('/worker-dashboard');
-      toast({
-        title: "Profile Updated",
-        description: "Your worker profile has been updated successfully",
-      });
-    } catch (error) {
-      toast({
-        title: "Error",
-        description: error.message || "Failed to update profile",
-        variant: "destructive",
-      });
-    } finally {
-      setIsLoading(false);
+      if (skillIndex === -1) {
+        currentSkills.push(skill);
+      } else {
+        currentSkills.splice(skillIndex, 1);
+      }
+      
+      return {
+        ...prevState,
+        skills: currentSkills
+      };
+    });
+  };
+
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setFormData(prevState => ({
+        ...prevState,
+        profileImage: file
+      }));
     }
   };
 
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    
+    // Simple validation
+    if (!formData.fullName || !formData.phoneNumber || !formData.location || formData.skills.length === 0) {
+      toast.error("Please fill all required fields");
+      return;
+    }
+
+    // Save profile data to local storage for demo purposes
+    const profileData = {
+      ...formData,
+      profileImage: formData.profileImage ? URL.createObjectURL(formData.profileImage) : null,
+      createdAt: new Date().toISOString()
+    };
+    
+    localStorage.setItem("workerProfile", JSON.stringify(profileData));
+    toast.success("Profile created successfully");
+    navigate("/worker-dashboard");
+  };
+
   return (
-    <div className="min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-3xl mx-auto">
-        <div className="text-center mb-8">
-          <h2 className="text-3xl font-extrabold text-gray-900">
-            Worker Profile
-          </h2>
-          <p className="mt-2 text-sm text-gray-600">
-            Complete your worker profile to start finding projects
-          </p>
+    <div className="min-h-screen flex flex-col">
+      <Header />
+      <main className="flex-grow bg-[#EDEEF1] py-12 px-4">
+        <div className="max-w-4xl mx-auto bg-white rounded-lg shadow p-8">
+          <h1 className="text-2xl font-bold text-[#004A57] mb-6">Create Your Worker Profile</h1>
+          <p className="text-gray-600 mb-8">Complete your profile to start finding job opportunities that match your skills.</p>
+          
+          <form onSubmit={handleSubmit} className="space-y-6">
+            <div className="grid md:grid-cols-2 gap-6">
+              <div>
+                <Label htmlFor="fullName">Full Name *</Label>
+                <Input 
+                  id="fullName"
+                  name="fullName"
+                  value={formData.fullName}
+                  onChange={handleChange}
+                  placeholder="Your full name"
+                  required
+                  className="mt-1"
+                />
+              </div>
+              
+              <div>
+                <Label htmlFor="phoneNumber">Phone Number *</Label>
+                <Input 
+                  id="phoneNumber"
+                  name="phoneNumber"
+                  value={formData.phoneNumber}
+                  onChange={handleChange}
+                  placeholder="Your phone number"
+                  required
+                  className="mt-1"
+                />
+              </div>
+              
+              <div>
+                <Label htmlFor="location">Location *</Label>
+                <Input 
+                  id="location"
+                  name="location"
+                  value={formData.location}
+                  onChange={handleChange}
+                  placeholder="City, State"
+                  required
+                  className="mt-1"
+                />
+              </div>
+              
+              <div>
+                <Label htmlFor="experience">Years of Experience *</Label>
+                <Input 
+                  id="experience"
+                  name="experience"
+                  type="number"
+                  min="0"
+                  value={formData.experience}
+                  onChange={handleChange}
+                  placeholder="Years of experience"
+                  required
+                  className="mt-1"
+                />
+              </div>
+              
+              <div>
+                <Label htmlFor="hourlyRate">Hourly Rate (₹)</Label>
+                <Input 
+                  id="hourlyRate"
+                  name="hourlyRate"
+                  type="number"
+                  min="0"
+                  value={formData.hourlyRate}
+                  onChange={handleChange}
+                  placeholder="Your hourly rate"
+                  className="mt-1"
+                />
+              </div>
+              
+              <div>
+                <Label htmlFor="availability">Availability</Label>
+                <select
+                  id="availability"
+                  name="availability"
+                  value={formData.availability}
+                  onChange={handleChange}
+                  className="w-full mt-1 border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-[#FF4B55] focus:border-[#FF4B55]"
+                >
+                  <option value="">Select availability</option>
+                  <option value="Full-time">Full-time</option>
+                  <option value="Part-time">Part-time</option>
+                  <option value="Weekends">Weekends only</option>
+                  <option value="Evenings">Evenings only</option>
+                </select>
+              </div>
+            </div>
+            
+            <div>
+              <Label>Skills *</Label>
+              <div className="grid grid-cols-3 gap-2 mt-1 sm:grid-cols-4">
+                {skillOptions.map(skill => (
+                  <div 
+                    key={skill}
+                    onClick={() => handleSkillToggle(skill)}
+                    className={`p-2 border rounded-md cursor-pointer text-center text-sm ${
+                      formData.skills.includes(skill) 
+                        ? "bg-[#004A57] text-white border-[#004A57]" 
+                        : "border-gray-300 hover:border-[#FF4B55]"
+                    }`}
+                  >
+                    {skill}
+                  </div>
+                ))}
+              </div>
+            </div>
+            
+            <div>
+              <Label htmlFor="bio">Bio</Label>
+              <textarea
+                id="bio"
+                name="bio"
+                value={formData.bio}
+                onChange={handleChange}
+                placeholder="Tell us about yourself and your work experience"
+                rows={4}
+                className="w-full mt-1 border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-[#FF4B55] focus:border-[#FF4B55]"
+              />
+            </div>
+            
+            <div>
+              <Label htmlFor="profileImage">Profile Photo</Label>
+              <Input 
+                id="profileImage"
+                name="profileImage"
+                type="file"
+                onChange={handleImageChange}
+                accept="image/*"
+                className="mt-1"
+              />
+            </div>
+            
+            <div className="pt-4">
+              <Button type="submit" className="w-full bg-[#FF4B55] hover:bg-[#E43F49] text-white">
+                Complete Profile
+              </Button>
+            </div>
+          </form>
         </div>
-
-        <form onSubmit={handleSubmit} className="space-y-6 bg-white p-6 rounded-lg shadow">
-          <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
-            <div>
-              <Label htmlFor="fullName">Full Name</Label>
-              <Input
-                id="fullName"
-                name="fullName"
-                type="text"
-                required
-                value={formData.fullName}
-                onChange={handleChange}
-                placeholder="Your full name"
-              />
-            </div>
-
-            <div>
-              <Label htmlFor="yearsOfExperience">Years of Experience</Label>
-              <Input
-                id="yearsOfExperience"
-                name="yearsOfExperience"
-                type="number"
-                required
-                value={formData.yearsOfExperience}
-                onChange={handleChange}
-              />
-            </div>
-
-            <div>
-              <Label htmlFor="skills">Skills</Label>
-              <Input
-                id="skills"
-                name="skills"
-                type="text"
-                required
-                value={formData.skills}
-                onChange={handleChange}
-                placeholder="e.g., Carpentry, Plumbing, Electrical"
-              />
-            </div>
-
-            <div>
-              <Label htmlFor="certifications">Certifications</Label>
-              <Input
-                id="certifications"
-                name="certifications"
-                type="text"
-                required
-                value={formData.certifications}
-                onChange={handleChange}
-                placeholder="e.g., OSHA, First Aid"
-              />
-            </div>
-
-            <div>
-              <Label htmlFor="phoneNumber">Phone Number</Label>
-              <Input
-                id="phoneNumber"
-                name="phoneNumber"
-                type="tel"
-                value={formData.phoneNumber}
-                onChange={handleChange}
-                placeholder="Your contact number"
-              />
-            </div>
-
-            <div>
-              <Label htmlFor="hourlyRate">Hourly Rate ($)</Label>
-              <Input
-                id="hourlyRate"
-                name="hourlyRate"
-                type="number"
-                required
-                value={formData.hourlyRate}
-                onChange={handleChange}
-              />
-            </div>
-
-            <div>
-              <Label htmlFor="availability">Availability</Label>
-              <Input
-                id="availability"
-                name="availability"
-                type="text"
-                required
-                value={formData.availability}
-                onChange={handleChange}
-                placeholder="e.g., Full-time, Part-time"
-              />
-            </div>
-          </div>
-
-          <div>
-            <Label htmlFor="description">About Me</Label>
-            <Textarea
-              id="description"
-              name="description"
-              required
-              value={formData.description}
-              onChange={handleChange}
-              placeholder="Describe your experience and what you can offer..."
-            />
-          </div>
-
-          <div className="flex justify-end">
-            <Button
-              type="submit"
-              className="bg-[#FF4B55] hover:bg-[#E43F49]"
-              disabled={isLoading}
-            >
-              {isLoading ? 'Saving...' : 'Save Profile'}
-            </Button>
-          </div>
-        </form>
-      </div>
+      </main>
+      <Footer />
     </div>
   );
 };

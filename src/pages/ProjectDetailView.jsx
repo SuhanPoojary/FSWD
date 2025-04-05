@@ -1,49 +1,21 @@
-import React, { useState, useEffect } from "react";
+
+import React from "react";
 import { useParams, Link, useNavigate } from "react-router-dom";
 import { Button } from "../components/ui/button";
 import { Badge } from "../components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "../components/ui/tabs";
 import { Calendar, MapPin, Clock, User, Building, ArrowLeft, Trash2, Users } from "lucide-react";
 import { useToast } from "../hooks/use-toast";
+import { useProjectContext } from "../components/PostProjectForm";
 import { motion } from "framer-motion";
-import { api } from "../services/api";
 
 const ProjectDetailView = () => {
   const { id } = useParams();
+  const { projects, removeProject } = useProjectContext();rew``
   const { toast } = useToast();
   const navigate = useNavigate();
-  const [job, setJob] = useState(null);
-  const [isLoading, setIsLoading] = useState(true);
   
-  useEffect(() => {
-    const fetchJob = async () => {
-      try {
-        const response = await api.getProject(id);
-        setJob(response.data);
-      } catch (error) {
-        console.error('Error fetching job:', error);
-        toast({
-          title: "Error",
-          description: "Failed to fetch job details",
-          variant: "destructive",
-        });
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    fetchJob();
-  }, [id, toast]);
-  
-  if (isLoading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-[#F6F6F7]">
-        <div className="text-center">
-          <h2 className="text-2xl font-bold mb-4">Loading...</h2>
-        </div>
-      </div>
-    );
-  }
+  const job = projects.find(p => p.id.toString() === id);
   
   if (!job) {
     return (
@@ -59,21 +31,13 @@ const ProjectDetailView = () => {
     );
   }
   
-  const handleRemoveProject = async () => {
-    try {
-      await api.deleteProject(id);
-      toast({
-        title: "Job Removed",
-        description: "The job has been successfully removed.",
-      });
-      navigate("/contractor-job-posting");
-    } catch (error) {
-      toast({
-        title: "Error",
-        description: "Failed to remove the job",
-        variant: "destructive",
-      });
-    }
+  const handleRemoveProject = () => {
+    removeProject(Number(id));
+    toast({
+      title: "Job Removed",
+      description: "The job has been successfully removed.",
+    });
+    navigate("/contractor-job-posting");
   };
   
   return (
@@ -141,28 +105,20 @@ const ProjectDetailView = () => {
               </div>
               
               <div className="text-right">
-                <div className="text-xl font-bold text-[#004A57]">
-                  {typeof job.hourlyRate === 'object' 
-                    ? `$${job.hourlyRate.min} - $${job.hourlyRate.max}/hr`
-                    : `$${job.hourlyRate}/hr`}
-                </div>
-                <div className="text-sm text-gray-500">
-                  {typeof job.timeline === 'object' 
-                    ? `${new Date(job.timeline.startDate).toLocaleDateString()} - ${new Date(job.timeline.endDate).toLocaleDateString()}`
-                    : job.timeline}
-                </div>
+                <div className="text-xl font-bold text-[#004A57]">{job.hourlyRate}/hr</div>
+                <div className="text-sm text-gray-500">{job.timeline} job</div>
               </div>
             </div>
             
             <div className="flex flex-wrap gap-4 mt-6">
               <div className="flex items-center text-gray-600">
                 <Calendar className="h-4 w-4 mr-2" />
-                <span>Posted {new Date(job.createdAt).toLocaleDateString()}</span>
+                <span>Posted {job.postedAt || "recently"}</span>
               </div>
               
               <div className="flex items-center text-gray-600">
                 <Clock className="h-4 w-4 mr-2" />
-                <span>Status: {job.status}</span>
+                <span>Expires in {job.expiresAfter} days</span>
               </div>
               
               <div className="flex items-center text-gray-600">
@@ -200,21 +156,30 @@ const ProjectDetailView = () => {
               <div className="space-y-6">
                 <div>
                   <h2 className="text-lg font-semibold mb-3">Job Description</h2>
-                  <p className="text-gray-700 whitespace-pre-line">{job.description}</p>
+                  <p className="text-gray-700 whitespace-pre-line">{job.jobDescription}</p>
                 </div>
                 
                 <div>
                   <h2 className="text-lg font-semibold mb-3">Requirements</h2>
-                  <p className="text-gray-700 whitespace-pre-line">{job.requirements || 'No specific requirements listed'}</p>
+                  <p className="text-gray-700 whitespace-pre-line">{job.requirements}</p>
                 </div>
                 
                 <div>
-                  <h2 className="text-lg font-semibold mb-3">Project Timeline</h2>
-                  <p className="text-gray-700">
-                    {typeof job.timeline === 'object'
-                      ? `Start Date: ${new Date(job.timeline.startDate).toLocaleDateString()}\nEnd Date: ${new Date(job.timeline.endDate).toLocaleDateString()}`
-                      : job.timeline}
-                  </p>
+                  <h2 className="text-lg font-semibold mb-3">Company</h2>
+                  <div className="flex items-center gap-3">
+                    <div className="w-12 h-12 bg-gray-200 rounded-lg flex items-center justify-center">
+                      <Building className="h-6 w-6 text-gray-500" />
+                    </div>
+                    <div>
+                      <h3 className="font-medium">{job.company}</h3>
+                      <Link 
+                        to="/company-profile" 
+                        className="text-[#FF4B55] text-sm hover:underline"
+                      >
+                        View Company Profile
+                      </Link>
+                    </div>
+                  </div>
                 </div>
                 
                 <div className="flex justify-end gap-4 pt-4 border-t border-gray-100">
@@ -225,6 +190,14 @@ const ProjectDetailView = () => {
                   >
                     <Trash2 className="mr-2 h-4 w-4" /> Remove Job
                   </Button>
+                  <Link to="/appoint-workers">
+                    <Button 
+                      variant="outline" 
+                      className="border-[#004A57] text-[#004A57] hover:bg-[#004A57] hover:text-white transition-all duration-300 hover:scale-105"
+                    >
+                      <Users className="mr-2 h-4 w-4" /> Appoint Workers
+                    </Button>
+                  </Link>
                   <Button variant="outline" className="border-[#004A57] text-[#004A57] hover:bg-[#004A57] hover:text-white transition-all duration-300 hover:scale-105">
                     Edit Job
                   </Button>

@@ -5,7 +5,7 @@ import { Button } from "../components/ui/button";
 import { Input } from "../components/ui/input";
 import { Search, Plus } from "lucide-react";
 import { Dialog, DialogContent, DialogTrigger } from "../components/ui/dialog";
-import PostServiceForm from "../components/PostServiceForm";
+import PostProjectForm from "../components/PostProjectForm";
 import Footer from "../components/layout/Footer";
 import ProfessionalNavbar from "../components/layout/ProfessionalNavbar";
 
@@ -20,58 +20,58 @@ const ProfessionalProjects = () => {
   const projects = [
     {
       id: 1,
-      title: "Commercial Complex Renovation",
-      client: "ABC Developers",
-      location: "Connaught Place, Delhi",
-      budget: "₹2 Crore - ₹2.5 Crore",
+      title: "Commercial Building Renovation",
+      client: "XYZ Developers",
+      location: "Downtown Area",
+      budget: "$250,000 - $300,000",
       deadline: "December 2023",
       posted: "2023-10-24",
       applicants: 24,
       status: "active",
-      description: "Renovation of a 5-story commercial complex, including structural updates, modern interiors, and electrical upgrades.",
+      description: "Major renovation project for a 3-story commercial building including structural updates, electrical systems, and interior finishing",
       skills: ["Commercial Construction", "Project Management", "Electrical Systems"]
     },
     {
       id: 2,
-      title: "Affordable Housing Project",
-      client: "State Housing Board",
-      location: "Bangalore Suburbs",
-      budget: "₹4 Crore - ₹6 Crore",
+      title: "Residential Complex Construction",
+      client: "HomeBuilders Inc",
+      location: "Suburban District",
+      budget: "$500,000 - $750,000",
       deadline: "October 2023",
       posted: "2023-07-05",
       applicants: 18,
       status: "active",
-      description: "Construction of a 100-unit affordable housing project under Pradhan Mantri Awas Yojana (PMAY).",
+      description: "New construction of a 72-unit residential complex with modern amenities and underground parking",
       skills: ["Residential Construction", "Site Management", "Foundation Work"]
     },
     {
       id: 3,
-      title: "Government Hospital Expansion",
-      client: "Ministry of Health & Family Welfare",
-      location: "Mumbai Central",
-      budget: "₹8 Crore - ₹12 Crore",
+      title: "Hospital Wing Expansion",
+      client: "HealthCare Solutions",
+      location: "Medical District",
+      budget: "$1M - $1.5M",
       deadline: "October 2023",
       posted: "2023-06-20",
       applicants: 32,
       status: "urgent",
-      description: "Expansion of a major government hospital, including ICU, operation theatres, and installation of advanced medical infrastructure.",
+      description: "Expansion of existing hospital facility including specialized medical infrastructure and equipment installation",
       skills: ["Healthcare Construction", "Medical Infrastructure", "HVAC Systems"]
     },
     {
       id: 4,
-      title: "Government School Renovation",
-      client: "State Education Department",
-      location: "Chennai",
-      budget: "₹2 Crore - ₹3 Crore",
+      title: "School Renovation Project",
+      client: "Education Board",
+      location: "Town Center",
+      budget: "$300,000 - $450,000",
       deadline: "November 2023",
       posted: "2023-07-07",
       applicants: 15,
       status: "active",
-      description: "Modernization of a government school, including new classrooms, smart boards, and safety improvements.",
+      description: "Comprehensive renovation of existing school building including classroom modernization and safety upgrades",
       skills: ["Educational Construction", "Safety Standards", "Renovation"]
     }
   ];
-  
+
   const handleFilterChange = (type, value) => {
     setFilters((prev) => ({
       ...prev,
@@ -108,7 +108,7 @@ const ProfessionalProjects = () => {
             </DialogTrigger>
             <DialogContent className="max-w-4xl max-h-[90vh] overflow-hidden">
               <div className="max-h-[calc(90vh-80px)] overflow-y-auto pr-2">
-                <PostServiceForm />
+                <PostProjectForm />
               </div>
             </DialogContent>
           </Dialog>

@@ -1,169 +1,61 @@
-import React, { useState, useEffect } from 'react';
+
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { Avatar, AvatarFallback, AvatarImage } from "../components/ui/avatar";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "../components/ui/tabs";
 import { Button } from "../components/ui/button";
 import { CheckCircle, Clock, MapPin, Star, User, X } from "lucide-react";
-import { useAuth } from '../contexts/AuthContext';
-import axios from 'axios';
-import { useToast } from '../components/ui/use-toast';
 
 const ProfessionalMessages = () => {
-  const { user } = useAuth();
-  const [applicants, setApplicants] = useState([]);
-  const [loading, setLoading] = useState(true);
   const [filters, setFilters] = useState({
     availableNow: false,
     verifiedOnly: false,
     minRating: 0
   });
-  const { toast } = useToast();
 
   const handleFilterChange = (e) => {
     const { name, checked } = e.target;
-    setFilters(prev => ({
+    setFilters((prev) => ({
       ...prev,
-      [name]: checked
+      [name]: checked,
     }));
   };
-
-  useEffect(() => {
-    const fetchApplicants = async () => {
-      try {
-        // First, fetch the builder's projects
-        const projectsResponse = await axios.get(`/api/projects?builder=${user._id}`);
-        const projects = Array.isArray(projectsResponse.data) ? projectsResponse.data : [];
-
-        if (projects.length === 0) {
-          setApplicants([]);
-          setLoading(false);
-          return;
-        }
-
-        // For each project, fetch its applications
-        const applicationsPromises = projects.map(async (project) => {
-          try {
-            const applicationsResponse = await axios.get(`/api/applications/project/${project._id}`);
-            const applications = Array.isArray(applicationsResponse.data) ? applicationsResponse.data : [];
-            
-            // For each application, fetch the contractor details
-            const applicationsWithContractorDetails = await Promise.all(
-              applications.map(async (application) => {
-                try {
-                  // Get contractor details from the application
-                  const contractor = application.worker;
-                  return {
-                    ...application,
-                    projectTitle: project.title,
-                    projectName: project.title,
-                    contractor: {
-                      businessName: contractor.businessName,
-                      businessType: contractor.businessType,
-                      yearsOfExperience: contractor.yearsOfExperience,
-                      licenseNumber: contractor.licenseNumber,
-                      insuranceInfo: contractor.insuranceInfo,
-                      projectTypes: contractor.projectTypes
-                    }
-                  };
-                } catch (error) {
-                  console.error(`Error processing contractor details for application ${application._id}:`, error);
-                  return null;
-                }
-              })
-            );
-
-            return applicationsWithContractorDetails.filter(app => app !== null);
-          } catch (error) {
-            console.error(`Error fetching applications for project ${project._id}:`, error);
-            return [];
-          }
-        });
-
-        const applicationsArrays = await Promise.all(applicationsPromises);
-        const allApplications = applicationsArrays.flat();
-
-        if (allApplications.length === 0) {
-          setApplicants([]);
-          setLoading(false);
-          return;
-        }
-
-        setApplicants(allApplications);
-      } catch (error) {
-        console.error('Error fetching applicants:', error);
-        toast({
-          title: "Error",
-          description: "Failed to fetch applicants",
-          variant: "destructive",
-        });
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    if (user?._id) {
-      fetchApplicants();
-    } else {
-      setLoading(false);
+  
+  
+  // Mock data for applicants
+  const applicants = [
+    {
+      id: 1,
+      name: "Elite Constructions",
+      avatar: "/placeholder.svg",
+      verified: true,
+      rating: 4.9,
+      projects: 127,
+      experience: 12,
+      status: "available",
+      projectName: "Residential construction"
+    },
+    {
+      id: 2,
+      name: "Commercial Projects",
+      avatar: "/placeholder.svg",
+      verified: true,
+      rating: 4.8,
+      projects: 98,
+      experience: 8,
+      status: "busy"
+    },
+    {
+      id: 3,
+      name: "Industrial Construction",
+      avatar: "/placeholder.svg",
+      verified: true,
+      rating: 4.7,
+      projects: 156,
+      experience: 15,
+      status: "available"
     }
-  }, [user, toast]);
-
-  const handleAccept = async (applicationId) => {
-    try {
-      await axios.patch(`/api/applications/${applicationId}/status`, {
-        status: 'accepted'
-      });
-      
-      // Update the applicants list to remove the accepted application
-      setApplicants(prev => prev.filter(app => app._id !== applicationId));
-      
-      toast({
-        title: "Success",
-        description: "Application accepted successfully",
-      });
-    } catch (error) {
-      toast({
-        title: "Error",
-        description: "Failed to accept application",
-        variant: "destructive",
-      });
-    }
-  };
-
-  const handleReject = async (applicationId) => {
-    try {
-      await axios.patch(`/api/applications/${applicationId}/status`, {
-        status: 'rejected'
-      });
-      
-      // Update the applicants list to remove the rejected application
-      setApplicants(prev => prev.filter(app => app._id !== applicationId));
-      
-      toast({
-        title: "Success",
-        description: "Application rejected successfully",
-      });
-    } catch (error) {
-      toast({
-        title: "Error",
-        description: "Failed to reject application",
-        variant: "destructive",
-      });
-    }
-  };
-
-  if (loading) {
-    return (
-      <div className="min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-4xl mx-auto">
-          <div className="text-center">
-            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#FF4B55] mx-auto"></div>
-            <p className="mt-4 text-gray-600">Loading applicants...</p>
-          </div>
-        </div>
-      </div>
-    );
-  }
+  ];
 
   return (
     <div className="min-h-screen bg-[#F6F6F7]">
@@ -245,70 +137,87 @@ const ProfessionalMessages = () => {
           
           {/* Main Content */}
           <div className="w-full md:w-3/4">
-            <h2 className="text-xl font-bold mb-4">Applications</h2>
-            
-            {applicants.length > 0 ? (
-              <div className="space-y-4">
-                {applicants.map((application) => (
-                  <div key={application._id} className="bg-white rounded-lg shadow-sm p-6">
-                    <div className="flex justify-between items-start mb-4">
-                      <div>
-                        <h3 className="text-lg font-semibold">{application.contractor.businessName}</h3>
-                        <p className="text-gray-600">{application.contractor.businessType}</p>
+            <div className="bg-white rounded-lg shadow-sm p-6">
+              <div className="flex justify-between items-center mb-6">
+                <h1 className="text-2xl font-bold text-[#004A57]">Incoming Applicants</h1>
+                <div className="text-xl font-medium text-gray-700">
+                  For {applicants[0].projectName}
+                </div>
+              </div>
+              
+              <div className="space-y-6">
+                {applicants.map(applicant => (
+                  <div key={applicant.id} className="border-b border-gray-100 pb-6 last:border-0 last:pb-0">
+                    <div className="flex items-center gap-4">
+                      <Avatar className="h-16 w-16">
+                        <AvatarImage src={applicant.avatar} alt={applicant.name} />
+                        <AvatarFallback>{applicant.name.charAt(0)}</AvatarFallback>
+                      </Avatar>
+                      
+                      <div className="flex-grow">
+                        <div className="flex justify-between items-start">
+                          <div>
+                            <h3 className="font-bold text-lg flex items-center gap-2">
+                              {applicant.name}
+                              {applicant.verified && (
+                                <span className="bg-[#004A57] text-white text-xs px-2 py-0.5 rounded-full">
+                                  Verified Pro
+                                </span>
+                              )}
+                            </h3>
+                            <div className="flex items-center mt-1">
+                              {[...Array(5)].map((_, i) => (
+                                <Star 
+                                  key={i} 
+                                  fill={i < Math.floor(applicant.rating) ? "#FF4B55" : "none"} 
+                                  className="h-4 w-4 text-[#FF4B55]" 
+                                />
+                              ))}
+                              <span className="text-xs ml-1">({applicant.rating})</span>
+                            </div>
+                          </div>
+                          
+                          <Button
+                            variant="primary"
+                            size="sm"
+                            className="ml-auto"
+                          >
+                            Contact
+                          </Button>
+                        </div>
+                        
+                        <div className="grid grid-cols-3 gap-4 mt-3">
+                          <div className="text-center">
+                            <p className="text-lg font-bold">{applicant.projects}</p>
+                            <p className="text-xs text-gray-500">Projects</p>
+                          </div>
+                          <div className="text-center">
+                            <p className="text-lg font-bold">{applicant.rating}</p>
+                            <p className="text-xs text-gray-500">Avg Rating</p>
+                          </div>
+                          <div className="text-center">
+                            <p className="text-lg font-bold">{applicant.experience} years</p>
+                            <p className="text-xs text-gray-500">Experience</p>
+                          </div>
+                        </div>
+                        
+                        <div className="mt-3">
+                          {applicant.status === "available" ? (
+                            <span className="flex items-center text-green-600 text-sm">
+                              <CheckCircle className="h-4 w-4 mr-1" /> Available now
+                            </span>
+                          ) : (
+                            <span className="flex items-center text-orange-500 text-sm">
+                              <Clock className="h-4 w-4 mr-1" /> Currently busy
+                            </span>
+                          )}
+                        </div>
                       </div>
-                      <div className="text-right">
-                        <p className="text-sm text-gray-500">Applied for</p>
-                        <p className="font-medium">{application.projectTitle}</p>
-                      </div>
-                    </div>
-                    
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-                      <div>
-                        <p className="text-sm text-gray-500">Business License</p>
-                        <p className="font-medium">{application.contractor.businessLicense}</p>
-                      </div>
-                      <div>
-                        <p className="text-sm text-gray-500">Years of Experience</p>
-                        <p className="font-medium">{application.contractor.yearsOfExperience} years</p>
-                      </div>
-                      <div>
-                        <p className="text-sm text-gray-500">License Number</p>
-                        <p className="font-medium">{application.contractor.licenseNumber}</p>
-                      </div>
-                      <div>
-                        <p className="text-sm text-gray-500">Insurance Info</p>
-                        <p className="font-medium">{application.contractor.insuranceInfo}</p>
-                      </div>
-                    </div>
-                    
-                    <div className="flex justify-end gap-4 mt-4">
-                      <Button
-                        variant="outline"
-                        className="border-red-500 text-red-500 hover:bg-red-500 hover:text-white"
-                        onClick={() => handleReject(application._id)}
-                      >
-                        Reject
-                      </Button>
-                      <Button
-                        variant="outline"
-                        className="border-green-500 text-green-500 hover:bg-green-500 hover:text-white"
-                        onClick={() => handleAccept(application._id)}
-                      >
-                        Accept
-                      </Button>
                     </div>
                   </div>
                 ))}
               </div>
-            ) : (
-              <div className="text-center py-12">
-                <User className="h-16 w-16 mx-auto text-gray-300 mb-3" />
-                <h3 className="text-lg font-medium text-gray-600">No Applications Yet</h3>
-                <p className="text-gray-500">
-                  When contractors apply to your projects, they will appear here.
-                </p>
-              </div>
-            )}
+            </div>
           </div>
         </div>
       </main>

@@ -1,15 +1,7 @@
 import React from "react";
-import { useNavigate } from "react-router-dom";
 import { Button } from "/src/components/ui/button";
 
 const GallerySection = () => {
-
-  const navigate = useNavigate();
-
-  const handleStartJourney = () => {
-    navigate("/journey");
-  };
-
   const images = [
     {
       id: 10,
@@ -56,10 +48,7 @@ const GallerySection = () => {
         <p className="text-black text-lg leading-[27px]">
           We provide the tools and connections you need to thrive.
         </p>
-        <Button variant="primary" 
-        shape="pill" 
-        onClick={handleStartJourney}
-        className="self-start">
+        <Button variant="primary" shape="pill" className="self-start">
           Get Involved
         </Button>
       </div>

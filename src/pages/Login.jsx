@@ -1,122 +1,98 @@
-import React, { useState } from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
-import { useAuth } from '../contexts/AuthContext';
-import { Button } from '../components/ui/button';
-import { Input } from '../components/ui/input';
-import { Label } from '../components/ui/label';
-import { useToast } from '../components/ui/use-toast';
+
+import React from "react";
+import { useLocation, Navigate } from "react-router-dom";
+import LoginLayout from "../components/layout/LoginLayout";
+import LoginForm from "../components/LoginForm";
 
 const Login = () => {
-  const [formData, setFormData] = useState({
-    email: '',
-    password: ''
-  });
-  const [isLoading, setIsLoading] = useState(false);
-  const { login } = useAuth();
-  const navigate = useNavigate();
   const location = useLocation();
-  const { toast } = useToast();
+  const role = new URLSearchParams(location.search).get("role");
 
-  // Get role from URL query parameter
-  const role = new URLSearchParams(location.search).get('role');
+  // Redirect to worker login if no role specified
+  if (!role) {
+    return <Navigate to="/login?role=worker" replace />;
+  }
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData(prev => ({
-      ...prev,
-      [name]: value
-    }));
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setIsLoading(true);
-
-    try {
-      await login(formData.email, formData.password, role, () => {
-        // Navigate based on role
-        switch (role) {
-          case 'worker':
-            navigate('/worker-dashboard');
-            break;
-          case 'contractor':
-            navigate('/contractor-dashboard');
-            break;
-          case 'professional':
-            navigate('/professional-dashboard');
-            break;
-          default:
-            navigate('/professional-dashboard');
-        }
-      });
-      
-      toast({
-        title: "Login Successful",
-        description: "Welcome back!",
-      });
-    } catch (error) {
-      toast({
-        title: "Login Failed",
-        description: error.message || "Invalid email or password",
-        variant: "destructive",
-      });
-    } finally {
-      setIsLoading(false);
+  // Role-specific content
+  const getRoleContent = () => {
+    switch (role) {
+      case "worker":
+        return {
+          title: "Welcome, Skilled Worker!",
+          subtitle: "Access your profile, track job applications, and connect with top contractors in your area.",
+          stats: {
+            stat1: { value: "2,500+", label: "Active Job Listings" },
+            stat2: { value: "500+", label: "Verified Contractors" },
+          },
+          formTitle: "Sign In",
+          redirectPath: "/worker-dashboard"
+        };
+      case "professional":
+        return {
+          title: "Welcome, Professional Builder!",
+          subtitle: "Access your professional dashboard, manage your services, and connect with clients.",
+          stats: {
+            stat1: { value: "1,200+", label: "Active Projects" },
+            stat2: { value: "85%", label: "Booking Rate" },
+          },
+          formTitle: "Professional Sign In",
+          redirectPath: "/professional-dashboard"
+        };
+      case "contractor":
+        return {
+          title: "Welcome, Contractor!",
+          subtitle: "Access your business dashboard, manage projects, and find skilled workers for your construction needs.",
+          stats: {
+            stat1: { value: "10,000+", label: "Verified Workers" },
+            stat2: { value: "95%", label: "Project Success Rate" },
+          },
+          testimonial: {
+            quote: "LabourNet has transformed how we hire skilled workers. Exceptional talent pool.",
+            author: "John Smith",
+            position: "ABC Construction",
+          },
+          formTitle: "Contractor Login",
+          emailLabel: "Business Email",
+          emailPlaceholder: "company@business.com",
+          showPasswordToggle: true,
+          actionButtonText: "Sign in to Dashboard",
+          alternateActionText: "Need a contractor account?",
+          alternateActionLinkText: "Register your business",
+          supportLink: true,
+          redirectPath: "/contractor-dashboard"
+        };
+      default:
+        return null;
     }
   };
 
-  return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-md w-full space-y-8">
-        <div>
-          <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
-            Sign in to your account
-          </h2>
-        </div>
-        <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
-          <div className="rounded-md shadow-sm -space-y-px">
-            <div>
-              <Label htmlFor="email">Email address</Label>
-              <Input
-                id="email"
-                name="email"
-                type="email"
-                autoComplete="email"
-                required
-                value={formData.email}
-                onChange={handleChange}
-                className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-[#FF4B55] focus:border-[#FF4B55] focus:z-10 sm:text-sm"
-                placeholder="Email address"
-              />
-            </div>
-            <div>
-              <Label htmlFor="password">Password</Label>
-              <Input
-                id="password"
-                name="password"
-                type="password"
-                autoComplete="current-password"
-                required
-                value={formData.password}
-                onChange={handleChange}
-                className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-[#FF4B55] focus:border-[#FF4B55] focus:z-10 sm:text-sm"
-                placeholder="Password"
-              />
-            </div>
-          </div>
+  const content = getRoleContent();
+  if (!content) {
+    return <Navigate to="/login?role=worker" replace />;
+  }
 
-          <div>
-            <Button
-              type="submit"
-              className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-[#FF4B55] hover:bg-[#E43F49] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#FF4B55]"
-              disabled={isLoading}
-            >
-              {isLoading ? 'Signing in...' : 'Sign in'}
-            </Button>
-          </div>
-        </form>
-      </div>
-    </div>
+  // Common login page structure with role-specific content
+  return (
+    <LoginLayout
+      title={content.title}
+      subtitle={content.subtitle}
+      stat1={content.stats?.stat1}
+      stat2={content.stats?.stat2}
+      testimonial={content.testimonial}
+    >
+      <LoginForm
+        title={content.formTitle || "Sign In"}
+        emailLabel={content.emailLabel}
+        emailPlaceholder={content.emailPlaceholder}
+        showPasswordToggle={content.showPasswordToggle}
+        actionButtonText={content.actionButtonText}
+        alternateActionText={content.alternateActionText}
+        alternateActionLinkText={content.alternateActionLinkText}
+        socialLogins={content.socialLogins}
+        supportLink={content.supportLink}
+        redirectPath={content.redirectPath}
+      />
+    </LoginLayout>
   );
 };
 

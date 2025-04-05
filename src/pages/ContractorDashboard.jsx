@@ -1,143 +1,234 @@
-import React, { useState, useEffect } from 'react';
-import { api } from '../services/api';
-import { useNavigate } from 'react-router-dom';
-import { useToast } from '../components/ui/use-toast';
-import axios from 'axios';
+import React, { useState } from 'react';
 
-// Correct the PostProjectForm import and usage
-import PostProjectForm from '../components/PostProjectForm'; // Ensure this file exists and is correctly implemented
-
-const ContractorDashboard = () => {
-  const navigate = useNavigate();
-  const { toast } = useToast();
-  const [isPostJobDialogOpen, setPostJobDialogOpen] = useState(false);
-  const [isContactDialogOpen, setContactDialogOpen] = useState(false);
-  const [projects, setProjects] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+// Import the PostProjectForm from the second file
+const PostProjectForm = () => {
   const [formData, setFormData] = useState({
-    title: '',
-    projectType: 'Commercial',
-    location: '',
-    timeline: '',
-    hourlyRate: '',
-    description: ''
+    title: "",
+    location: "",
+    employmentType: "",
+    hourlyRate: "",
+    jobDescription: "",
+    requirements: "",
+    company: "Bharati Construction Ltd",
+    projectType: "Commercial",
+    timeline: "3 months",
+    expiresAfter: "30",
+    postedDate: new Date().toISOString(),
   });
-  const [user, setUser] = useState(null);
 
-  useEffect(() => {
-    const fetchProjects = async () => {
-      try {
-        const response = await api.getProjects();
-        setProjects(response.data);
-        setLoading(false);
-      } catch (err) {
-        setError('Failed to fetch projects');
-        setLoading(false);
-      }
-    };
-
-    fetchProjects();
-  }, []);
-
-  useEffect(() => {
-    const fetchUser = async () => {
-      try {
-        const response = await api.getProfile();
-        setUser(response.data);
-      } catch (error) {
-        console.error('Error fetching user:', error);
-        setError('Failed to fetch user');
-        setLoading(false);
-      }
-    };
-
-    fetchUser();
-  }, []);
-
-  const handleInputChange = (e) => {
+  const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
-      [name]: value
+      [name]: value,
     }));
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
-    try {
-      const projectData = {
-        ...formData,
-        status: 'active',
-        contractor: 'current-user-id', // This should be replaced with actual user ID
-        employmentType: 'Contract',
-        timeline: {
-          startDate: new Date(),
-          endDate: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000) // 30 days from now
-        },
-        hourlyRate: {
-          min: parseInt(formData.hourlyRate.split('-')[0]),
-          max: parseInt(formData.hourlyRate.split('-')[1])
-        }
-      };
-
-      await api.createProject(projectData);
-      setPostJobDialogOpen(false);
-      // Refresh projects list
-      const response = await api.getProjects();
-      setProjects(response.data);
-    } catch (err) {
-      setError('Failed to create project');
-    }
+    // Form validation logic here
+    console.log("Post Job Form submitted:", formData);
+    alert("Job Posted Successfully!");
+    // Reset form
   };
 
-  const handleApplyNow = async (projectId) => {
-    try {
-      if (!user) {
-        toast({
-          title: "Authentication Required",
-          description: "Please login to apply for projects",
-          variant: "destructive",
-        });
-        navigate('/login?role=contractor');
-        return;
-      }
+  return (
+    <div className="p-6 max-h-[80vh] overflow-y-auto">
+      <h2 className="text-2xl font-bold mb-2 text-[#FF4B55]">Post New Project</h2>
+      <p className="text-gray-500 mb-8">Fill in the details to post your new construction project</p>
 
-      // Get contractor's profile details
-      const profileResponse = await api.getProfile();
-      const contractorProfile = profileResponse.data;
+      <form onSubmit={handleSubmit} className="space-y-8">
+        <div className="bg-gray-50 p-6 rounded-lg border-l-4 border-[#FF4B55] shadow-sm">
+          <h3 className="text-lg font-semibold mb-4">Basic Information</h3>
 
-      const applicationData = {
-        project: projectId,
-        worker: user._id,
-        status: 'pending',
-        coverLetter: "I am interested in working on this project",
-        expectedRate: 35,
-        contractorDetails: {
-          businessName: contractorProfile.businessName,
-          businessType: contractorProfile.businessType,
-          yearsOfExperience: contractorProfile.yearsOfExperience,
-          licenseNumber: contractorProfile.licenseNumber,
-          insuranceInfo: contractorProfile.insuranceInfo,
-          projectTypes: contractorProfile.projectTypes
-        }
-      };
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+            <div>
+              <label className="block text-sm font-medium mb-1">Job Title</label>
+              <input
+                id="title"
+                name="title"
+                value={formData.title}
+                onChange={handleChange}
+                placeholder="e.g. Site Engineer"
+                className="w-full p-2 border rounded mt-1"
+                required
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium mb-1">Location</label>
+              <input
+                id="location"
+                name="location"
+                value={formData.location}
+                onChange={handleChange}
+                placeholder="e.g. Mumbai, Maharashtra"
+                className="w-full p-2 border rounded mt-1"
+                required
+              />
+            </div>
+          </div>
 
-      await api.applyToProject(applicationData);
-      
-      toast({
-        title: "Success",
-        description: "Your application has been submitted successfully",
-      });
-    } catch (error) {
-      console.error('Error submitting application:', error);
-      toast({
-        title: "Error",
-        description: error.response?.data?.message || "Failed to submit application",
-        variant: "destructive",
-      });
-    }
-  };
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div>
+              <label className="block text-sm font-medium mb-1">Employment Type</label>
+              <select
+                id="employmentType"
+                name="employmentType"
+                value={formData.employmentType}
+                onChange={handleChange}
+                className="w-full mt-1 p-2 border rounded"
+                required
+              >
+                <option value="">Select Type</option>
+                <option value="Full-time">Full-time</option>
+                <option value="Part-time">Part-time</option>
+                <option value="Contract">Contract</option>
+                <option value="Temporary">Temporary</option>
+              </select>
+            </div>
+            <div>
+              <label className="block text-sm font-medium mb-1">Salary Range</label>
+              <input
+                id="hourlyRate"
+                name="hourlyRate"
+                value={formData.hourlyRate}
+                onChange={handleChange}
+                placeholder="e.g. ₹25,000-35,000"
+                className="w-full p-2 border rounded mt-1"
+                required
+              />
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
+            <div>
+              <label className="block text-sm font-medium mb-1">Project Type</label>
+              <select
+                id="projectType"
+                name="projectType"
+                value={formData.projectType}
+                onChange={handleChange}
+                className="w-full mt-1 p-2 border rounded"
+                required
+              >
+                <option value="Commercial">Commercial</option>
+                <option value="Residential">Residential</option>
+                <option value="Industrial">Industrial</option>
+                <option value="Infrastructure">Infrastructure</option>
+                <option value="Government">Government</option>
+              </select>
+            </div>
+            <div>
+              <label className="block text-sm font-medium mb-1">Project Timeline</label>
+              <select
+                id="timeline"
+                name="timeline"
+                value={formData.timeline}
+                onChange={handleChange}
+                className="w-full mt-1 p-2 border rounded"
+                required
+              >
+                <option value="1 month">1 month</option>
+                <option value="3 months">3 months</option>
+                <option value="6 months">6 months</option>
+                <option value="1 year">1 year</option>
+                <option value="2+ years">2+ years</option>
+              </select>
+            </div>
+          </div>
+
+          <div className="mt-6">
+            <label className="block text-sm font-medium mb-1">Remove Job After</label>
+            <select
+              id="expiresAfter"
+              name="expiresAfter"
+              value={formData.expiresAfter}
+              onChange={handleChange}
+              className="w-full mt-1 p-2 border rounded"
+            >
+              <option value="7">7 days</option>
+              <option value="14">14 days</option>
+              <option value="30">30 days</option>
+              <option value="60">60 days</option>
+              <option value="90">90 days</option>
+              <option value="never">Don't remove</option>
+            </select>
+          </div>
+        </div>
+
+        <div className="bg-gray-50 p-6 rounded-lg border-l-4 border-[#FF4B55] shadow-sm">
+          <h3 className="text-lg font-semibold mb-4">Job Details</h3>
+
+          <div className="mb-6">
+            <label className="block text-sm font-medium mb-1">Job Description</label>
+            <textarea
+              id="jobDescription"
+              name="jobDescription"
+              value={formData.jobDescription}
+              onChange={handleChange}
+              rows={5}
+              className="w-full mt-1 p-2 border rounded"
+              placeholder="Describe the job responsibilities, daily tasks, and expectations..."
+              required
+            ></textarea>
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium mb-1">Requirements</label>
+            <textarea
+              id="requirements"
+              name="requirements"
+              value={formData.requirements}
+              onChange={handleChange}
+              rows={5}
+              className="w-full mt-1 p-2 border rounded"
+              placeholder="List qualifications, skills, experience, and education requirements..."
+              required
+            ></textarea>
+          </div>
+        </div>
+
+        <div className="bg-gray-50 p-6 rounded-lg border-l-4 border-[#FF4B55] shadow-sm">
+          <h3 className="text-lg font-semibold mb-4">Project Images</h3>
+
+          <div className="border-2 border-dashed border-gray-300 rounded-lg p-8 text-center">
+            <div className="flex flex-col items-center justify-center">
+              <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-gray-400 mb-4">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                <polyline points="17 8 12 3 7 8"></polyline>
+                <line x1="12" y1="3" x2="12" y2="15"></line>
+              </svg>
+              <p className="text-gray-600 mb-2">Upload Project Images</p>
+              <p className="text-gray-400 text-sm mb-4">Drag and drop files here or click to browse</p>
+              <input type="file" className="hidden" multiple accept="image/*" id="file-upload" />
+              <label htmlFor="file-upload">
+                <button type="button" className="px-4 py-2 border rounded-md text-gray-600 hover:bg-[#FF4B55] hover:text-white transition-all">
+                  Select Files
+                </button>
+              </label>
+            </div>
+          </div>
+        </div>
+
+        <div className="flex justify-end gap-4 mt-8">
+          <button type="button" className="px-4 py-2 border rounded-md">
+            Save as Draft
+          </button>
+          <button
+            type="submit"
+            className="bg-[#FF4B55] text-white px-4 py-2 rounded-md hover:bg-[#E43F49] shadow-md hover:shadow-lg"
+          >
+            Post Job
+          </button>
+        </div>
+      </form>
+    </div>
+  );
+};
+
+const ContractorDashboard = () => {
+  const [isPostJobDialogOpen, setPostJobDialogOpen] = useState(false);
+  const [isContactDialogOpen, setContactDialogOpen] = useState(false);
 
   const openPostJobDialog = () => setPostJobDialogOpen(true);
   const closePostJobDialog = () => setPostJobDialogOpen(false);
@@ -145,8 +236,10 @@ const ContractorDashboard = () => {
   const openContactDialog = () => setContactDialogOpen(true);
   const closeContactDialog = () => setContactDialogOpen(false);
 
-  if (loading) return <div>Loading...</div>;
-  if (error) return <div>Error: {error}</div>;
+  const handleApplyNow = (e) => {
+    e.stopPropagation();
+    alert('Application Submitted');
+  };
 
   return (
     <div className="min-h-screen bg-white">
@@ -232,53 +325,110 @@ const ContractorDashboard = () => {
         <div className="mb-12">
           <h2 className="text-xl font-semibold text-[#121224] mb-6">Available projects</h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {projects.map(project => (
-              <div
-                key={project._id}
-                className="bg-white border border-gray-200 rounded-lg shadow-sm overflow-hidden hover:border-[#FF4B55] transition-colors card-hover cursor-pointer"
-                onClick={() => navigate(`/project-detail-view/${project._id}`)}
-              >
-                <div className="h-40 bg-gray-200"></div>
-                <div className="p-4">
-                  <div className="flex justify-between mb-2">
-                    <span className="bg-gray-100 text-gray-600 px-2 py-1 rounded text-xs">
-                      {project.projectType}
-                    </span>
-                    <span className="text-sm text-gray-500 flex items-center gap-1">
-                      <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                        <circle cx="12" cy="12" r="10"></circle>
-                        <polyline points="12 6 12 12 16 14"></polyline>
-                      </svg>
-                      {project.timeline?.endDate ? 
-                        `${Math.ceil((new Date(project.timeline.endDate) - new Date()) / (1000 * 60 * 60 * 24))} days` : 
-                        'Ongoing'}
-                    </span>
-                  </div>
-                  <h3 className="font-semibold mb-1">{project.title}</h3>
-                  <p className="text-sm text-gray-500 mb-3 flex items-center gap-1">
+            {/* Project Card 1 */}
+            <div
+              className="bg-white border border-gray-200 rounded-lg shadow-sm overflow-hidden hover:border-[#FF4B55] transition-colors card-hover cursor-pointer"
+              onClick={() => (window.location.href = '/project-detail-view/1')}
+            >
+              <div className="h-40 bg-gray-200"></div>
+              <div className="p-4">
+                <div className="flex justify-between mb-2">
+                  <span className="bg-gray-100 text-gray-600 px-2 py-1 rounded text-xs">Commercial</span>
+                  <span className="text-sm text-gray-500 flex items-center gap-1">
                     <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                      <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"></path>
-                      <circle cx="12" cy="10" r="3"></circle>
-                    </svg>
-                    {project.location}
-                  </p>
-                  <div className="flex justify-between items-center">
-                    <span className="text-[#FF4B55] font-bold">
-                      ${project.hourlyRate?.min}-{project.hourlyRate?.max}/hr
-                    </span>
-                    <button
-                      className="text-[#FF4B55] text-sm font-medium border border-[#FF4B55] px-3 py-1 rounded hover:bg-[#FF4B55] hover:text-white"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        handleApplyNow(project._id);
-                      }}
-                    >
-                      Apply Now
-                    </button>
-                  </div>
+                      <circle cx="12" cy="12" r="10"></circle>
+                      <polyline points="12 6 12 12 16 14"></polyline>
+                    </svg> 3 weeks
+                  </span>
+                </div>
+                <h3 className="font-semibold mb-1">Retail Center Remodel</h3>
+                <p className="text-sm text-gray-500 mb-3 flex items-center gap-1">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"></path>
+                    <circle cx="12" cy="10" r="3"></circle>
+                  </svg> Oakland, CA
+                </p>
+                <div className="flex justify-between items-center">
+                  <span className="text-[#FF4B55] font-bold">$30-45/hr</span>
+                  <button
+                    className="text-[#FF4B55] text-sm font-medium border border-[#FF4B55] px-3 py-1 rounded hover:bg-[#FF4B55] hover:text-white"
+                    onClick={handleApplyNow}
+                  >
+                    Apply Now
+                  </button>
                 </div>
               </div>
-            ))}
+            </div>
+            
+            {/* Project Card 2 */}
+            <div
+              className="bg-white border border-gray-200 rounded-lg shadow-sm overflow-hidden hover:border-[#FF4B55] transition-colors card-hover cursor-pointer"
+              onClick={() => (window.location.href = '/project-detail-view/2')}
+            >
+              <div className="h-40 bg-gray-200"></div>
+              <div className="p-4">
+                <div className="flex justify-between mb-2">
+                  <span className="bg-gray-100 text-gray-600 px-2 py-1 rounded text-xs">Residential</span>
+                  <span className="text-sm text-gray-500 flex items-center gap-1">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                      <circle cx="12" cy="12" r="10"></circle>
+                      <polyline points="12 6 12 12 16 14"></polyline>
+                    </svg> 1 month
+                  </span>
+                </div>
+                <h3 className="font-semibold mb-1">Custom Home Construction</h3>
+                <p className="text-sm text-gray-500 mb-3 flex items-center gap-1">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"></path>
+                    <circle cx="12" cy="10" r="3"></circle>
+                  </svg> Denver, CO
+                </p>
+                <div className="flex justify-between items-center">
+                  <span className="text-[#FF4B55] font-bold">$28-40/hr</span>
+                  <button
+                    className="text-[#FF4B55] text-sm font-medium border border-[#FF4B55] px-3 py-1 rounded hover:bg-[#FF4B55] hover:text-white"
+                    onClick={handleApplyNow}
+                  >
+                    Apply Now
+                  </button>
+                </div>
+              </div>
+            </div>
+            
+            {/* Project Card 3 */}
+            <div
+              className="bg-white border border-gray-200 rounded-lg shadow-sm overflow-hidden hover:border-[#FF4B55] transition-colors card-hover cursor-pointer"
+              onClick={() => (window.location.href = '/project-detail-view/3')}
+            >
+              <div className="h-40 bg-gray-200"></div>
+              <div className="p-4">
+                <div className="flex justify-between mb-2">
+                  <span className="bg-gray-100 text-gray-600 px-2 py-1 rounded text-xs">Industrial</span>
+                  <span className="text-sm text-gray-500 flex items-center gap-1">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                      <circle cx="12" cy="12" r="10"></circle>
+                      <polyline points="12 6 12 12 16 14"></polyline>
+                    </svg> 2 months
+                  </span>
+                </div>
+                <h3 className="font-semibold mb-1">Warehouse Expansion</h3>
+                <p className="text-sm text-gray-500 mb-3 flex items-center gap-1">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"></path>
+                    <circle cx="12" cy="10" r="3"></circle>
+                  </svg> Phoenix, AZ
+                </p>
+                <div className="flex justify-between items-center">
+                  <span className="text-[#FF4B55] font-bold">$35-50/hr</span>
+                  <button
+                    className="text-[#FF4B55] text-sm font-medium border border-[#FF4B55] px-3 py-1 rounded hover:bg-[#FF4B55] hover:text-white"
+                    onClick={handleApplyNow}
+                  >
+                    Apply Now
+                  </button>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
 

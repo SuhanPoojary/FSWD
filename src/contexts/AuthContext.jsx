@@ -50,7 +50,7 @@ export const AuthProvider = ({ children }) => {
       return response;
     } catch (error) {
       console.error("Registration error:", error);
-      toast.error(error.message || "Registration failed");
+      toast.error(error.response?.data?.message || "Registration failed");
       throw error;
     } finally {
       setLoading(false);
@@ -76,7 +76,7 @@ export const AuthProvider = ({ children }) => {
       return response;
     } catch (error) {
       console.error("Login error:", error);
-      toast.error(error.message || "Login failed");
+      toast.error(error.response?.data?.message || "Login failed");
       throw error;
     } finally {
       setLoading(false);
@@ -109,7 +109,7 @@ export const AuthProvider = ({ children }) => {
       return response;
     } catch (error) {
       console.error("Update profile error:", error);
-      toast.error(error.message || "Failed to update profile");
+      toast.error(error.response?.data?.message || "Failed to update profile");
       throw error;
     } finally {
       setLoading(false);

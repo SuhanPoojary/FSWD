@@ -26,6 +26,20 @@ api.interceptors.request.use(
   }
 );
 
+// Intercept responses to handle errors
+api.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    // Handle 401 unauthorized errors (token expired, etc.)
+    if (error.response && error.response.status === 401) {
+      localStorage.removeItem('jwt');
+      localStorage.removeItem('user');
+      window.location.href = '/login';
+    }
+    return Promise.reject(error);
+  }
+);
+
 // Auth services
 export const authService = {
   // Register a new user

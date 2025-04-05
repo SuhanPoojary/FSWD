@@ -1,19 +1,24 @@
-
-const express = require('express');
-const userController = require('../controllers/userController');
-const authMiddleware = require('../middleware/authMiddleware');
+import express from 'express';
+import {
+  updateProfile,
+  getProfile,
+  getAllWorkers,
+  getAllProfessionals,
+  getAllContractors
+} from '../controllers/userController.js';
+import { protect } from '../middleware/authMiddleware.js';
 
 const router = express.Router();
 
 // Protect all routes after this middleware
-router.use(authMiddleware.protect);
+router.use(protect);
 
-router.get('/profile', userController.getProfile);
-router.get('/profile/:userId', userController.getProfile);
-router.patch('/profile', userController.updateProfile);
+router.get('/profile', getProfile);
+router.get('/profile/:userId', getProfile);
+router.patch('/profile', updateProfile);
 
-router.get('/workers', userController.getAllWorkers);
-router.get('/professionals', userController.getAllProfessionals);
-router.get('/contractors', userController.getAllContractors);
+router.get('/workers', getAllWorkers);
+router.get('/professionals', getAllProfessionals);
+router.get('/contractors', getAllContractors);
 
-module.exports = router;
+export default router;

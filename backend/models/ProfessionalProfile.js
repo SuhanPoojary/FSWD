@@ -1,5 +1,4 @@
-
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 
 const professionalProfileSchema = new mongoose.Schema({
   user: {
@@ -46,4 +45,4 @@ const professionalProfileSchema = new mongoose.Schema({
 
 const ProfessionalProfile = mongoose.model('ProfessionalProfile', professionalProfileSchema);
 
-module.exports = ProfessionalProfile;
+export default ProfessionalProfile;

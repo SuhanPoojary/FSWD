@@ -1,5 +1,4 @@
-
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 
 const contractorProfileSchema = new mongoose.Schema({
   user: {
@@ -48,4 +47,4 @@ const contractorProfileSchema = new mongoose.Schema({
 
 const ContractorProfile = mongoose.model('ContractorProfile', contractorProfileSchema);
 
-module.exports = ContractorProfile;
+export default ContractorProfile;

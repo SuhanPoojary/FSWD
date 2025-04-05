@@ -1,12 +1,11 @@
-
-const jwt = require('jsonwebtoken');
-const User = require('../models/User');
+import jwt from 'jsonwebtoken';
+import User from '../models/User.js';
 
 // Middleware to protect routes
-exports.protect = async (req, res, next) => {
+const protect = async (req, res, next) => {
   try {
     let token;
-    
+
     // Get token from headers or cookies
     if (req.headers.authorization && req.headers.authorization.startsWith('Bearer')) {
       token = req.headers.authorization.split(' ')[1];
@@ -22,7 +21,21 @@ exports.protect = async (req, res, next) => {
     }
 
     // Verify token
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    let decoded;
+    try {
+      decoded = jwt.verify(token, process.env.JWT_SECRET);
+    } catch (err) {
+      if (err.name === 'TokenExpiredError') {
+        return res.status(401).json({
+          status: 'fail',
+          message: 'Your token has expired. Please log in again'
+        });
+      }
+      return res.status(401).json({
+        status: 'fail',
+        message: 'Invalid token. Please log in again'
+      });
+    }
 
     // Check if user still exists
     const currentUser = await User.findById(decoded.id);
@@ -38,15 +51,15 @@ exports.protect = async (req, res, next) => {
     next();
   } catch (error) {
     console.error('Auth middleware error:', error);
-    return res.status(401).json({
-      status: 'fail',
-      message: 'Not authorized, token failed'
+    return res.status(500).json({
+      status: 'error',
+      message: 'An error occurred while processing your request'
     });
   }
 };
 
 // Restrict to certain roles
-exports.restrictTo = (...roles) => {
+const restrictTo = (...roles) => {
   return (req, res, next) => {
     if (!roles.includes(req.user.role)) {
       return res.status(403).json({
@@ -57,3 +70,6 @@ exports.restrictTo = (...roles) => {
     next();
   };
 };
+
+export { protect, restrictTo };
+export default { protect, restrictTo };

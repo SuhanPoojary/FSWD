@@ -1,25 +1,34 @@
-
-const express = require('express');
-const projectController = require('../controllers/projectController');
-const authMiddleware = require('../middleware/authMiddleware');
+import express from 'express';
+import {
+  createProject,
+  getAllProjects,
+  getProject,
+  updateProject,
+  deleteProject,
+  applyForProject,
+  updateContractorStatus,
+  getProjectsForContractor,
+  getProfessionalProjects
+} from '../controllers/projectController.js';
+import { protect } from '../middleware/authMiddleware.js';
 
 const router = express.Router();
 
 // Public routes
-router.get('/', projectController.getAllProjects);
-router.get('/:id', projectController.getProject);
+router.get('/', getAllProjects);
+router.get('/:id', getProject);
 
 // Protect all routes after this middleware
-router.use(authMiddleware.protect);
+router.use(protect);
 
-router.post('/', projectController.createProject);
-router.patch('/:id', projectController.updateProject);
-router.delete('/:id', projectController.deleteProject);
+router.post('/', createProject);
+router.patch('/:id', updateProject);
+router.delete('/:id', deleteProject);
 
-router.post('/:id/apply', projectController.applyForProject);
-router.patch('/contractors/status', projectController.updateContractorStatus);
+router.post('/:id/apply', applyForProject);
+router.patch('/contractors/status', updateContractorStatus);
 
-router.get('/contractor/available', projectController.getProjectsForContractor);
-router.get('/professional/myprojects', projectController.getProfessionalProjects);
+router.get('/contractor/available', getProjectsForContractor);
+router.get('/professional/myprojects', getProfessionalProjects);
 
-module.exports = router;
+export default router;

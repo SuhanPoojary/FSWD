@@ -1,5 +1,4 @@
-
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 
 const workerProfileSchema = new mongoose.Schema({
   user: {
@@ -26,4 +25,4 @@ const workerProfileSchema = new mongoose.Schema({
 
 const WorkerProfile = mongoose.model('WorkerProfile', workerProfileSchema);
 
-module.exports = WorkerProfile;
+export default WorkerProfile;

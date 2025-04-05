@@ -1,9 +1,8 @@
-
-const Job = require('../models/Job');
-const User = require('../models/User');
+import Job from '../models/Job.js';
+import User from '../models/User.js';
 
 // Create a new job
-exports.createJob = async (req, res) => {
+const createJob = async (req, res) => {
   try {
     // Only contractors can post jobs
     if (req.user.role !== 'contractor') {
@@ -34,7 +33,7 @@ exports.createJob = async (req, res) => {
 };
 
 // Get all jobs
-exports.getAllJobs = async (req, res) => {
+const getAllJobs = async (req, res) => {
   try {
     let filter = {};
     
@@ -70,7 +69,7 @@ exports.getAllJobs = async (req, res) => {
 };
 
 // Get a single job
-exports.getJob = async (req, res) => {
+const getJob = async (req, res) => {
   try {
     const job = await Job.findById(req.params.id)
       .populate('postedBy', 'name email')
@@ -99,7 +98,7 @@ exports.getJob = async (req, res) => {
 };
 
 // Update a job
-exports.updateJob = async (req, res) => {
+const updateJob = async (req, res) => {
   try {
     const job = await Job.findById(req.params.id);
     
@@ -143,7 +142,7 @@ exports.updateJob = async (req, res) => {
 };
 
 // Delete a job
-exports.deleteJob = async (req, res) => {
+const deleteJob = async (req, res) => {
   try {
     const job = await Job.findById(req.params.id);
     
@@ -178,7 +177,7 @@ exports.deleteJob = async (req, res) => {
 };
 
 // Apply for a job
-exports.applyForJob = async (req, res) => {
+const applyForJob = async (req, res) => {
   try {
     // Only workers can apply for jobs
     if (req.user.role !== 'worker') {
@@ -234,7 +233,7 @@ exports.applyForJob = async (req, res) => {
 };
 
 // Update application status (for contractors)
-exports.updateApplicationStatus = async (req, res) => {
+const updateApplicationStatus = async (req, res) => {
   try {
     const { jobId, workerId, status } = req.body;
     
@@ -296,7 +295,7 @@ exports.updateApplicationStatus = async (req, res) => {
 };
 
 // Get jobs for worker (recommended jobs)
-exports.getJobsForWorker = async (req, res) => {
+const getJobsForWorker = async (req, res) => {
   try {
     // Get all open jobs
     const jobs = await Job.find({ status: 'Open' })
@@ -320,7 +319,7 @@ exports.getJobsForWorker = async (req, res) => {
 };
 
 // Get jobs posted by a contractor
-exports.getContractorJobs = async (req, res) => {
+const getContractorJobs = async (req, res) => {
   try {
     const jobs = await Job.find({ postedBy: req.user.id })
       .populate('applicants.worker', 'name email')
@@ -340,4 +339,16 @@ exports.getContractorJobs = async (req, res) => {
       message: error.message
     });
   }
+};
+
+export {
+  createJob,
+  getAllJobs,
+  getJob,
+  updateJob,
+  deleteJob,
+  applyForJob,
+  updateApplicationStatus,
+  getJobsForWorker,
+  getContractorJobs
 };

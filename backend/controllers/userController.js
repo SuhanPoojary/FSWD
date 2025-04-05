@@ -1,8 +1,7 @@
-
-const User = require('../models/User');
-const WorkerProfile = require('../models/WorkerProfile');
-const ContractorProfile = require('../models/ContractorProfile');
-const ProfessionalProfile = require('../models/ProfessionalProfile');
+import User from '../models/User.js';
+import WorkerProfile from '../models/WorkerProfile.js';
+import ContractorProfile from '../models/ContractorProfile.js';
+import ProfessionalProfile from '../models/ProfessionalProfile.js';
 
 // Get profile model based on user role
 const getProfileModel = (role) => {
@@ -19,7 +18,7 @@ const getProfileModel = (role) => {
 };
 
 // Update user profile
-exports.updateProfile = async (req, res) => {
+const updateProfile = async (req, res) => {
   try {
     const user = await User.findById(req.user.id);
     
@@ -78,7 +77,7 @@ exports.updateProfile = async (req, res) => {
 };
 
 // Get user profile
-exports.getProfile = async (req, res) => {
+const getProfile = async (req, res) => {
   try {
     const userId = req.params.userId || req.user.id;
     const user = await User.findById(userId);
@@ -127,7 +126,7 @@ exports.getProfile = async (req, res) => {
 };
 
 // Get all workers
-exports.getAllWorkers = async (req, res) => {
+const getAllWorkers = async (req, res) => {
   try {
     const workers = await User.find({ role: 'worker' });
     const workerIds = workers.map(worker => worker._id);
@@ -159,7 +158,7 @@ exports.getAllWorkers = async (req, res) => {
 };
 
 // Get all professionals
-exports.getAllProfessionals = async (req, res) => {
+const getAllProfessionals = async (req, res) => {
   try {
     const professionals = await User.find({ role: 'professional' });
     const professionalIds = professionals.map(professional => professional._id);
@@ -191,7 +190,7 @@ exports.getAllProfessionals = async (req, res) => {
 };
 
 // Get all contractors
-exports.getAllContractors = async (req, res) => {
+const getAllContractors = async (req, res) => {
   try {
     const contractors = await User.find({ role: 'contractor' });
     const contractorIds = contractors.map(contractor => contractor._id);
@@ -220,4 +219,12 @@ exports.getAllContractors = async (req, res) => {
       message: error.message
     });
   }
+};
+
+export {
+  updateProfile,
+  getProfile,
+  getAllWorkers,
+  getAllProfessionals,
+  getAllContractors
 };

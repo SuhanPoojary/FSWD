@@ -1,9 +1,8 @@
-
-const Project = require('../models/Project');
-const User = require('../models/User');
+import Project from '../models/Project.js';
+import User from '../models/User.js';
 
 // Create a new project
-exports.createProject = async (req, res) => {
+const createProject = async (req, res) => {
   try {
     // Only professionals can post projects
     if (req.user.role !== 'professional') {
@@ -34,7 +33,7 @@ exports.createProject = async (req, res) => {
 };
 
 // Get all projects
-exports.getAllProjects = async (req, res) => {
+const getAllProjects = async (req, res) => {
   try {
     let filter = {};
     
@@ -70,7 +69,7 @@ exports.getAllProjects = async (req, res) => {
 };
 
 // Get a single project
-exports.getProject = async (req, res) => {
+const getProject = async (req, res) => {
   try {
     const project = await Project.findById(req.params.id)
       .populate('postedBy', 'name email')
@@ -99,7 +98,7 @@ exports.getProject = async (req, res) => {
 };
 
 // Update a project
-exports.updateProject = async (req, res) => {
+const updateProject = async (req, res) => {
   try {
     const project = await Project.findById(req.params.id);
     
@@ -143,7 +142,7 @@ exports.updateProject = async (req, res) => {
 };
 
 // Delete a project
-exports.deleteProject = async (req, res) => {
+const deleteProject = async (req, res) => {
   try {
     const project = await Project.findById(req.params.id);
     
@@ -178,7 +177,7 @@ exports.deleteProject = async (req, res) => {
 };
 
 // Apply for a project (for contractors)
-exports.applyForProject = async (req, res) => {
+const applyForProject = async (req, res) => {
   try {
     // Only contractors can apply for projects
     if (req.user.role !== 'contractor') {
@@ -234,7 +233,7 @@ exports.applyForProject = async (req, res) => {
 };
 
 // Update contractor application status (for professionals)
-exports.updateContractorStatus = async (req, res) => {
+const updateContractorStatus = async (req, res) => {
   try {
     const { projectId, contractorId, status } = req.body;
     
@@ -296,7 +295,7 @@ exports.updateContractorStatus = async (req, res) => {
 };
 
 // Get projects for contractor (available projects)
-exports.getProjectsForContractor = async (req, res) => {
+const getProjectsForContractor = async (req, res) => {
   try {
     // Get all active projects
     const projects = await Project.find({ status: 'active' })
@@ -320,7 +319,7 @@ exports.getProjectsForContractor = async (req, res) => {
 };
 
 // Get projects posted by a professional
-exports.getProfessionalProjects = async (req, res) => {
+const getProfessionalProjects = async (req, res) => {
   try {
     const projects = await Project.find({ postedBy: req.user.id })
       .populate('contractors.contractor', 'name email')
@@ -340,4 +339,16 @@ exports.getProfessionalProjects = async (req, res) => {
       message: error.message
     });
   }
+};
+
+export {
+  createProject,
+  getAllProjects,
+  getProject,
+  updateProject,
+  deleteProject,
+  applyForProject,
+  updateContractorStatus,
+  getProjectsForContractor,
+  getProfessionalProjects
 };

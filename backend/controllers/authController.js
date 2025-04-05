@@ -1,9 +1,8 @@
-
-const jwt = require('jsonwebtoken');
-const User = require('../models/User');
-const WorkerProfile = require('../models/WorkerProfile');
-const ContractorProfile = require('../models/ContractorProfile');
-const ProfessionalProfile = require('../models/ProfessionalProfile');
+import jwt from 'jsonwebtoken';
+import User from '../models/User.js';
+import WorkerProfile from '../models/WorkerProfile.js';
+import ContractorProfile from '../models/ContractorProfile.js';
+import ProfessionalProfile from '../models/ProfessionalProfile.js';
 
 // Sign JWT token
 const signToken = id => {
@@ -40,7 +39,7 @@ const createSendToken = (user, statusCode, res) => {
 };
 
 // Sign up user
-exports.signup = async (req, res) => {
+export const signup = async (req, res) => {
   try {
     const { name, email, password, role, phone, location } = req.body;
     
@@ -86,7 +85,7 @@ exports.signup = async (req, res) => {
 };
 
 // Login user
-exports.login = async (req, res) => {
+export const login = async (req, res) => {
   try {
     const { email, password } = req.body;
     
@@ -120,7 +119,7 @@ exports.login = async (req, res) => {
 };
 
 // Logout user
-exports.logout = (req, res) => {
+export const logout = (req, res) => {
   res.cookie('jwt', 'loggedout', {
     expires: new Date(Date.now() + 10 * 1000),
     httpOnly: true
@@ -130,7 +129,7 @@ exports.logout = (req, res) => {
 };
 
 // Get current user
-exports.getCurrentUser = async (req, res) => {
+export const getCurrentUser = async (req, res) => {
   try {
     let user = await User.findById(req.user.id);
     

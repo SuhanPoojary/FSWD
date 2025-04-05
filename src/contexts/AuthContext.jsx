@@ -93,7 +93,7 @@ export const AuthProvider = ({ children }) => {
       toast.success("Logged out successfully");
     } catch (error) {
       console.error("Logout error:", error);
-      toast.error(error.message || "Logout failed");
+      toast.error(error.response?.data?.message || "Logout failed");
     } finally {
       setLoading(false);
     }

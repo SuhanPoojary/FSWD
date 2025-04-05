@@ -1,4 +1,3 @@
-
 import React from "react";
 import { useParams, Link, useNavigate } from "react-router-dom";
 import { Button } from "../components/ui/button";
@@ -49,8 +48,8 @@ const mockApplicants = [
   }
 ];
 
-const ProjectApplicants: React.FC = () => {
-  const { id } = useParams<{ id: string }>();
+const ProjectApplicants = () => {
+  const { id } = useParams();
   const { projects } = useProjectContext();
   const { toast } = useToast();
   const navigate = useNavigate();
@@ -71,14 +70,14 @@ const ProjectApplicants: React.FC = () => {
     );
   }
   
-  const handleHire = (applicantId: number) => {
+  const handleHire = (applicantId) => {
     toast({
       title: "Contractor Hired",
       description: "You've successfully hired this contractor.",
     });
   };
   
-  const handleReject = (applicantId: number) => {
+  const handleReject = (applicantId) => {
     toast({
       title: "Application Rejected",
       description: "You've rejected this contractor's application.",

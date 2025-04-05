@@ -18,7 +18,7 @@ function genId() {
   return count.toString();
 }
 
-// Define the types we need instead of importing them
+// Define a simple toast action element
 const ToastActionElement = React.forwardRef((props, ref) => (
   <button ref={ref} {...props} />
 ));
